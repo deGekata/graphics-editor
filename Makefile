@@ -3,11 +3,18 @@ APPLICATION = $(notdir $(CURDIR))# Application name is name of root holder
 GXX_STANDARD = 17 # 11, 14, 17, 20
 OUT_FILE_NAME = $(APPLICATION).exe
 
+
+# Get project directory
+CWD := $(subst /,\, $(abspath $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))))
+
+# test:
+# 	$(info    DIR is $(CWD))
+
 # Сompiler options
 CC = g++
 CXXFLAGS = -Wall -Wextra -std=c++$(GXX_STANDARD)
-CXXFLAGS += -g -lmingw32 -lSDL2main -lSDL2 -I C:\Users\Gekata\Desktop\GitProjects\graphics_editor\SDL2\include -L C:\Users\Gekata\Desktop\GitProjects\graphics_editor\SDL2\lib
-LXXFLAGS = 
+CXXFLAGS += -g -lmingw64 -lSDL2main -lSDL2 -I $(CWD)\SDL2\include -L $(CWD)\graphics-editor\SDL2\lib 
+LXXFLAGS =
 BUILD = Debug# Debug or Release
 
 # Folder name setting
@@ -30,7 +37,7 @@ SRC = $(filter-out $(EXLUDED),$(notdir $(SRC_FULL_PATH)))
 OBJ = $(addprefix $(BIN_DIR)/, $(SRC:.cpp=.o))
 
 # Include library
-LIB_PATH = C:\\Users\\Gekata\\Desktop\\GitProjects\\graphics_editor\\SDL2\\
+LIB_PATH = $(CWD)\graphics-editor\\SDL2\\
 LIB_DEPEND = mingw32 SDL2main SDL2 
 CXXFLAGS += $(patsubst %,-I%/include,$(LIB_PATH))
 LXXFLAGS += $(patsubst %,-L%\\lib,$(LIB_PATH)) $(addprefix -l, $(LIB_DEPEND))

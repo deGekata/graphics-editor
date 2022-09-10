@@ -48,7 +48,7 @@ public:
         m31_ = 0                 , m32_ = 0                 , m33_ = 1;        
     };
 
-    Transformation(Point point, double rotate_angle = 0) : Transformation(point.x_,  ){}
+    // Transformation(Point point, double rotate_angle = 0) : Transformation(point.x_,   {}
 
     Transformation(double m11, double m12, double m13,
                    double m21, double m22, double m23, 
