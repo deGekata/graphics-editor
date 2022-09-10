@@ -1,6 +1,7 @@
 #ifndef GRAPHICS_ITEM_HPP
 #define GRAPHICS_ITEM_HPP
 
+#include "Utilities.hpp"
 
 class Painter;
 

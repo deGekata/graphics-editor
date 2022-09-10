@@ -1,0 +1,19 @@
+Painter 
+    draw on buffer
+    present (on window)
+    in constructor has window
+
+
+windows
+    only creating window
+    needed for Painter
+
+
+Graphic scene:
+    store graphic items
+    maps click on graphic items
+    
+
+GraphicsItem
+    has method paint (using painter)
+    
