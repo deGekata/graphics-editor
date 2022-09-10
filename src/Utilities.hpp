@@ -59,14 +59,14 @@ public:
 
     
     Transformation(int dx, int dy)                      : dx_(dx), dy_(dy)                              {};
-    Transformation(double rotate_angle)                 :                   rotate_angle_(rotate_angle) {};
+    // Transformation(double rotate_angle)                 :                   rotate_angle_(rotate_angle) {};
 
 
-    Transformation operator*(const Transformation& other) {
-        return Transformation(
-            m11_
-        )
-    }
+    // Transformation operator*(const Transformation& other) {
+    //     return Transformation(
+    //         m11_
+    //     )
+    // }
 
     double  m11_, m12_, m13_,
             m21_, m22_, m23_,
