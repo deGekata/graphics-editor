@@ -13,7 +13,7 @@ CWD := $(subst /,\, $(abspath $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEF
 # Сompiler options
 CC = g++
 CXXFLAGS = -Wall -Wextra -std=c++$(GXX_STANDARD)
-CXXFLAGS += -g -lmingw64 -lSDL2main -lSDL2 -I $(CWD)\SDL2\include -L $(CWD)\graphics-editor\SDL2\lib 
+CXXFLAGS += -g -lmingw64 -lSDL2main -lSDL2 -I $(CWD)\SDL2\include -L $(CWD)\SDL2\lib 
 LXXFLAGS =
 BUILD = Debug# Debug or Release
 
@@ -26,7 +26,7 @@ ifeq ($(BUILD), Debug)
 	CXXFLAGS += -O0 -g -fdiagnostics-color=always
 	BUILD_PATH = build-debug
 else
-	CXXFLAGS += -O0 -s -DNDEBUG
+	CXXFLAGS += -O0 -s -g -DNDEBUG
 	BUILD_PATH = build-release
 endif
 
@@ -37,7 +37,7 @@ SRC = $(filter-out $(EXLUDED),$(notdir $(SRC_FULL_PATH)))
 OBJ = $(addprefix $(BIN_DIR)/, $(SRC:.cpp=.o))
 
 # Include library
-LIB_PATH = $(CWD)\graphics-editor\\SDL2\\
+LIB_PATH = $(CWD)\\SDL2\\
 LIB_DEPEND = mingw32 SDL2main SDL2 
 CXXFLAGS += $(patsubst %,-I%/include,$(LIB_PATH))
 LXXFLAGS += $(patsubst %,-L%\\lib,$(LIB_PATH)) $(addprefix -l, $(LIB_DEPEND))

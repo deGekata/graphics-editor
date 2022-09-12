@@ -1,13 +1,19 @@
-#include "..\SDL2\include\SDL2\SDL.h"
 #include <iostream> 
 #include "vectord_2d.hpp"
+#include "GraphicsItem.hpp"
+#include "Painter.hpp"
+#include "Window.hpp"
+#include "GraphicsScene.hpp"
+#include "RectangleItem.hpp"
+#include "DottedRectangle.hpp"
+#include "Arrow.hpp"
 
 int main(int argv, char** args) {
 
-    SDL_Init(SDL_INIT_EVERYTHING);
-    SDL_SetHint(SDL_HINT_VIDEO_HIGHDPI_DISABLED, "1");
-    SDL_Window *window = SDL_CreateWindow("Hello SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, 0);
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
+    Window::startGraphicalLib();
+
+    Window window;
+    Painter painter(window);
     
     bool isRunning = true;
     bool invert_coord = true;
@@ -21,8 +27,30 @@ int main(int argv, char** args) {
     SDL_Log("s y %d \n", ss.size_.getY());
     SDL_Log("b x %d \n", ss.base_point_.getY());
     SDL_Log("b y %d \n", ss.base_point_.getY());
+
     // return 0;
     Vec2D line(400, 300);
+
+    GraphicsScene scene;
+    GraphicsRectangleItem rect1(Point(0, 0));
+    // rect1.rotation_angle_ = 0.1 * M_PI;
+    rect1.parent_delta_coords_ = {100, 100};
+    GraphicsRectangleItem rect2(Point(500, 200));
+    DottedRectangle dot_rect(Point(0, 0));
+    dot_rect.parent_delta_coords_ = {200, 200};
+    GraphicsArrow arrow(Point(0, 0));
+    scene.items.push_back(&arrow);
+    rect1.addChild(&arrow, Point(0, 0));
+    rect1.addChild(&rect2, Point(-200, 100));
+    rect1.addChild(&dot_rect, Point(200, 200));
+    scene.items.push_back(&rect1);
+    scene.items.push_back(&rect2);
+    scene.items.push_back(&dot_rect);
+    std::cout << rect1.absTransformToParent() << '\n';
+    std::cout << rect2.transformOnParent() << '\n';
+    std::cout << rect2.absTransformToParent() << '\n';
+    
+    // exit(0);
     while (isRunning) {
         while (SDL_PollEvent(&event)) {
             // printf("lo1");
@@ -30,6 +58,19 @@ int main(int argv, char** args) {
             case SDL_QUIT:
                 isRunning = false;
                 break;
+            
+            case SDL_MOUSEBUTTONDOWN:{
+                Point mouse_p;
+                int x, y;
+                Transformation trnsfrm = arrow.absTransformFromParent();
+                std::cout << trnsfrm << " transformer\n";
+                SDL_GetMouseState(&x, &y);
+                std::cout << "af tranfrom " << trnsfrm * Point(x, y) << "  \n";
+                arrow.rect_.p2_ = trnsfrm * Point(x, y);
+                printf(" x %d  y %d \n", x, y);
+                arrow.rect_.p1_ = -arrow.rect_.p2_;
+                break;
+            }
 
             case SDL_KEYDOWN:
                 if (event.key.keysym.sym == SDLK_ESCAPE) {
@@ -40,32 +81,39 @@ int main(int argv, char** args) {
                 if (event.key.keysym.sym == SDLK_CAPSLOCK) {
                     invert_coord = !invert_coord;
                 }
-                
+                break;
             default:
                 break;
             }
         }
+        painter.setColor(255, 0, 0);
+        painter.fillWindow();
 
+        painter.setColor(255, 255, 255);
+        painter.drawLine(320, 200, 300, 240);
+        painter.drawLine(300, 240, 340, 240);
+        painter.drawLine(340, 240, 320, 200);
 
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-        SDL_RenderClear(renderer);
+        scene.repaint(&painter);
 
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-        SDL_RenderDrawLine(renderer, 320, 200, 300, 240);
-        SDL_RenderDrawLine(renderer, 300, 240, 340, 240);
-        SDL_RenderDrawLine(renderer, 340, 240, 320, 200);
         if (invert_coord) {
-            ss.drawVec(renderer, ss2, line); 
+            ss.drawVec(painter.painter_, ss2, line); 
         } else {
-            ss.drawVec(renderer, ss1, line);
+            ss.drawVec(painter.painter_, ss1, line);
         }
-        SDL_RenderPresent(renderer);
+        painter.present();
+        rect1.rotation_angle_ += 0.0001 * M_PI;
+        dot_rect.rotation_angle_ += 0.0001 * M_PI;
+        // arrow.rotation_angle_ += 0.0001 * M_PI;
     }
 
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
+    Window::stopGraphicalLib();
     SDL_Quit();
-
+    
+    
+    // itm_child.parent_base_point = {0, 0};
+    // itm_child.rotation_angle_ = -1 * M_PI;
+    // std::cout << itm_child.mapOnParent({1, 2}) << " fs\n";
     return 0;
 }
 

@@ -8,11 +8,11 @@ class GraphicsGeometryItem : public GraphicsItem {
 public:
     virtual ~GraphicsGeometryItem() {};
 
-    virtual bool hasCollision(const GraphicsGeometryItem& other);
+    // virtual bool hasCollision(const GraphicsGeometryItem& other);
     
     
     
-    
+    Point rel_pos_ = {0, 0};
 
 
 };
