@@ -21,9 +21,7 @@ public:
         Point base_point = rel_pos_ + (rect_.p1_ + rect_.p2_) / 2;
         Point direction  = (rect_.p2_ - base_point).normalize() * 50;
         Point end_point  = rel_pos_ + base_point + direction.normalize() * arrow_len;
-        if (is_parent_bounded) {
-            
-        }
+
         // Point absolute_pos = absPos(pos_);
         Transformation abs_transform = absTransformToParent();
         // std::cout << abs_transform * (base_point) << "  arrow  " << abs_transform * end_point << " \n";

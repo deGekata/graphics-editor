@@ -6,7 +6,7 @@
 
 class DottedRectangle : public GraphicsGeometryItem {
 public:
-    DottedRectangle(GraphicsItem* parent = nullptr) {};
+    DottedRectangle(GraphicsItem* parent = NULL) : GraphicsGeometryItem(parent) {};
 
     DottedRectangle(const Point& pos, Rect rect = {-100, -100, 100, 100}) {
         rel_pos_.x_ = pos.x_;

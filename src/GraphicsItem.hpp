@@ -4,7 +4,6 @@
 #include "Utilities.hpp"
 #include "Painter.hpp"
 
-
 class GraphicsItem {
 public:
     GraphicsItem() = default;
@@ -12,7 +11,7 @@ public:
     virtual int paint(Painter* painter) = 0;
     // virtual void pos()  = 0;
     
-    virtual const Rect& boundingRect() const { return rect_; };
+    GraphicsItem(GraphicsItem* item) : parent_(item) {};
     
     int addChild(GraphicsItem* item, Point pos) {
         if (item == NULL) return 1;
@@ -20,21 +19,19 @@ public:
         item->parent_delta_coords_ = pos;
         return 0;
     }
+    
+    virtual const Rect& boundingRect() const { return rect_; };
 
+    #pragma region positioning
+    //positioning region
     Transformation absTransformToParent() {
         if (parent_ == NULL) return Transformation(parent_delta_coords_, -rotation_angle_);
-         
+    
         return parent_->absTransformToParent() * Transformation(parent_delta_coords_, -rotation_angle_);
     }
 
     Transformation absTransformFromParent() {
-        if (parent_ == NULL) return Transformation(-parent_delta_coords_, rotation_angle_);
-         
-        return Transformation(-parent_delta_coords_, rotation_angle_) * parent_->absTransformFromParent();
-    }
-
-    Transformation transformOnParent() {
-        return Transformation(parent_delta_coords_, -rotation_angle_);
+        return absTransformToParent().inverse();
     }
 
     Point absPos(const Point& pos_in_this) {
@@ -42,17 +39,14 @@ public:
 
         return absTransformToParent() * pos_in_this;
     }
-    
-    Point mapOnParent(const Point& point) {
-        Transformation transformation(parent_delta_coords_, -rotation_angle_);
-        // std::cout << transformation << '\n';
-        // std::cout << point << '\n';
-        // std::cout << parent_base_point << '\n';
-        // Point pnt = transformation * point;
-        // std::cout << "pnt res" << pnt << "\n";
-        return transformation * point;
-    }
+    //end positioning region
+    #pragma endregion
 
+    // #pragma region 
+
+// dfasdfsad
+
+// MappableObject* parent cringeeeee
     GraphicsItem* parent_ = NULL;
     
     Rect rect_ = {0, 0};

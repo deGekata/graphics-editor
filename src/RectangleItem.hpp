@@ -6,7 +6,7 @@
 
 class GraphicsRectangleItem : public GraphicsGeometryItem {
 public:
-    GraphicsRectangleItem(GraphicsItem* parent = nullptr) {};
+    GraphicsRectangleItem(GraphicsItem* parent = NULL) : GraphicsGeometryItem(parent) {};
     GraphicsRectangleItem(Rect rect, Point point);
 
     GraphicsRectangleItem(const Point& pos) {

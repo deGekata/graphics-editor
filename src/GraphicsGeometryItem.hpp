@@ -3,9 +3,10 @@
 
 #include "GraphicsItem.hpp"
 #include "Utilities.hpp"
-
+//CRINGE
 class GraphicsGeometryItem : public GraphicsItem {
 public:
+    GraphicsGeometryItem(GraphicsItem* item = NULL) : GraphicsItem(item) {};
     virtual ~GraphicsGeometryItem() {};
 
     // virtual bool hasCollision(const GraphicsGeometryItem& other);

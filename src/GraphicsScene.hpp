@@ -1,7 +1,7 @@
 #ifndef GRAPHICS_SCENE_HPP
 #define GRAPHICS_SCENE_HPP
 
-#include "Painter.hpp";
+#include "Painter.hpp"
 #include "GraphicsItem.hpp"
 #include <vector> //FIX: delete this shiiiiiiit
 

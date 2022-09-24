@@ -3,6 +3,9 @@
 #include <math.h>
 #include <iostream>
 
+#define MIN(a,b) ((a) < (b) ? (a) : (b))
+#define MAX(a,b) ((a) > (b) ? (a) : (b))
+#define SWAP(T, a, b) do { T tmp = a; a = b; b = tmp; } while (0)
 
 class Point {
     public:
@@ -43,6 +46,10 @@ class Point {
         return Point (x_ / norm, y_ / norm);
     }
 
+    double len() {
+        return sqrt(x_ * x_ + y_ * y_);
+    }
+
     friend Point operator-(const Point& point);
     friend Point operator+(const Point& point);
 
@@ -55,31 +62,55 @@ class Point {
 
 class Rect {
 public:
+    Rect() {};
     Rect(Point p1, Point p2) : Rect(p1.x_, p1.y_, p2.x_, p2.y_) {};
     Rect(double x1, double y1, double x2, double y2) {
-        p1_ = {x1, y1};
-        p2_ = {x2, y2};
+        p1_ = {MIN(x1, x2), MIN(y1, y2)};
+        p2_ = {MAX(x1, x2), MAX(y1, y2)};
     }
     
+    static Rect min_rect(const Rect& bounds, Rect sample, Point move_rect) {
+        Rect res;
+        if (move_rect.x_ < 0 || move_rect.x_ > bounds.p2_.x_) {
+            move_rect.x_ = 0;
+        }
+
+        if (move_rect.y_ < 0 || move_rect.y_ > bounds.p2_.y_) {
+            move_rect.y_ = 0;
+        }
+
+        sample.p1_ = sample.p1_ + move_rect;
+        sample.p2_ = sample.p2_ + move_rect;
+
+        if (sample.p1_.x_ < bounds.p1_.x_ ||  bounds.p2_.x_ < sample.p1_.x_) {
+            res.p1_.x_ = bounds.p1_.x_;
+        }
+
+        if (sample.p2_.x_ < bounds.p1_.x_ ||  bounds.p2_.x_ < sample.p2_.x_) {
+            res.p2_.x_ = bounds.p2_.x_;
+        }
+
+        if (sample.p1_.y_ < bounds.p1_.y_ ||  bounds.p2_.y_ < sample.p1_.y_) {
+            res.p1_.y_ = bounds.p1_.y_;
+        }
+
+        if (sample.p2_.y_ < bounds.p1_.y_ ||  bounds.p2_.y_ < sample.p2_.y_) {
+            res.p2_.y_ = bounds.p2_.y_;
+        }
+
+        return res;
+    }
+
     ~Rect() = default;
     Point p1_ = {0, 0}, p2_ = {0, 0};
 };
 
 
-std::ostream& operator<<(std::ostream& out, const Point& point) {
-    out << '\t' << point.x_ << '\t' << point.y_;
-    return out;
-}
+std::ostream& operator<<(std::ostream& out, const Point& point);
 
+Point operator-(const Point& point);
 
-
-Point operator-(const Point& point) {
-    return Point(-point.x_, -point.y_);
-}
-
-Point operator+(const Point& point) {
-    return point;
-}
+Point operator+(const Point& point);
 
 class Transformation {
 public:
@@ -108,6 +139,15 @@ public:
     Transformation(int dx, int dy)                      : m13_(dx), m23_(dy)                              {};
     // Transformation(double rotate_angle)                 :                   rotate_angle_(rotate_angle) {};
 
+    double det() {
+        return m11_*m22_*m33_ + m12_*m23_*m31_ + m13_*m21_*m32_ - m13_*m22_*m31_ - m11_*m23_*m32_ - m12_*m21_*m33_;
+    }
+
+    Transformation inverse() {
+        return (1/det()) * Transformation(m22_*m33_ - m23_*m32_   , -(m12_*m33_ - m13_*m32_), m12_*m23_ - m13_*m22_   ,
+                                          -(m21_*m33_ - m23_*m31_), m11_*m33_ - m13_*m31_   , -(m11_*m23_ - m13_*m21_),
+                                          m21_*m32_ - m22_*m31_   , -(m11_*m32_ - m12_*m31_),  m11_*m22_ - m12_*m21_);
+    }
 
     Transformation operator*(const Transformation& other) {
         return Transformation(
@@ -116,6 +156,16 @@ public:
             m31_ * other.m11_ + m32_ * other.m21_ + m33_ * other.m31_, m31_ * other.m12_ + m32_ * other.m22_ + m33_ * other.m32_, m31_ * other.m13_ + m32_ * other.m23_ + m33_ * other.m33_
         );
     }
+
+    Transformation operator*(double num) {
+        return Transformation(
+            m11_ * num, m12_ * num, m13_ * num,
+            m21_ * num, m22_ * num, m23_ * num,
+            m31_ * num, m32_ * num, m33_ * num
+        );
+    }
+
+    friend Transformation operator*(double num, const Transformation& m);
 
     Point operator*(const Point& other) {
         return Point(m11_ * other.x_ + m12_ * other.y_ + m13_, m21_ * other.x_ + m22_ * other.y_ + m23_);
@@ -135,14 +185,66 @@ public:
             m31_, m32_, m33_;
 };
 
-std::ostream& operator<<(std::ostream& out, const Transformation& other) {
-    out << '\t' << other.m11_ << '\t' << other.m12_ << '\t' << other.m13_ << '\n';
-    out << '\t' << other.m21_ << '\t' << other.m22_ << '\t' << other.m23_ << '\n';
-    out << '\t' << other.m31_ << '\t' << other.m32_ << '\t' << other.m33_;
-    return out;
-}
+Transformation operator*(double num, const Transformation& m);
+
+std::ostream& operator<<(std::ostream& out, const Transformation& other);
+
+Transformation transformOnParent(const Point& parent_delta_coords, double rotation_angle);
+
+Point mapOnParent(const Point& point, const Point& parent_delta_coords, double rotation_angle);
 
 
+class ColorF {
+public:
+    explicit ColorF(double r, double g, double b, double a=1) {
+        r = fabs(r), r =  r > 1.0 ? 1 : r;
+        g = fabs(g), g =  g > 1.0 ? 1 : g;
+        b = fabs(b), b =  b > 1.0 ? 1 : b;
+        a = fabs(a), a =  a > 1.0 ? 1 : a;
+        r_=r, g_=g, b_=b, a_=a;
+    }
+
+    ColorF(int r, int g, int b, int a=255) {
+        r_ = (r & 255) / 255;
+        g_ = (g & 255) / 255;
+        b_ = (b & 255) / 255;
+        a_ = (a & 255) / 255;
+    }
+
+    ColorF(const ColorF& other) {
+        r_=other.r_, g_=other.g_, b_=other.b_, a_=other.a_;
+    }
+
+    const ColorF& operator*=(const ColorF& other) {
+        r_ *= other.r_, g_ *=other.g_, b_ *= other.b_, a_ *= other.a_;
+        return *this;
+    }
+
+    ColorF operator*(const ColorF& other) {
+        return ColorF(*this) *= other;
+    }
+
+    const ColorF& operator+=(const ColorF& other) {
+        r_ += other.r_, g_ +=other.g_, b_ += other.b_, a_ += other.a_;
+        return *this;
+    }
+
+    ColorF operator+(const ColorF& other) {
+        return ColorF(*this) += other;
+    }
+
+    const ColorF& operator*=(double num) {
+        r_ *= num, g_ *= num, b_ *= num, a_ *= num;
+        return *this;
+    }
+
+    ColorF operator*(double num) {
+        return ColorF(*this) *= num;
+    }
+
+
+    double r_=0, g_=0, b_=0, a_=1;
+};
 
 
 #endif
