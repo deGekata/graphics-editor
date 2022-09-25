@@ -3,21 +3,29 @@
 
 #include "Widget.hpp"
 #include "Vector3D.hpp"
+#include "RayIntersectable.hpp"
 
 
-
-class RayTrace : public Widget {
+class RayTracerWidget : public Widget {
 private:
-    double FOV = M_PI / 2;
-    double view_plane_dist = 100;
+    double FOV_ = M_PI / 2;
+    double view_plane_dist_;
     
-
-
+    double recalc_view_plane_dist();
+    Ray    calc_ray_direction(int x, int y);
+    
 public:
-    RayTrace(const )
-    int paint(Painter* painter); //FIX
-    Vector3D camera_pos = {0, 0, 0};
-    Vector3D camera_direction = {0, 0, 1};
+    RayTracerWidget(double FOV, 
+                    const Rect& rect, 
+                    const Point& point, 
+                    Widget* parent=nullptr);
+
+    RayTracerWidget(const Rect& rect, const Point& point, Widget* parent=nullptr);
+
+    // RayTracerWidget(const )
+    // int paint(Painter* painter); //FIX
+    Vector3D camera_pos_ = {0, 0, 0};
+    Vector3D camera_direction_ = {0, 0, 1};
 
 };
 

@@ -1,156 +1,127 @@
-#ifndef VECTOR3D_HPP
-#define VECTOR3D_HPP
-
 #include <cmath>
 #include <iostream>
+#include <math.h>
+#include "RayIntersectable.hpp"
 
 #define EPS 1e-6
 
-class Vector3D {
-public:
 
-    Vector3D() {}
-    Vector3D(double x, double y, double z) : x_(x), y_(y), z_(z) {
-        update_length();
+
+double Plane::intersect(const Ray& ray) {
+    if (is_zero(scalarMult(ray.direction_, normal_vec))) return NAN;
+    double dist_to_plane = distance_to_base_point(ray.base_point_);
+    double scale =  dist_to_plane / fabs(scalarMult(ray.direction_, normal_vec));
+    if (distance_to_base_point(ray.base_point_ + ray.direction_ * scale / 2) > dist_to_plane) {
+        return NAN;
+    }
+
+    return scale;
+}
+
+double Plane::distance_to_base_point(const Vector3D& point) {
+    return fabs(scalarMult(point - base_point, normal_vec));
+}
+
+Vector3D Plane::get_normal(const Ray& ray, double distance) {
+    if (isnan(distance)) return Vector3D();
+
+    return normal_vec * - scalarMult(ray.direction_, normal_vec);
+}
+
+
+Triangle::Triangle(const Vector3D& v1, const Vector3D& v2, const Vector3D& v3) {
+    normal_ = {
+        (v2.y_ - v1.y_) * (v3.z_ - v1.z_) - (v2.z_ - v1.z_) * (v3.y_ - v1.y_),
+       -(v2.x_ - v1.x_) * (v3.z_ - v1.z_) + (v2.z_ - v1.z_) * (v3.x_ - v1.x_),
+        (v2.x_ - v1.x_) * (v3.y_ - v1.y_) - (v2.y_ - v1.y_) * (v3.x_ - v1.x_)
     };
 
-    Vector3D(const Vector3D& sample) : x_(sample.x_), y_(sample.y_), z_(sample.z_), length_(sample.length_) {}
+    base_point_ = v1;
+    v1_ = v2 - v1;
+    v2_ = v3 - v1;
+}
+
+
+
+
+double Triangle::intersect(const Ray& ray) {
+    if (is_zero(scalarMult(ray.direction_, normal_))) return NAN;
     
-    double length() const {
-        return length_;
+    double dist_to_plane = distToPlane(ray.base_point_);
+    double scale =  dist_to_plane / fabs(scalarMult(ray.direction_, normal_));
+    if (is_in_triangle(ray.base_point_ + ray.direction_ * scale)) 
+        return scale;
+
+    return NAN;
+}
+
+double Triangle::distance_to_base_point(const Vector3D& vec) {
+    Vector3D projection =  vec - normal_ * distToPlane(vec);
+    return is_in_triangle(projection) ? distToPlane(vec) : NAN;
+}
+
+double Triangle::distToPlane(const Vector3D& vec) {
+    return fabs(scalarMult(vec - base_point_, normal_));
+}
+
+
+
+Vector3D Triangle::get_normal(const Ray& ray, double distance) {
+    if (isnan(distance)) return Vector3D();
+
+    return normal_ * - scalarMult(ray.direction_, normal_);
+}
+
+bool Triangle::is_in_triangle(Vector3D vec) {
+    vec = base_point_ - vec;
+    double vec_area = area() - triangleArea(vec, v1_) - triangleArea(vec, v2_) - triangleArea(v2_ - vec, v1_ - vec);
+    if (is_zero(vec_area)) {
+        return true;
+    }
+    return false;
+}
+
+double Triangle::area() {
+    return triangleArea(v1_, v2_);
+}
+
+
+
+double Sphere::intersect(const Ray& ray) {
+    Vector3D base_point_to_center = base_point - ray.base_point_;
+    double dist_to_height = scalarMult(base_point_to_center, ray.direction_); // dist from line begin to intersection of height and line
+    double dist_to_line = scalarMult(base_point_to_center, base_point_to_center) - dist_to_height*dist_to_height;//square dist from sphere center to line
+    if (dist_to_line > radius*radius) {
+        return NAN;
     }
 
-    Vector3D normalize() const {
-        if (length_ == 0) throw;
-        return Vector3D(x_ / length_, y_ / length_, z_ / length_);
-    }
+    double inside_sphere_dist = sqrt(radius*radius - dist_to_line);
+    dist_to_height - inside_sphere_dist;
 
-    const Vector3D& operator=(const Vector3D& sample) {
-        x_ = sample.x_;
-        y_ = sample.y_;
-        z_ = sample.z_; 
-        length_ = sample.length_;
-        return *this;
-    }
+    if ((dist_to_height - inside_sphere_dist) > 0.001) return dist_to_height - inside_sphere_dist;
 
-    const Vector3D& operator+=(const Vector3D& sample) {
-        x_ += sample.x_;
-        y_ += sample.y_;
-        z_ += sample.z_;
-        update_length();
-        return *this;
-    }    
+    if ((dist_to_height + inside_sphere_dist) > 0.001) return dist_to_height + inside_sphere_dist;
 
-    const Vector3D& operator-=(const Vector3D& sample) {
-        x_ -= sample.x_;
-        y_ -= sample.y_;
-        z_ -= sample.z_;
-        update_length();
-        return *this;
-    }    
+    return NAN;
+}
 
-    const Vector3D& operator*=(double num) {
-        x_ *= num;
-        y_ *= num;
-        z_ *= num;
-        update_length();
-        return *this;
-    }
+double Sphere::distance_to_base_point(const Vector3D& vec) {
+    return (vec - base_point).length_ - radius;
+}
+
+Vector3D Sphere::get_normal(const Ray& ray, double distance) {
+    if (isnan(distance)) return Vector3D();
+    Vector3D norm = (ray.direction_ * distance - (base_point - ray.base_point_)).normalize();
+    return norm * -scalarMult(norm, ray.direction_);
+}
 
 
-    
-    const Vector3D& operator/=(double num) {
-        if (num == 0) throw;
-        x_ /= num;
-        y_ /= num;
-        z_ /= num;
-        update_length();
-        return *this;
-    }
-
-    friend Vector3D operator+(const Vector3D& lft, const Vector3D& rht);
-
-    friend Vector3D operator-(const Vector3D& lft, const Vector3D& rht);
-
-    friend Vector3D operator*(const Vector3D& lft, double num);
-    friend Vector3D operator*(double num, const Vector3D& lft);
-
-    friend Vector3D operator/(const Vector3D& lft, double num);
-    friend Vector3D operator/(double num, const Vector3D& lft);
-
-    ~Vector3D() {};
-    double x_ = 0, y_ = 0, z_ = 0, length_ = 0;
-
-private:
-    void update_length() {
-        length_ = sqrt(x_*x_ + y_*y_ + z_*z_);
-    }
-};
-
-Vector3D operator+(const Vector3D& lft, const Vector3D& other);
-
-Vector3D operator-(const Vector3D& lft, const Vector3D& other);
-
-Vector3D operator*(const Vector3D& vec, double num);
-Vector3D operator*(double num, const Vector3D& vec);
-
-Vector3D operator/(const Vector3D& vec, double num);
-Vector3D operator/(double num, const Vector3D& vec);
 
 bool is_zero(double num);
 
-struct Intersection
-{
-    Vector3D normal = {1, 1, 1};
-    double distance = 0;
-    bool exist = false;
-};
-
-struct Line {
-    Vector3D base_point = {0, 0, 0};
-    Vector3D direction  = {1, 0, 0};
-    Line(const Vector3D& base_point, const Vector3D& direction) : base_point(base_point), direction(direction.normalize()) {}
-};
-
-struct Plane {
-    Vector3D base_point = {0, 0, 0};
-    Vector3D normal_vec = {1, 0, 0};
-    Plane(const Vector3D& base_point, const Vector3D& normal_vec) : base_point(base_point), normal_vec(normal_vec.normalize()) {}
-    Plane() {};
-};
-
-struct Triangle {
-    Vector3D v1, v2, v3;
-};
-
-struct Sphere {
-    Vector3D base_point =  {0, 0, 0};
-    double radius = 1;
-    Sphere(const Vector3D& base_point, double radius) : base_point(base_point), radius(radius) {}
-};
-
-double scalarMult(const Vector3D& lft, const Vector3D& rht);
-
-double distToLine(const Vector3D& point, const Line& line);
-
-double triangleArea(const Vector3D& v1, const Vector3D& v2);
-
-Plane planeByTriangle(const Vector3D& v1, const Vector3D& v2, const Vector3D& v3);
-
-double distToPlane(const Vector3D& point, const Plane& plane);
-
-Vector3D projectionPointPlane(const Vector3D& point, const Plane& plane);
-
-Intersection intersectLinePlane(const Line& line, const Plane& plane);
-
-Intersection intersectLineTriangle(const Line& line, const Triangle& triangle);
-
-Intersection intersectLineSphere(const Line& line, const Sphere& sphere);
-
-
-double distToSphere(const Vector3D& point, const Vector3D& radius, const Vector3D& base_point);
-
-
-
-
-#endif
+// struct Intersection
+// {
+//     Vector3D normal = {1, 1, 1};
+//     double distance = 0;
+//     bool exist = false;
+// };

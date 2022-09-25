@@ -196,6 +196,8 @@ Point mapOnParent(const Point& point, const Point& parent_delta_coords, double r
 
 class ColorF {
 public:
+    ColorF() {};
+
     explicit ColorF(double r, double g, double b, double a=1) {
         r = fabs(r), r =  r > 1.0 ? 1 : r;
         g = fabs(g), g =  g > 1.0 ? 1 : g;
