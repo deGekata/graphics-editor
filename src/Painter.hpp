@@ -40,7 +40,7 @@ public:
     }
 
     int setColor(const ColorF& color) {
-        return SDL_SetRenderDrawColor(painter_, uint8_t(color.r_ * 255), uint8_t(color.g_ * 255), uint8_t(color.b_ * 255), uint8_t(color.a_ * 255));
+            return SDL_SetRenderDrawColor(painter_, uint8_t(color.r_ * 255), uint8_t(color.g_ * 255), uint8_t(color.b_ * 255), uint8_t(color.a_ * 255));
     }
 
     void present() {
@@ -48,7 +48,7 @@ public:
     }
 
     void setConstraint(const Rect& rect, const Point& point) {
-        rect_.x = rect.p1_.x_ + point.x_;
+        rect_.x = rect.p1_.x_ + point.x_;   
         rect_.y = rect.p1_.y_ + point.y_;
         rect_.w = rect.p2_.x_ - rect.p2_.x_;
         rect_.h = rect.p2_.y_ - rect.p1_.y_;

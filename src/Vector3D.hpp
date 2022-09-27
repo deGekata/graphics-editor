@@ -21,7 +21,7 @@ public:
     }
 
     Vector3D normalize() const {
-        if (length_ == 0) throw;
+        if (length_ == 0) return *this;
         return Vector3D(x_ / length_, y_ / length_, z_ / length_);
     }
 
@@ -114,6 +114,8 @@ bool is_zero(double num);
 // };
 
 double scalarMult(const Vector3D& lft, const Vector3D& rht);
+
+Vector3D vectorMult(const Vector3D& lft, const Vector3D& rht);
 
 // double distToLine(const Vector3D& point, const Line& line);
 

@@ -35,6 +35,7 @@ public:
 };
 
 class Sphere: public RayIntersectableBasic {
+public:
     Vector3D base_point =  {0, 0, 0};
     double radius = 1;
     Sphere(const Vector3D& base_point, double radius) : base_point(base_point), radius(radius) {}

@@ -10,6 +10,7 @@
 #include "RectangleItem.hpp"
 #include "DottedRectangle.hpp"
 #include "Arrow.hpp"
+#include "RayTracerWidget.hpp"
 
 class MyWindow : public Window {
 public:
@@ -40,7 +41,48 @@ public:
         dot_rect->addChild(arrow, Point(0, 0));
         rect1->addChild(rect2, Point(-200, 100));
         rect1->addChild(dot_rect, Point(200, 200));
+        tracer = new RayTracerWidget(Rect(0, 0, 300, 300), Point(0, 0));
         
+        //-----------------------------------------------------
+        Sphere* sphere1 = new Sphere(Vector3D(100, 0, 300), 20);
+        sphere1->albedo_ = 1;
+        sphere1->is_light_source_ = true;
+        sphere1->color_ = ColorF(255, 255, 0);
+        // tracer->add_item(sphere1);
+
+
+        //-----------------------------------------------------
+        Sphere* sphere2 = new Sphere(Vector3D(-100, 0, 300), 60);
+        sphere2->albedo_ = 2;
+        // sphere2->is_light_source_ = true;
+        tracer->add_item(sphere2);
+        sphere2->color_ = ColorF(0.9, 0.9, 0.9);
+
+        //-----------------------------------------------------
+        Triangle* triangle = new Triangle(Vector3D(-100, -100, 200), Vector3D(-100, 100, 200), Vector3D(0, 0, 300));
+        triangle->albedo_ = 3;
+        triangle->color_ = ColorF(0.5, 0.5, 0.5);
+        // tracer->add_item(triangle);
+        // triangle->is_light_source_ = true;
+
+        
+        //-----------------------------------------------------
+        Plane* plane1 = new Plane(Vector3D(0, 0, 300), Vector3D(-1.0, 0, -1.0));
+        plane1->color_ = ColorF(0.0, 255.0, 255.);
+        plane1->is_light_source_ = true;
+        plane1->albedo_ = 4;
+        tracer->add_item(plane1);
+        
+        //-----------------------------------------------------
+        Plane* plane2 = new Plane(Vector3D(0, 0, -300), Vector3D(-1.0, 0, -1.0));
+        plane2->color_ = ColorF(0.0, 1.0, 0.0);
+        plane2->albedo_ = 5;
+        plane2->is_light_source_ = true;
+        tracer->add_item(plane2);
+        
+
+        // tracer->trace_ray(Ray(Vector3D(0, 0, 0), Vector3D(-0.40824829046386307, -0.40824829046386307, 0.81649658092772592)), 0);
+        // scene->items.push_back(tracer);
     }
 
     void exec() {
@@ -107,7 +149,7 @@ public:
             painter_->drawLine(340, 240, 320, 200);
 
             scene->repaint(painter_);
-
+            tracer->paint(painter_);
             if (invert_coord) {
                 ss.drawVec(painter_->painter_, ss2, line); 
             } else {
@@ -133,6 +175,7 @@ public:
     DottedRectangle* dot_rect;
     GraphicsArrow* arrow;
     Painter* painter_;
+    RayTracerWidget* tracer;
 };
 
 #endif

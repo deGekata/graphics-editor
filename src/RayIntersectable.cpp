@@ -35,6 +35,7 @@ Triangle::Triangle(const Vector3D& v1, const Vector3D& v2, const Vector3D& v3) {
        -(v2.x_ - v1.x_) * (v3.z_ - v1.z_) + (v2.z_ - v1.z_) * (v3.x_ - v1.x_),
         (v2.x_ - v1.x_) * (v3.y_ - v1.y_) - (v2.y_ - v1.y_) * (v3.x_ - v1.x_)
     };
+    normal_ = normal_.normalize();
 
     base_point_ = v1;
     v1_ = v2 - v1;
@@ -73,7 +74,7 @@ Vector3D Triangle::get_normal(const Ray& ray, double distance) {
 }
 
 bool Triangle::is_in_triangle(Vector3D vec) {
-    vec = base_point_ - vec;
+    vec = vec - base_point_;
     double vec_area = area() - triangleArea(vec, v1_) - triangleArea(vec, v2_) - triangleArea(v2_ - vec, v1_ - vec);
     if (is_zero(vec_area)) {
         return true;

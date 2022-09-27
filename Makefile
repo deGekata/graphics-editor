@@ -23,10 +23,10 @@ BIN_DIR = bin
 
 # Setting build parameters
 ifeq ($(BUILD), Debug)
-	CXXFLAGS += -O0 -g -fdiagnostics-color=always
+	CXXFLAGS += -O3 -g -fdiagnostics-color=always
 	BUILD_PATH = build-debug
 else
-	CXXFLAGS += -O0 -s -g -DNDEBUG
+	CXXFLAGS += -O3 -s -g -DNDEBUG
 	BUILD_PATH = build-release
 endif
 

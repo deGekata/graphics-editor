@@ -19,6 +19,14 @@ double scalarMult(const Vector3D& lft, const Vector3D& rht) {
     return lft.x_*rht.x_ + lft.y_*rht.y_ + lft.z_*rht.z_;
 }
 
+Vector3D vectorMult(const Vector3D& a, const Vector3D& b) {
+    return Vector3D(
+         (a.y_*b.z_) - (a.z_*b.y_),
+        -(a.x_*b.z_) + (a.z_*b.x_),
+         (a.x_*b.y_) - (a.y_*b.x_)
+    );
+}
+
 // double distToLine(const Vector3D& point, const Line& line) {
 //     return  (line.base_point - point - line.direction * (scalarMult(line.base_point, line.direction) - scalarMult(point, line.direction)) / scalarMult(line.direction, line.direction)).length();
 // }

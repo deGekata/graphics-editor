@@ -206,11 +206,11 @@ public:
         r_=r, g_=g, b_=b, a_=a;
     }
 
-    ColorF(int r, int g, int b, int a=255) {
-        r_ = (r & 255) / 255;
-        g_ = (g & 255) / 255;
-        b_ = (b & 255) / 255;
-        a_ = (a & 255) / 255;
+    explicit ColorF(int r, int g, int b, int a=255) {
+        r_ = (r & 255) / 255.0;
+        g_ = (g & 255) / 255.0;
+        b_ = (b & 255) / 255.0;
+        a_ = (a & 255) / 255.0;
     }
 
     ColorF(const ColorF& other) {
