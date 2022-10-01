@@ -12,7 +12,7 @@ CWD := $(subst /,\, $(abspath $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEF
 
 # Сompiler options
 CC = g++
-CXXFLAGS = -Wall -Wextra -std=c++$(GXX_STANDARD)
+CXXFLAGS = -Wall -Wextra -std=c++$(GXX_STANDARD) -fopenmp  -lpthread
 CXXFLAGS += -g -lmingw64 -lSDL2main -lSDL2 -I $(CWD)\SDL2\include -L $(CWD)\SDL2\lib 
 LXXFLAGS =
 BUILD = Debug# Debug or Release

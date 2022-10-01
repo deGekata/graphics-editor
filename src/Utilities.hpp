@@ -199,10 +199,10 @@ public:
     ColorF() {};
 
     explicit ColorF(double r, double g, double b, double a=1) {
-        r = fabs(r), r =  r > 1.0 ? 1 : r;
-        g = fabs(g), g =  g > 1.0 ? 1 : g;
-        b = fabs(b), b =  b > 1.0 ? 1 : b;
-        a = fabs(a), a =  a > 1.0 ? 1 : a;
+        // r = fabs(r), r =  r > 1.0 ? 1 : r;
+        // g = fabs(g), g =  g > 1.0 ? 1 : g;
+        // b = fabs(b), b =  b > 1.0 ? 1 : b;
+        // a = fabs(a), a =  a > 1.0 ? 1 : a;
         r_=r, g_=g, b_=b, a_=a;
     }
 
@@ -244,6 +244,18 @@ public:
         return ColorF(*this) *= num;
     }
 
+    const ColorF& operator/=(double num) {
+        r_ /= num, g_ /= num, b_ /= num, a_ /= num;
+        return *this;
+    }
+
+    ColorF operator/(double num) {
+        return ColorF(*this) /= num;
+    }
+
+    ColorF normalize() {
+        return ColorF(sqrt(r_), sqrt(g_), sqrt(b_));
+    }
 
     double r_=0, g_=0, b_=0, a_=1;
 };

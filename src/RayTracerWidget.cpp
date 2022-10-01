@@ -51,33 +51,61 @@ void RayTracerWidget::recalc_view_plane_dist() {
 }
 
 inline Ray RayTracerWidget::calc_ray_direction(int x, int y) {
-    Ray ret_val = Ray(
+    // Ray ret_val = Ray(
+    //     camera_pos_, 
+    //     camera_direction_ * view_plane_dist_ + plane_coord_x_ * (x - (rect_.p2_.x_ - rect_.p1_.x_) /2) + plane_coord_y_ * (y - (rect_.p2_.y_ - rect_.p1_.y_) /2) );
+    // return ret_val;
+    return Ray(
         camera_pos_, 
         camera_direction_ * view_plane_dist_ + plane_coord_x_ * (x - (rect_.p2_.x_ - rect_.p1_.x_) /2) + plane_coord_y_ * (y - (rect_.p2_.y_ - rect_.p1_.y_) /2) );
-    return ret_val;
-    // return Ray(
-    //     camera_pos_, 
-    //     camera_direction_ * view_plane_dist_ + plane_coord_x_ * (x - (rect_.p2_.x_ - rect_.p1_.x_) /2) + plane_coord_y_ * (y - (rect_.p2_.y_ - rect_.p1_.y_) /2) 
-    // );
 }
 
 ColorF RayTracerWidget::trace_ray(const Ray& ray, short int depth) {
     Intersection min_obj = get_min_intersection_object(ray);
     if (min_obj.obj_ptr == nullptr) return ColorF(0.0, 0.0, 0.0);
-    if ( min_obj.obj_ptr->albedo_ == 5) {
-        // printf("lel");
-    }
+
+    Vector3D normal = min_obj.obj_ptr->get_normal(ray, min_obj.distance);
+
     if (min_obj.obj_ptr->is_light_source_) {
         return min_obj.obj_ptr->color_;
     } else {
         if (depth >= depth_ - 1) {
-            printf("max_depth");
-            return ColorF(0.0, 0.0, 0.0);
+            // printf("max_depth");
+            return ColorF(0, 0, 0);
+            // return ColorF(0.05, 0.05, 0.05);
+        }
+
+        ColorF ret_color = trace_ray(
+            Ray(
+                ray.base_point_ + ray.direction_ * (min_obj.distance - 4), 
+                ray.direction_ + min_obj.obj_ptr->get_normal(ray, min_obj.distance)),
+            depth + 1
+        ) * min_obj.obj_ptr->albedo_;
+        // #pragma omp for
+        for (short int it = 0; it < lambert_ray_cnt; ++it) {
+            ret_color += trace_lambert(ray, normal, min_obj.distance, depth + 1);
         }
         // return min_obj.obj_ptr->color_ * trace_ray(Ray(ray.base_point_ + ray.direction_ * min_obj.distance, ray.direction_ + min_obj.obj_ptr->get_normal(ray, min_obj.distance)), depth + 1);
-        return min_obj.obj_ptr->color_ * trace_ray(Ray(ray.base_point_ + ray.direction_ * (min_obj.distance - 1), ray.direction_ + min_obj.obj_ptr->get_normal(ray, min_obj.distance)), depth + 1);
+        return min_obj.obj_ptr->color_ * ret_color;
     }
 }
+
+ColorF RayTracerWidget::trace_lambert(const Ray& ray, const Vector3D& normal, double distance, short int depth) {
+    Vector3D ray_projection = ray.direction_ - normal * scalarMult(ray.direction_, normal);
+    Vector3D ray_perpendicular = vectorMult(ray_projection, normal);
+    return trace_ray
+    (
+        Ray(ray.base_point_ + ray.direction_ * distance + normal, 
+            normal + ray_projection * (double)(rand() - 15000) / RAND_MAX + ray_perpendicular * (double)(rand() - 15000) / RAND_MAX
+        ),
+        depth + lambert_depth_delta
+    ) * lambert_coefficient;
+    // rand() / RAND_MAX
+}
+
+
+// ColorF RayTracerWidget::calc_color()
+
 
 Intersection RayTracerWidget::get_min_intersection_object(const Ray& ray) {
     Intersection min_obj = {nullptr, INFINITY};
@@ -100,9 +128,10 @@ int RayTracerWidget::paint(Painter* painter) {
     size_t max_y = rect_.p2_.y_ - rect_.p1_.y_;
     for (size_t cur_y = 0; cur_y < max_y; ++cur_y) {
         for (size_t cur_x = 0; cur_x < max_x; ++cur_x) {
-            painter->setColor(trace_ray(calc_ray_direction(cur_x, cur_y), 0));
+            painter->setColor(trace_ray(calc_ray_direction(cur_x, cur_y), 0).normalize());
             painter->drawPoint(cur_x, cur_y);
         }
+        // painter->present();
     }
     return 0;
 }

@@ -16,6 +16,8 @@ public:
 
     Vector3D(const Vector3D& sample) : x_(sample.x_), y_(sample.y_), z_(sample.z_), length_(sample.length_) {}
     
+    Vector3D(Vector3D&& sample) : x_(sample.x_), y_(sample.y_), z_(sample.z_), length_(sample.length_) {};
+
     double length() const {
         return length_;
     }
