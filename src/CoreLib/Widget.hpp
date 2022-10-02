@@ -12,10 +12,10 @@ class Widget : public BasicObject {
 protected:
     virtual int paint(Painter* painter) {};
 public:
-    Widget(const Rect& rect, const Point& point, Widget* parent=nullptr);
+    Widget(const RectF& rect, const PointF& point, Widget* parent=nullptr);
 
     int repaint(Painter* painter);
-    int addChild(Widget* child, Point pos);
+    int addChild(Widget* child, PointF pos);
 
 
     #pragma region positioning
@@ -24,15 +24,15 @@ public:
 
     Transformation absTransformFromParent();
 
-    Point absPos(const Point& pos_in_this);
+    PointF absPos(const PointF& pos_in_this);
     //end positioning region
     #pragma endregion
 
     std::vector<Widget*> items;
     Widget* parent_ = nullptr;
 
-    Rect rect_ = {0, 0};
-    Point pos_ = {0, 0};
+    RectF rect_ = {0, 0};
+    PointF pos_ = {0, 0};
 
 };
 

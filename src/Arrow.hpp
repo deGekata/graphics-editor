@@ -1,14 +1,14 @@
 #ifndef GRAPHICS_ARROW_HPP
 #define GRAPHICS_ARROW_HPP
 
-#include "GraphicsGeometryItem.hpp"
+#include "CoreLib\GraphicsGeometryItem.hpp"
 
 
 class GraphicsArrow : public GraphicsGeometryItem {
 public:
     GraphicsArrow(GraphicsItem* parent = nullptr) {};
 
-    GraphicsArrow(const Point& pos, Rect rect = {-100, -100, 100, 100}) {
+    GraphicsArrow(const PointF& pos, RectF rect = {-100, -100, 100, 100}) {
         rel_pos_.x_ = pos.x_;
         rel_pos_.y_ = pos.y_;
         rect_ = rect;
@@ -18,9 +18,9 @@ public:
     int paint(Painter* painter) {
         if (painter == NULL) return 1;
 
-        Point base_point = rel_pos_ + (rect_.p1_ + rect_.p2_) / 2;
-        Point direction  = (rect_.p2_ - base_point).normalize() * 50;
-        Point end_point  = rel_pos_ + base_point + direction.normalize() * arrow_len;
+        PointF base_point = rel_pos_ + (rect_.p1_ + rect_.p2_) / 2;
+        PointF direction  = (rect_.p2_ - base_point).normalize() * 50;
+        PointF end_point  = rel_pos_ + base_point + direction.normalize() * arrow_len;
 
         // Point absolute_pos = absPos(pos_);
         Transformation abs_transform = absTransformToParent();
@@ -41,7 +41,7 @@ public:
         return is_parent_bounded = false;
     }
 
-    const Rect& boundingRect() const {
+    const RectF& boundingRect() const {
         return rect_;
     };
 

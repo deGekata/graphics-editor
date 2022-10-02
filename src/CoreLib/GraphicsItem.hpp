@@ -13,14 +13,14 @@ public:
     
     GraphicsItem(GraphicsItem* item) : parent_(item) {};
     
-    int addChild(GraphicsItem* item, Point pos) {
+    int addChild(GraphicsItem* item, PointF pos) {
         if (item == NULL) return 1;
         item->parent_ = this;
         item->parent_delta_coords_ = pos;
         return 0;
     }
     
-    virtual const Rect& boundingRect() const { return rect_; };
+    virtual const RectF& boundingRect() const { return rect_; };
 
     #pragma region positioning
     //positioning region
@@ -34,7 +34,7 @@ public:
         return absTransformToParent().inverse();
     }
 
-    Point absPos(const Point& pos_in_this) {
+    PointF absPos(const PointF& pos_in_this) {
         if (parent_ == NULL) return pos_in_this;
 
         return absTransformToParent() * pos_in_this;
@@ -49,8 +49,8 @@ public:
 // MappableObject* parent cringeeeee
     GraphicsItem* parent_ = NULL;
     
-    Rect rect_ = {0, 0};
-    Point parent_delta_coords_ = {0, 0};
+    RectF rect_ = {0, 0};
+    PointF parent_delta_coords_ = {0, 0};
     
     bool is_parent_bounded = false;
     double scale_x_ = 1.0, scale_y_ = 1.0;

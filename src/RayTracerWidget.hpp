@@ -4,8 +4,16 @@
 #include "Widget.hpp"
 #include "Vector3D.hpp"
 #include "RayIntersectable.hpp"
+#include <omp.h>
+
 
 #define LAMBERT_RAY_CNT 5
+
+#pragma omp declare \
+            reduction(ColorPlus: ColorF: \
+                omp_out += omp_in)
+
+#define AMBIENT ColorF(0.1, 0.1, 0.1)
 
 class RayTracerWidget : public Widget {
 public:
@@ -14,10 +22,10 @@ public:
     Vector3D plane_coord_x_;
     Vector3D plane_coord_y_;
     
-    short int depth_ = 10;
-    short int lambert_depth_delta = 5;
-    short int lambert_ray_cnt = 5;
-    double lambert_coefficient = 0.05 / lambert_ray_cnt; 
+    short int depth_ = 20;
+    short int lambert_depth_delta = 10;
+    short int lambert_ray_cnt = 10;
+    double lambert_coefficient = 1 / lambert_ray_cnt; 
 
     void   recalc_view_plane_dist();
 
@@ -31,11 +39,11 @@ public:
 
 public:
     RayTracerWidget(double FOV, 
-                    const Rect& rect, 
-                    const Point& point, 
+                    const RectF& rect, 
+                    const PointF& point, 
                     Widget* parent=nullptr);
 
-    RayTracerWidget(const Rect& rect, const Point& point, Widget* parent=nullptr);
+    RayTracerWidget(const RectF& rect, const PointF& point, Widget* parent=nullptr);
 
     bool add_item(RayIntersectableBasic* n_item);
 
@@ -43,6 +51,7 @@ public:
     int paint(Painter* painter); //FIX:
     Vector3D camera_pos_ = {0, 0, 0};
     Vector3D camera_direction_ = {0, 0, 1};
+    ColorF* screen_buffer = nullptr;
 
 };
 

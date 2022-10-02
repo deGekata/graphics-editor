@@ -1,30 +1,32 @@
- #ifndef PAINTER_HPP
-#define PAINTER_HPP
+#ifndef GRAPHICS_INTERFACES_SLD_PAINTER_HPP
+#define GRAPHICS_INTERFACES_SLD_PAINTER_HPP
 
 #include "Utilities.hpp"
-#include "..\SDL2\include\SDL2\SDL.h"
-#include "Window.hpp"
+#include "SDL.h"
+#include "SDL_window.hpp"
 
-class Painter {
+class Painter_ {
 public:
-    Painter(const Window& window) {
-        painter_ = SDL_CreateRenderer(window.window, -1, 0);
+    Painter_(Window_* window) {
+        painter_ = SDL_CreateRenderer(window->window, -1, 0);
         if (painter_ == NULL) {
+            printf("fdasdasfdsafdsafdsafsad");
             throw; //TODO:
         }
     }
 
-    ~Painter() {
+    ~Painter_() {
+        printf("dtoooooooooooooooor\n");
         if (painter_ != NULL) {
             SDL_DestroyRenderer(painter_);
         }
     }
 
-    void setWindow(const Window& window) {
+    void setWindow(Window_* window) {
         if (painter_ != NULL) {
             SDL_DestroyRenderer(painter_);
         }
-        painter_ = SDL_CreateRenderer(window.window, -1, 0);
+        painter_ = SDL_CreateRenderer(window->window, -1, 0);
     }
 
     int fillWindow() {
@@ -36,29 +38,35 @@ public:
     }
 
     int setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) {
-        return SDL_SetRenderDrawColor(painter_, r, g, b, a);
+        if (painter_ == NULL) {
+            printf("fucking nuuuuuuuul%d\n", __LINE__);
+            exit(-1);
+        }
+        r = SDL_SetRenderDrawColor(painter_, r, g, b, a);
+        return r;
+        // return SDL_SetRenderDrawColor(painter_, r, g, b, a);
     }
 
     int setColor(const ColorF& color) {
-            return SDL_SetRenderDrawColor(painter_, uint8_t(color.r_ * 255), uint8_t(color.g_ * 255), uint8_t(color.b_ * 255), uint8_t(color.a_ * 255));
+        if (painter_ == NULL)
+            printf("fucking nuuuuuuuul%d\n", __LINE__);
+        return SDL_SetRenderDrawColor(painter_, uint8_t(color.r_ * 255), uint8_t(color.g_ * 255), uint8_t(color.b_ * 255), uint8_t(color.a_ * 255));
     }
 
     void present() {
         SDL_RenderPresent(painter_);
     }
 
-    void setConstraint(const Rect& rect, const Point& point) {
+    void setConstraint(const RectF& rect, const PointF& point) {
         rect_.x = rect.p1_.x_ + point.x_;   
         rect_.y = rect.p1_.y_ + point.y_;
         rect_.w = rect.p2_.x_ - rect.p2_.x_;
         rect_.h = rect.p2_.y_ - rect.p1_.y_;
     }
 
-    void repaint();
-
-    int drawArrow(const Point& p1, const Point& p2) {
-        Point perpen  = (p2 - p1).rotate(0.5 * M_PI) / ((p2 - p1).len() / 20);
-        Point direction = (p2 - p1) / 5;
+    int drawArrow(const PointF& p1, const PointF& p2) {
+        PointF perpen  = (p2 - p1).rotate(0.5 * M_PI) / ((p2 - p1).len() / 20);
+        PointF direction = (p2 - p1) / 5;
 
         drawLine(p1, p2);
         drawLine(p2, p2 - (direction + perpen));
@@ -66,7 +74,7 @@ public:
         return 0;
     }
 
-    int drawLine(Point p1, Point p2) {
+    int drawLine(PointF p1, PointF p2) {
         return drawLine(p1.x_, p1.y_, p2.x_, p2.y_);
     }
 
@@ -81,15 +89,10 @@ public:
             SWAP(int, y1, y2);
         }
 
-
-        //TODO:
-        // y2 = y2 > (rect_.y + rect_.h) ? (rect_.y + rect_.h) : y2;
-        // y2 = y2 < (rect_.)
-        // return SDL_RenderDrawLine(painter_, x1, y1, x2, y2);
         return 1;
     }
     
-    int drawPoint(Point p1) {
+    int drawPoint(PointF p1) {
         return drawPoint(p1.x_, p1.y_);
     }
 
@@ -105,7 +108,7 @@ public:
 
     SDL_Renderer* painter_ = NULL;
     SDL_FRect rect_;
-    Point point_;
+    PointF point_;
 };
 
 

@@ -20,10 +20,11 @@ public:
     virtual double   distance_to_base_point(const Vector3D& vec) = 0;
     virtual Vector3D get_normal(const Ray& ray, double distance) = 0;
     bool is_light_source_ = false;
-    double albedo_ = 1.0;   
+    ColorF reflection_ = ColorF(1.0, 1.0, 1.0);  
+    double intensity = 5; 
     // double spread_ = 
-    ColorF color_ = ColorF(255, 255, 255, 255);
-};
+    ColorF color_ = ColorF(1.0, 1.0, 1.0, 1.0);
+};  
 
 struct Intersection
 {

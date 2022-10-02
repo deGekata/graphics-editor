@@ -47,12 +47,12 @@ public:
                     break;
                 
                 case SDL_MOUSEBUTTONDOWN:{
-                    Point mouse_p;
+                    PointF mouse_p;
                     int x, y;
                     Transformation trnsfrm = arrow->absTransformFromParent();
                     SDL_GetMouseState(&x, &y);
-                    std::cout << "af tranfrom " << trnsfrm * Point(x, y) << "  \n";
-                    arrow->rect_.p2_ = trnsfrm * Point(x, y);
+                    std::cout << "af tranfrom " << trnsfrm * PointF(x, y) << "  \n";
+                    arrow->rect_.p2_ = trnsfrm * PointF(x, y);
                     arrow->rect_.p1_ = -arrow->rect_.p2_;
                     break;
                 }
@@ -71,6 +71,7 @@ public:
                     break;
                 }
             }
+            // printf("%d\n", __LINE__);
             painter_->setColor(0, 0, 0);
             // painter_->fillWindow();
 
@@ -80,15 +81,22 @@ public:
             // painter_->drawLine(340, 240, 320, 200);
 
             // scene->repaint(painter_);
+            // printf("%d\n", __LINE__);
+
             tracer->paint(painter_);
             // if (invert_coord) {
             //     ss.drawVec(painter_->painter_, ss2, line); 
             // } else {
             //     ss.drawVec(painter_->painter_, ss1, line);
             // }
+            // printf("%d\n", __LINE__);
+
             painter_->present();
+            // printf("%d\n", __LINE__);
+
             rect1->rotation_angle_ += 0.0001 * M_PI;
             dot_rect->rotation_angle_ += 0.0001 * M_PI;
+            sphere1->base_point.x_ += 5;
             // arrow.rotation_angle_ += 0.0001 * M_PI;
         }
     }
@@ -98,7 +106,7 @@ public:
             painter_ = painter;
     }
 
-    void drawSphere(const Point& center, const Point& radius); 
+    void drawSphere(const PointF& center, const PointF& radius); 
 
     
 
@@ -109,6 +117,7 @@ public:
     GraphicsArrow* arrow;
     Painter* painter_;
     RayTracerWidget* tracer;
+    Sphere* sphere1;
 };
 
 #endif

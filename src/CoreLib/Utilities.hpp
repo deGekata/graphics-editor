@@ -7,9 +7,67 @@
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 #define SWAP(T, a, b) do { T tmp = a; a = b; b = tmp; } while (0)
 
+class PointF {
+    public:
+    PointF(double x = 0, double y = 0) : x_(x), y_(y) {
+        // std::cout << "constr " << x << "  " << y << '\n';
+    };
+
+    PointF rotate(double rotation_angle) {
+        double cos_angle = cos(rotation_angle);
+        double sin_angle = sin(rotation_angle);
+        return PointF(x_ * cos_angle - y_ * sin_angle, x_ * sin_angle + y_ * cos_angle);
+    }
+
+    PointF move(double dx, double dy) {
+        x_ += dx;
+        y_ += dy;
+        return *this;
+    }
+
+    PointF operator+(const PointF& rht) const {
+        return PointF(x_ + rht.x_, y_ + rht.y_);
+    }
+
+    PointF operator-(const PointF& rht) const {
+        return PointF(x_ - rht.x_, y_ - rht.y_);
+    }
+
+    PointF operator*(double rht) const {
+        return PointF(x_ * rht, y_ * rht);
+    }
+
+    PointF operator/(double rht) const {
+        return PointF(x_ / rht, y_ / rht);
+    }
+
+    PointF normalize() {
+        double norm = sqrt(x_ * x_ + y_ * y_);
+        return PointF (x_ / norm, y_ / norm);
+    }
+
+    double len() {
+        return sqrt(x_ * x_ + y_ * y_);
+    }
+
+    friend PointF operator-(const PointF& point);
+    friend PointF operator+(const PointF& point);
+
+    friend std::ostream& operator<<(std::ostream& out, const PointF& point);
+
+    ~PointF() = default;
+    double x_, y_;
+};
+
+std::ostream& operator<<(std::ostream& out, const PointF& point);
+
+PointF operator-(const PointF& point);
+
+PointF operator+(const PointF& point);
+
 class Point {
     public:
-    Point(double x = 0, double y = 0) : x_(x), y_(y) {
+    Point(int x = 0, int y = 0) : x_(x), y_(y) {
         // std::cout << "constr " << x << "  " << y << '\n';
     };
 
@@ -19,7 +77,7 @@ class Point {
         return Point(x_ * cos_angle - y_ * sin_angle, x_ * sin_angle + y_ * cos_angle);
     }
 
-    Point move(double dx, double dy) {
+    Point move(int dx, int dy) {
         x_ += dx;
         y_ += dy;
         return *this;
@@ -33,16 +91,16 @@ class Point {
         return Point(x_ - rht.x_, y_ - rht.y_);
     }
 
-    Point operator*(double rht) const {
+    Point operator*(int rht) const {
         return Point(x_ * rht, y_ * rht);
     }
 
-    Point operator/(double rht) const {
+    Point operator/(int rht) const {
         return Point(x_ / rht, y_ / rht);
     }
 
     Point normalize() {
-        double norm = sqrt(x_ * x_ + y_ * y_);
+        int norm = sqrt(x_ * x_ + y_ * y_);
         return Point (x_ / norm, y_ / norm);
     }
 
@@ -56,15 +114,65 @@ class Point {
     friend std::ostream& operator<<(std::ostream& out, const Point& point);
 
     ~Point() = default;
-    double x_, y_;
+    int x_, y_;
 };
 
+std::ostream& operator<<(std::ostream& out, const PointF& point);
+
+Point operator-(const Point& point);
+
+Point operator+(const Point& point);
+
+class RectF {
+public:
+    RectF() {};
+    RectF(PointF p1, PointF p2) : RectF(p1.x_, p1.y_, p2.x_, p2.y_) {};
+    RectF(double x1, double y1, double x2, double y2) {
+        p1_ = {MIN(x1, x2), MIN(y1, y2)};
+        p2_ = {MAX(x1, x2), MAX(y1, y2)};
+    }
+    
+    static RectF min_rect(const RectF& bounds, RectF sample, PointF move_rect) {
+        RectF res;
+        if (move_rect.x_ < 0 || move_rect.x_ > bounds.p2_.x_) {
+            move_rect.x_ = 0;
+        }
+
+        if (move_rect.y_ < 0 || move_rect.y_ > bounds.p2_.y_) {
+            move_rect.y_ = 0;
+        }
+
+        sample.p1_ = sample.p1_ + move_rect;
+        sample.p2_ = sample.p2_ + move_rect;
+
+        if (sample.p1_.x_ < bounds.p1_.x_ ||  bounds.p2_.x_ < sample.p1_.x_) {
+            res.p1_.x_ = bounds.p1_.x_;
+        }
+
+        if (sample.p2_.x_ < bounds.p1_.x_ ||  bounds.p2_.x_ < sample.p2_.x_) {
+            res.p2_.x_ = bounds.p2_.x_;
+        }
+
+        if (sample.p1_.y_ < bounds.p1_.y_ ||  bounds.p2_.y_ < sample.p1_.y_) {
+            res.p1_.y_ = bounds.p1_.y_;
+        }
+
+        if (sample.p2_.y_ < bounds.p1_.y_ ||  bounds.p2_.y_ < sample.p2_.y_) {
+            res.p2_.y_ = bounds.p2_.y_;
+        }
+
+        return res;
+    }
+
+    ~RectF() = default;
+    PointF p1_ = {0, 0}, p2_ = {0, 0};
+};
 
 class Rect {
 public:
     Rect() {};
     Rect(Point p1, Point p2) : Rect(p1.x_, p1.y_, p2.x_, p2.y_) {};
-    Rect(double x1, double y1, double x2, double y2) {
+    Rect(int x1, int y1, int x2, int y2) {
         p1_ = {MIN(x1, x2), MIN(y1, y2)};
         p2_ = {MAX(x1, x2), MAX(y1, y2)};
     }
@@ -106,11 +214,8 @@ public:
 };
 
 
-std::ostream& operator<<(std::ostream& out, const Point& point);
 
-Point operator-(const Point& point);
 
-Point operator+(const Point& point);
 
 class Transformation {
 public:
@@ -124,9 +229,9 @@ public:
         m31_ = 0                 , m32_ = 0                 , m33_ = 1;        
     };
 
-    Transformation(const Point& delta, double rotate_angle): Transformation(delta.x_, delta.y_, rotate_angle) {}
+    Transformation(const PointF& delta, double rotate_angle): Transformation(delta.x_, delta.y_, rotate_angle) {}
 
-    // Transformation(Point point, double rotate_angle = 0) : Transformation(point.x_,   {}
+    // Transformation(PointF point, double rotate_angle = 0) : Transformation(point.x_,   {}
 
     Transformation(double m11, double m12, double m13,
                    double m21, double m22, double m23, 
@@ -167,8 +272,8 @@ public:
 
     friend Transformation operator*(double num, const Transformation& m);
 
-    Point operator*(const Point& other) {
-        return Point(m11_ * other.x_ + m12_ * other.y_ + m13_, m21_ * other.x_ + m22_ * other.y_ + m23_);
+    PointF operator*(const PointF& other) {
+        return PointF(m11_ * other.x_ + m12_ * other.y_ + m13_, m21_ * other.x_ + m22_ * other.y_ + m23_);
     }
 
     void print() {
@@ -189,16 +294,19 @@ Transformation operator*(double num, const Transformation& m);
 
 std::ostream& operator<<(std::ostream& out, const Transformation& other);
 
+Transformation transformOnParent(const PointF& parent_delta_coords, double rotation_angle);
+
 Transformation transformOnParent(const Point& parent_delta_coords, double rotation_angle);
 
-Point mapOnParent(const Point& point, const Point& parent_delta_coords, double rotation_angle);
+PointF mapOnParent(const PointF& point, const PointF& parent_delta_coords, double rotation_angle);
+PointF mapOnParent(const Point&  point, const Point&  parent_delta_coords, double rotation_angle);
 
 
 class ColorF {
 public:
-    ColorF() {};
+    explicit ColorF() {};
 
-    explicit ColorF(double r, double g, double b, double a=1) {
+    ColorF(double r, double g, double b, double a=1) {
         // r = fabs(r), r =  r > 1.0 ? 1 : r;
         // g = fabs(g), g =  g > 1.0 ? 1 : g;
         // b = fabs(b), b =  b > 1.0 ? 1 : b;
@@ -207,13 +315,13 @@ public:
     }
 
     explicit ColorF(int r, int g, int b, int a=255) {
-        r_ = (r & 255) / 255.0;
-        g_ = (g & 255) / 255.0;
-        b_ = (b & 255) / 255.0;
-        a_ = (a & 255) / 255.0;
+        r_ = r / 255.0;
+        g_ = g / 255.0;
+        b_ = b / 255.0;
+        a_ = a / 255.0;
     }
 
-    ColorF(const ColorF& other) {
+     ColorF(const ColorF& other) {
         r_=other.r_, g_=other.g_, b_=other.b_, a_=other.a_;
     }
 
@@ -253,8 +361,12 @@ public:
         return ColorF(*this) /= num;
     }
 
-    ColorF normalize() {
-        return ColorF(sqrt(r_), sqrt(g_), sqrt(b_));
+    // ColorF normalize() {
+    //     // return ColorF(sqrt(r_), sqrt(g_), sqrt(b_));
+    // }
+
+    ColorF inverse() {
+        return ColorF(1- r_, 1 - g_, 1 - b_);
     }
 
     double r_=0, g_=0, b_=0, a_=1;

@@ -1,10 +1,12 @@
-#ifndef WINDOW_HPP
-#define WINDOW_HPP
-#include "..\SDL2\include\SDL2\SDL.h"
+#ifndef GRAPHICS_INTERFACES_SLD_WINDOW_HPP
+#define GRAPHICS_INTERFACES_SLD_WINDOW_HPP
 
-class Window {
+#include "SDL.h"
+#include <stdio.h>
+
+class Window_ {
 public:
-    Window(int width = 800, int height = 600, int x = SDL_WINDOWPOS_CENTERED, int y = SDL_WINDOWPOS_CENTERED, uint32_t flags = 0) {
+    Window_(int width = 800, int height = 600, int x = SDL_WINDOWPOS_CENTERED, int y = SDL_WINDOWPOS_CENTERED, uint32_t flags = 0) {
         startGraphicalLib();
         window = SDL_CreateWindow("", x, y, width, height, flags | SDL_WINDOW_OPENGL);
     }
@@ -12,7 +14,8 @@ public:
 
     SDL_Window* window;
 
-    ~Window() {
+    ~Window_() {
+        printf("dtooooooooooooor-----------");
         SDL_DestroyWindow(window);
     }
 
@@ -31,8 +34,7 @@ public:
             SDL_Quit();
         }
     }
-
-    virtual void exec() {}
+    friend class Window;
 };
 
 

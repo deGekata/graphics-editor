@@ -13,7 +13,7 @@ public:
     
     
     
-    Point rel_pos_ = {0, 0};
+    PointF rel_pos_ = {0, 0};
 
 
 };

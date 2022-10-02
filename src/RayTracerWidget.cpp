@@ -7,8 +7,8 @@
 RayTracerWidget::RayTracerWidget
 (
     double FOV, 
-    const Rect& rect, 
-    const Point& point, 
+    const RectF& rect, 
+    const PointF& point, 
     Widget* parent
 ):
     Widget(rect, point, parent)
@@ -16,12 +16,14 @@ RayTracerWidget::RayTracerWidget
     if (is_zero(FOV - M_PI)) throw;
     FOV_ = FOV;
     recalc_view_plane_dist();
+    // rect_.p2_.x_ - rect.p1_.x_
+    // screen_buffer = new ColorF[(rect_.p2_.x_ - rect.p1_.x_) * (rect_.p2_.y_ - rect.p1_.y_)];
 }
 
 
 RayTracerWidget::RayTracerWidget(
-    const Rect& rect, 
-    const Point& point, 
+    const RectF& rect, 
+    const PointF& point, 
     Widget* parent
 ): 
     Widget(rect, point, parent)
@@ -60,33 +62,39 @@ inline Ray RayTracerWidget::calc_ray_direction(int x, int y) {
         camera_direction_ * view_plane_dist_ + plane_coord_x_ * (x - (rect_.p2_.x_ - rect_.p1_.x_) /2) + plane_coord_y_ * (y - (rect_.p2_.y_ - rect_.p1_.y_) /2) );
 }
 
+
+
 ColorF RayTracerWidget::trace_ray(const Ray& ray, short int depth) {
     Intersection min_obj = get_min_intersection_object(ray);
-    if (min_obj.obj_ptr == nullptr) return ColorF(0.0, 0.0, 0.0);
+    if (min_obj.obj_ptr == nullptr) return AMBIENT;
 
     Vector3D normal = min_obj.obj_ptr->get_normal(ray, min_obj.distance);
 
     if (min_obj.obj_ptr->is_light_source_) {
-        return min_obj.obj_ptr->color_;
+        // return min_obj.obj_ptr->color_;
+        return min_obj.obj_ptr->color_ * min_obj.obj_ptr->intensity;
     } else {
         if (depth >= depth_ - 1) {
             // printf("max_depth");
-            return ColorF(0, 0, 0);
-            // return ColorF(0.05, 0.05, 0.05);
+            // return ColorF(0, 0, 0);
+            return AMBIENT;
         }
 
         ColorF ret_color = trace_ray(
             Ray(
-                ray.base_point_ + ray.direction_ * (min_obj.distance - 4), 
+                ray.base_point_ + ray.direction_ * min_obj.distance + normal, 
                 ray.direction_ + min_obj.obj_ptr->get_normal(ray, min_obj.distance)),
             depth + 1
-        ) * min_obj.obj_ptr->albedo_;
+        );
         // #pragma omp for
-        for (short int it = 0; it < lambert_ray_cnt; ++it) {
-            ret_color += trace_lambert(ray, normal, min_obj.distance, depth + 1);
+        short int it = 0;
+        ColorF lambert_color = ColorF(0, 0, 0);
+        // #pragma omp parallel for reduction(ColorPlus:ret_color)
+        for (it = 0; it < lambert_ray_cnt; ++it) {
+            lambert_color += trace_lambert(ray, normal, min_obj.distance, depth + 1);
         }
         // return min_obj.obj_ptr->color_ * trace_ray(Ray(ray.base_point_ + ray.direction_ * min_obj.distance, ray.direction_ + min_obj.obj_ptr->get_normal(ray, min_obj.distance)), depth + 1);
-        return min_obj.obj_ptr->color_ * ret_color;
+        return min_obj.obj_ptr->color_ * ret_color + lambert_color * min_obj.obj_ptr->color_;
     }
 }
 
@@ -95,8 +103,8 @@ ColorF RayTracerWidget::trace_lambert(const Ray& ray, const Vector3D& normal, do
     Vector3D ray_perpendicular = vectorMult(ray_projection, normal);
     return trace_ray
     (
-        Ray(ray.base_point_ + ray.direction_ * distance + normal, 
-            normal + ray_projection * (double)(rand() - 15000) / RAND_MAX + ray_perpendicular * (double)(rand() - 15000) / RAND_MAX
+        Ray(ray.base_point_ + ray.direction_ * distance + normal * 2, 
+            normal + ray_projection * 2 * (double)(rand() - 15000) / RAND_MAX + ray_perpendicular * 2 * (double)(rand() - 15000) / RAND_MAX
         ),
         depth + lambert_depth_delta
     ) * lambert_coefficient;
@@ -126,13 +134,26 @@ Intersection RayTracerWidget::get_min_intersection_object(const Ray& ray) {
 int RayTracerWidget::paint(Painter* painter) {
     size_t max_x = rect_.p2_.x_ - rect_.p1_.x_;
     size_t max_y = rect_.p2_.y_ - rect_.p1_.y_;
-    for (size_t cur_y = 0; cur_y < max_y; ++cur_y) {
-        for (size_t cur_x = 0; cur_x < max_x; ++cur_x) {
-            painter->setColor(trace_ray(calc_ray_direction(cur_x, cur_y), 0).normalize());
-            painter->drawPoint(cur_x, cur_y);
+    size_t cur_y = 0;
+    #pragma omp parallel for
+    for (cur_y = 0; cur_y < max_y; ++cur_y) {
+        size_t cur_x = 0;
+        #pragma omp parallel for
+        for (cur_x = 0; cur_x < max_x; ++cur_x) {
+            ColorF color = trace_ray(calc_ray_direction(cur_x, cur_y), 0);
+            #pragma omp critical 
+            {
+                painter->setColor(color);
+                painter->drawPoint(cur_x, cur_y);
+            }
         }
-        // painter->present();
+        // printf("%d cur_y\n", cur_y);
+        #pragma omp critical
+        {
+            painter->present();
+        }
     }
+
     return 0;
 }
 

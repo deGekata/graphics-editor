@@ -1,12 +1,15 @@
 #include <iostream> 
 #include "MyWindow.hpp"
 #include <assert.h>
+#include "CoreLib/GraphicsInterfaces/SDL_painter.hpp"
+
 int main(__attribute__((unused)) int argv, __attribute__((unused)) char** args) {
     std::cout << triangleArea(Vector3D(20, 0, 0), Vector3D(0, 0, 30)) << "check";
     Window::startGraphicalLib();
     MyWindow window;
     Painter painter(window);
     window.setPainter(&painter);
+    printf("%x", window.painter_->rsp_->painter_);
     window.exec();
     
 

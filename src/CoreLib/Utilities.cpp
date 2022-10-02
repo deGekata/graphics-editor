@@ -2,6 +2,20 @@
 
 
 
+PointF operator-(const PointF& point) {
+    return PointF(-point.x_, -point.y_);
+}
+
+PointF operator+(const PointF& point) {
+    return point;
+}
+
+
+std::ostream& operator<<(std::ostream& out, const PointF& point) {
+    out << '\t' << point.x_ << '\t' << point.y_;
+    return out;
+}
+
 Point operator-(const Point& point) {
     return Point(-point.x_, -point.y_);
 }
@@ -31,11 +45,11 @@ std::ostream& operator<<(std::ostream& out, const Transformation& other) {
     return out;
 }
 
-Transformation transformOnParent(const Point& parent_delta_coords, double rotation_angle) {
+Transformation transformOnParent(const PointF& parent_delta_coords, double rotation_angle) {
     return Transformation(parent_delta_coords, -rotation_angle);
 }
 
-Point mapOnParent(const Point& point, const Point& parent_delta_coords, double rotation_angle) {
+PointF mapOnParent(const PointF& point, const PointF& parent_delta_coords, double rotation_angle) {
     Transformation transformation(parent_delta_coords, -rotation_angle);
     return transformation * point;
 }

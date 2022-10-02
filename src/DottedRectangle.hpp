@@ -8,7 +8,7 @@ class DottedRectangle : public GraphicsGeometryItem {
 public:
     DottedRectangle(GraphicsItem* parent = NULL) : GraphicsGeometryItem(parent) {};
 
-    DottedRectangle(const Point& pos, Rect rect = {-100, -100, 100, 100}) {
+    DottedRectangle(const PointF& pos, RectF rect = {-100, -100, 100, 100}) {
         rel_pos_.x_ = pos.x_;
         rel_pos_.y_ = pos.y_;
         rect_ = rect;
@@ -17,11 +17,11 @@ public:
 
     int paint(Painter* painter) {
         if (painter == NULL) return 1;
-        // Point absolute_pos = absPos(pos_);
+        // PointF absolute_pos = absPos(pos_);
         Transformation abs_transform = absTransformToParent();
 
-        Point dx = { (rect_.p2_.x_ - rect_.p1_.x_) / line_cnt_, 0                    };
-        Point dy = { 0,                                         (rect_.p2_.y_ - rect_.p1_.y_) / line_cnt_ };
+        PointF dx = { (rect_.p2_.x_ - rect_.p1_.x_) / line_cnt_, 0                    };
+        PointF dy = { 0,                                         (rect_.p2_.y_ - rect_.p1_.y_) / line_cnt_ };
 
 
         for (int x = 0; x <= line_cnt_; ++x) {
@@ -34,7 +34,7 @@ public:
         return 0;
     }
 
-    const Rect& boundingRect() const {
+    const RectF& boundingRect() const {
         return rect_;
     };
 

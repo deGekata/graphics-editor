@@ -1,7 +1,7 @@
 #ifndef VECTOR_2D
 #define VECTOR_2D
 
-#include "..\SDL2\include\SDL2\SDL.h"
+#include "SDL.h"
 #include <stdio.h>
 
 class CoordSys;

@@ -12,10 +12,15 @@ CWD := $(subst /,\, $(abspath $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEF
 
 # Сompiler options
 CC = g++
+INCLUDE_PATHS = -I $(CWD)\\SDL2\\include -I $(CWD)\\SDL2\\include\\SDL2 -I $(CWD)\\src\\CoreLib\\
+LIBS_PATHS = -L $(CWD)\\SDL2\\lib
 CXXFLAGS = -Wall -Wextra -std=c++$(GXX_STANDARD) -fopenmp  -lpthread
-CXXFLAGS += -g -lmingw64 -lSDL2main -lSDL2 -I $(CWD)\SDL2\include -L $(CWD)\SDL2\lib 
-LXXFLAGS =
-BUILD = Debug# Debug or Release
+CXXFLAGS += -g -lmingw64 -lSDL2main -lSDL2  $(INCLUDE_PATHS) $(LIBS_PATHS)
+LXXFLAGS = -fopenmp -lpthread
+
+# Debug or Release
+# BUILD = Debug
+BUILD = Release
 
 # Folder name setting
 SRC_DIR = src
@@ -23,11 +28,12 @@ BIN_DIR = bin
 
 # Setting build parameters
 ifeq ($(BUILD), Debug)
-	CXXFLAGS += -O3 -g -fdiagnostics-color=always
+	CXXFLAGS += -O0 -g -fdiagnostics-color=always
 	BUILD_PATH = build-debug
 else
-	CXXFLAGS += -O3 -s -g -DNDEBUG
-	BUILD_PATH = build-release
+# CXXFLAGS += -O1 -g -fdiagnostics-color=always
+	CXXFLAGS += -O3 -s -g -DNDEBUG 
+	BUILD_PATH = build-debug
 endif
 
 # Search for source files

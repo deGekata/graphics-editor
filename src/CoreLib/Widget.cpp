@@ -1,6 +1,6 @@
 #include "Widget.hpp"
 
-Widget::Widget(const Rect& rect, const Point& point, Widget* parent) {
+Widget::Widget(const RectF& rect, const PointF& point, Widget* parent) {
     rect_ = rect;
     pos_ = point;
     if (parent != nullptr) {
@@ -18,9 +18,9 @@ int Widget::repaint(Painter* painter) {
     return 0;
 }
 
-int Widget::addChild(Widget* child, Point pos) {
+int Widget::addChild(Widget* child, PointF pos) {
     if (child == nullptr) return 1;
-    child->rect_ = Rect::min_rect(rect_, child->rect_, pos);
+    child->rect_ = RectF::min_rect(rect_, child->rect_, pos);
     items.push_back(child);
     child->parent_ = this;
     return 0;
