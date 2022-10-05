@@ -6,43 +6,48 @@
 
 class Plane: public RayIntersectableBasic {
 public:
-    Vector3D base_point = {0, 0, 0};
-    Vector3D normal_vec = {1, 0, 0};
-    Plane(const Vector3D& base_point, const Vector3D& normal_vec) : base_point(base_point), normal_vec(normal_vec.normalize()) {}
-    Plane() {};
+    Vector3D normal_ = {1, 0, 0};
+    
+    Plane(const Vector3D& base_point, const Vector3D& normal_vec) : RayIntersectableBasic(base_point), normal_(normal_vec.normalize()) {}
+
     static Plane planeByTriangle(const Vector3D& v1, const Vector3D& v2, const Vector3D& v3);
     
     double   intersect(const Ray& ray);
     Vector3D get_normal(const Ray& ray, double distance);
+    Vector3D get_direction(Vector3D point);
     Vector3D projectionPointPlane(const Vector3D& point, const Plane& plane);
     double   distance_to_base_point(const Vector3D& vec);
-
+    bool     is_inside(const Vector3D& point);
 };
 
 class Triangle: public RayIntersectableBasic {
 public:
-    Vector3D v1_, v2_, base_point_, normal_;
+    Vector3D v1_, v2_, normal_;
             
     Triangle(const Vector3D& v1, const Vector3D& v2, const Vector3D& v3);
 
     double   intersect(const Ray& ray);
     Vector3D get_normal(const Ray& ray, double distance);
+    Vector3D get_direction(Vector3D point);
 
     double area();
     bool     is_in_triangle(Vector3D vec);
     double   distance_to_base_point(const Vector3D& vec);
     double   distToPlane(const Vector3D& vec);
+    bool     is_inside(const Vector3D& point);
 };
 
 class Sphere: public RayIntersectableBasic {
 public:
-    Vector3D base_point =  {0, 0, 0};
+    // Vector3D base_point_ =  {0, 0, 0};
     double radius = 1;
-    Sphere(const Vector3D& base_point, double radius) : base_point(base_point), radius(radius) {}
+    Sphere(const Vector3D& base_point, double radius) : RayIntersectableBasic(base_point), radius(radius) {}
 
     double   intersect(const Ray& ray);
     Vector3D get_normal(const Ray& ray, double distance);
+    Vector3D get_direction(Vector3D point);
     double   distance_to_base_point(const Vector3D& vec);
+    bool     is_inside(const Vector3D& point);
 };
 
 

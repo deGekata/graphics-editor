@@ -8,7 +8,7 @@
 
 class BasicObject {
 public: 
-    virtual void event(Event& cur_event) {};
+    virtual void event(Event& cur_event) { UNUSED(cur_event); }; //FIX:
     // virtual int  paint(Painter* painter) { return 0;};
     // some slots functionality
     

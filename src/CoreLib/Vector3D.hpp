@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <assert.h>
 
 #define EPS 1e-6
 
@@ -23,7 +24,11 @@ public:
     }
 
     Vector3D normalize() const {
-        if (length_ == 0) return *this;
+        
+        if (length_ == 0) {
+            assert(0 && "kekw");
+            return *this;
+        }
         return Vector3D(x_ / length_, y_ / length_, z_ / length_);
     }
 
@@ -70,6 +75,10 @@ public:
         return *this;
     }
 
+    Vector3D operator-() const {
+        return Vector3D(-x_, -y_, -z_);
+    }
+
     friend Vector3D operator+(const Vector3D& lft, const Vector3D& rht);
 
     friend Vector3D operator-(const Vector3D& lft, const Vector3D& rht);
@@ -114,6 +123,10 @@ bool is_zero(double num);
 //     double radius = 1;
 //     Sphere(const Vector3D& base_point, double radius) : base_point(base_point), radius(radius) {}
 // };
+
+double angleCos(const Vector3D& lft, const Vector3D& rht);
+
+double angleSin(const Vector3D& lft, const Vector3D& rht);
 
 double scalarMult(const Vector3D& lft, const Vector3D& rht);
 

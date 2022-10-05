@@ -7,6 +7,8 @@
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 #define SWAP(T, a, b) do { T tmp = a; a = b; b = tmp; } while (0)
 
+#define UNUSED(x) (void)(x)
+
 class PointF {
     public:
     PointF(double x = 0, double y = 0) : x_(x), y_(y) {
@@ -307,10 +309,10 @@ public:
     explicit ColorF() {};
 
     ColorF(double r, double g, double b, double a=1) {
-        // r = fabs(r), r =  r > 1.0 ? 1 : r;
-        // g = fabs(g), g =  g > 1.0 ? 1 : g;
-        // b = fabs(b), b =  b > 1.0 ? 1 : b;
-        // a = fabs(a), a =  a > 1.0 ? 1 : a;
+        // r = fabs(r), r =  r_ > 1.0 ? 1 : r_;
+        // g = fabs(g), g =  g_ > 1.0 ? 1 : g_;
+        // b = fabs(b), b =  b_ > 1.0 ? 1 : b_;
+        // a = fabs(a), a =  a_ > 1.0 ? 1 : a_;
         r_=r, g_=g, b_=b, a_=a;
     }
 
@@ -321,11 +323,16 @@ public:
         a_ = a / 255.0;
     }
 
-     ColorF(const ColorF& other) {
+    ColorF(const ColorF& other) {
         r_=other.r_, g_=other.g_, b_=other.b_, a_=other.a_;
     }
 
-    const ColorF& operator*=(const ColorF& other) {
+    ColorF& operator=(const ColorF& other) {
+        r_=other.r_, g_=other.g_, b_=other.b_, a_=other.a_;
+        return *this;
+    }
+
+    ColorF& operator*=(const ColorF& other) {
         r_ *= other.r_, g_ *=other.g_, b_ *= other.b_, a_ *= other.a_;
         return *this;
     }
@@ -334,7 +341,7 @@ public:
         return ColorF(*this) *= other;
     }
 
-    const ColorF& operator+=(const ColorF& other) {
+    ColorF& operator+=(const ColorF& other) {
         r_ += other.r_, g_ +=other.g_, b_ += other.b_, a_ += other.a_;
         return *this;
     }
@@ -343,7 +350,7 @@ public:
         return ColorF(*this) += other;
     }
 
-    const ColorF& operator*=(double num) {
+    ColorF& operator*=(double num) {
         r_ *= num, g_ *= num, b_ *= num, a_ *= num;
         return *this;
     }
@@ -361,9 +368,15 @@ public:
         return ColorF(*this) /= num;
     }
 
-    // ColorF normalize() {
-    //     // return ColorF(sqrt(r_), sqrt(g_), sqrt(b_));
-    // }
+    ColorF normalize() {
+        return ColorF(
+            sqrt(r_ > 1.0 ? 1 : r_),
+            sqrt(g_ > 1.0 ? 1 : g_),
+            sqrt(b_ > 1.0 ? 1 : b_),
+            sqrt(a_ > 1.0 ? 1 : a_)
+        );
+        // return ColorF(sqrt(r_), sqrt(g_), sqrt(b_));
+    }
 
     ColorF inverse() {
         return ColorF(1- r_, 1 - g_, 1 - b_);

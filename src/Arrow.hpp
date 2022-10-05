@@ -6,7 +6,7 @@
 
 class GraphicsArrow : public GraphicsGeometryItem {
 public:
-    GraphicsArrow(GraphicsItem* parent = nullptr) {};
+    GraphicsArrow(GraphicsItem* parent = nullptr) { UNUSED(parent); };
 
     GraphicsArrow(const PointF& pos, RectF rect = {-100, -100, 100, 100}) {
         rel_pos_.x_ = pos.x_;

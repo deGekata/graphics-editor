@@ -22,8 +22,7 @@ public:
     
     virtual const RectF& boundingRect() const { return rect_; };
 
-    #pragma region positioning
-    //positioning region
+    //{ region positioning
     Transformation absTransformToParent() {
         if (parent_ == NULL) return Transformation(parent_delta_coords_, -rotation_angle_);
     
@@ -39,12 +38,7 @@ public:
 
         return absTransformToParent() * pos_in_this;
     }
-    //end positioning region
-    #pragma endregion
-
-    // #pragma region 
-
-// dfasdfsad
+    //}
 
 // MappableObject* parent cringeeeee
     GraphicsItem* parent_ = NULL;

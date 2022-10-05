@@ -14,7 +14,7 @@
 
 class MyWindow : public Window {
 public:
-    MyWindow(int width = 800, int height = 600, int x = SDL_WINDOWPOS_CENTERED, int y = SDL_WINDOWPOS_CENTERED, uint32_t flags = 0);
+    MyWindow(int width = 800, int height = 600, int x = SDL_WINDOWPOS_CENTERED, int y = SDL_WINDOWPOS_CENTERED, uint32_t flags = 0);    
 
     void exec() {
         bool isRunning = true;
@@ -96,7 +96,42 @@ public:
 
             rect1->rotation_angle_ += 0.0001 * M_PI;
             dot_rect->rotation_angle_ += 0.0001 * M_PI;
-            sphere1->base_point.x_ += 5;
+            // tracer->camera_pos_.x_ += 5;
+            // sphere1->base_point_.x_ += 5;
+            
+            // tracer->camera_pos_ = cen
+            // tracer->FOV_ += M_PI / 180 * 5;
+            // tracer->camera_pos_.x_ += 5;
+            // sphere1->base_point_.x_ += 5;
+            
+            tracer->camera_pos_ = tracer->camera_pos_ - center_vec;
+            // tracer->camera_direction_ = {
+            //     tracer->camera_direction_.x_ * cos(0.05) - tracer->camera_direction_.z_ * sin(0.05),
+            //     0,
+            //     tracer->camera_direction_.x_ * sin(0.05) + tracer->camera_direction_.z_ * cos(0.05)
+            // };
+
+            tracer->camera_pos_ = {
+                tracer->camera_pos_.x_ * cos(0.05) - tracer->camera_pos_.z_ * sin(0.05),
+                tracer->camera_pos_.y_,
+                tracer->camera_pos_.x_ * sin(0.05) + tracer->camera_pos_.z_ * cos(0.05)
+            };
+
+            
+            tracer->camera_pos_ += center_vec;
+            // tracer->camera_direction_ = {
+            //     -tracer->camera_pos_.x_,
+            //     0,
+            //     -tracer->camera_pos_.z_ 
+            // };
+            tracer->camera_direction_ = center_vec - tracer->camera_pos_;
+            // tracer->FOV_ += M_PI / 180 * 5;
+            
+            // tracer->recalc_view_plane_dist();
+            // arrow.rotation_angle_ += 0.0001 * M_PI;
+            tracer->recalc_view_plane_dist();
+            std::cout << tracer->camera_direction_.x_ << "  " << tracer->camera_direction_.y_ << "  " << tracer->camera_direction_.z_  << " direction\n";
+            std::cout << tracer->camera_pos_.x_ << "  " << tracer->camera_pos_.y_ << "  " << tracer->camera_pos_.z_  << " pos\n";
             // arrow.rotation_angle_ += 0.0001 * M_PI;
         }
     }
@@ -118,6 +153,7 @@ public:
     Painter* painter_;
     RayTracerWidget* tracer;
     Sphere* sphere1;
+    Vector3D center_vec;
 };
 
 #endif

@@ -1,5 +1,5 @@
 #include "RayTracerWidget.hpp"
-
+#include "Dump.cpp";
 
 
 
@@ -16,6 +16,10 @@ RayTracerWidget::RayTracerWidget
     if (is_zero(FOV - M_PI)) throw;
     FOV_ = FOV;
     recalc_view_plane_dist();
+    size_t max_x = rect_.p2_.x_ - rect_.p1_.x_;
+    size_t max_y = rect_.p2_.y_ - rect_.p1_.y_;
+    scr_buff_ = (BYTE*) calloc(max_x * max_x * 3, sizeof(char));
+
     // rect_.p2_.x_ - rect.p1_.x_
     // screen_buffer = new ColorF[(rect_.p2_.x_ - rect.p1_.x_) * (rect_.p2_.y_ - rect.p1_.y_)];
 }
@@ -26,10 +30,9 @@ RayTracerWidget::RayTracerWidget(
     const PointF& point, 
     Widget* parent
 ): 
-    Widget(rect, point, parent)
+   RayTracerWidget(M_PI / 2, rect, point, parent)
 {
-    FOV_ = M_PI / 2;
-    recalc_view_plane_dist();
+
 }
 
 bool RayTracerWidget::add_item(RayIntersectableBasic* n_item) {
@@ -45,11 +48,18 @@ bool RayTracerWidget::add_item(RayIntersectableBasic* n_item) {
 
 void RayTracerWidget::recalc_view_plane_dist() {
     view_plane_dist_ = tan(M_PI / 2 - FOV_ / 2) * (rect_.p2_.x_ - rect_.p1_.x_) / 2;
-    if (is_zero(camera_direction_.x_) && is_zero(camera_direction_.y_)) 
-        plane_coord_x_ = Vector3D(1, 0, 0);
-    else
-        plane_coord_x_ = Vector3D(-camera_direction_.x_, camera_direction_.y_, 0).normalize();
-    plane_coord_y_ = vectorMult(camera_direction_, plane_coord_x_).normalize();
+    camera_direction_ = camera_direction_.normalize();
+    plane_coord_x_ = {
+                camera_direction_.x_ * cos(M_PI / 2) - camera_direction_.z_ * sin(M_PI / 2),
+                0,
+                camera_direction_.x_ * sin(M_PI / 2) + camera_direction_.z_ * cos(M_PI / 2)
+            };
+    plane_coord_x_ = plane_coord_x_.normalize();
+    // if (is_zero(camera_direction_.x_) && is_zero(camera_direction_.y_)) 
+    //     plane_coord_x_ = Vector3D(1, 0, 0);
+    // else 
+    //     plane_coord_x_ = Vector3D(-camera_direction_.x_, camera_direction_.y_, 0).normalize();
+    plane_coord_y_ = -(vectorMult(camera_direction_, plane_coord_x_).normalize());
 }
 
 inline Ray RayTracerWidget::calc_ray_direction(int x, int y) {
@@ -71,30 +81,104 @@ ColorF RayTracerWidget::trace_ray(const Ray& ray, short int depth) {
     Vector3D normal = min_obj.obj_ptr->get_normal(ray, min_obj.distance);
 
     if (min_obj.obj_ptr->is_light_source_) {
-        // return min_obj.obj_ptr->color_;
-        return min_obj.obj_ptr->color_ * min_obj.obj_ptr->intensity;
+        return min_obj.obj_ptr->material.actual_color_ * min_obj.obj_ptr->intensity;
     } else {
         if (depth >= depth_ - 1) {
             // printf("max_depth");
             // return ColorF(0, 0, 0);
             return AMBIENT;
         }
+        Vector3D trace_point = ray.base_point_ + ray.direction_ * min_obj.distance + normal;
 
-        ColorF ret_color = trace_ray(
+        
+        RayIntersectableBasic* cur_env = get_cur_surrounding(trace_point);
+        // RayIntersectableBasic* next_env = get_cur_surrounding(trace_point - 2 * normal);
+        double cur_env_n = cur_env == nullptr ? 1.0 : cur_env->material.refract_n_;
+        double sinAlpha2 = angleSin(-ray.direction_, normal) * cur_env_n / min_obj.obj_ptr->material.refract_n_;
+
+
+        // ColorF refraction_color = trace_ray(
+        //     Ray(
+        //         trace_point - 2*normal,
+        //         (
+        //             (
+        //                 sqrt(1 - sinAlpha2 * sinAlpha2) * 
+        //                 (ray.direction_ - (normal * scalarMult(ray.direction_, normal) / ray.direction_.length())).normalize()
+        //             ) - normal * sinAlpha2
+        //         ).normalize()
+        //     ), 
+        //     depth + 1
+        // );
+
+
+
+        ColorF refraction_color = ColorF(0, 0, 0);
+
+        if (min_obj.obj_ptr->material.is_transparent) {
+            Ray refraction_ray(
+                trace_point - 2*normal,
+                (
+                    (
+                        sqrt(1 - sinAlpha2 * sinAlpha2) * 
+                        (ray.direction_ - (normal * scalarMult(ray.direction_, normal) / ray.direction_.length())).normalize()
+                    ) - normal * sinAlpha2
+                ).normalize()
+            );
+            if (!(is_zero(refraction_ray.direction_.x_) && is_zero(refraction_ray.direction_.y_) && is_zero(refraction_ray.direction_.z_))) {
+                refraction_color = trace_ray(refraction_ray, depth + 4);
+                // refraction_color = trace_ray(refraction_ray, depth + 5);
+                // printf("%lf cosalpha2\n", sqrt(1 - sinAlpha2 * sinAlpha2));
+                // printf("pizdec");
+            } else {
+                // printf("ok------------------------\n");
+            }
+        }
+
+        // ColorF refraction_color = ColorF(0, 0, 0);
+
+        ColorF reflection_color = trace_ray(
             Ray(
-                ray.base_point_ + ray.direction_ * min_obj.distance + normal, 
+                trace_point, 
                 ray.direction_ + min_obj.obj_ptr->get_normal(ray, min_obj.distance)),
             depth + 1
         );
-        // #pragma omp for
-        short int it = 0;
+
+        
+
+        //          LAMBERT
+        short int lambert_it = 0;
         ColorF lambert_color = ColorF(0, 0, 0);
-        // #pragma omp parallel for reduction(ColorPlus:ret_color)
-        for (it = 0; it < lambert_ray_cnt; ++it) {
+        // #pragma omp parallel for reduction(ColorPlus:reflection_color)
+        for (lambert_it = 0; lambert_it < lambert_ray_cnt; ++lambert_it) {
             lambert_color += trace_lambert(ray, normal, min_obj.distance, depth + 1);
         }
+        // https://t.me/folesis
+        // https://t.me/eto0p
+
+
+        //          DIFFUSE
+        ColorF diffuse_color = ColorF(0, 0, 0);
+        int light_source_cnt = 1;
+        for (size_t it = 0; it < scene_items.size(); ++it) {
+            if (scene_items[it]->is_light_source_) {
+                light_source_cnt++;
+                Ray light_source_ray(trace_point, scene_items[it]->get_direction(trace_point));
+                Intersection light_source_intersection = get_min_intersection_object(light_source_ray);
+                if (light_source_intersection.obj_ptr != scene_items[it]) continue;
+                if (angleCos(normal, light_source_ray.direction_) < 0) continue;
+                diffuse_color += light_source_intersection.obj_ptr->material.actual_color_ * angleCos(normal, light_source_ray.direction_);
+            }
+        }
+        diffuse_color /= light_source_cnt;
+
+
+
         // return min_obj.obj_ptr->color_ * trace_ray(Ray(ray.base_point_ + ray.direction_ * min_obj.distance, ray.direction_ + min_obj.obj_ptr->get_normal(ray, min_obj.distance)), depth + 1);
-        return min_obj.obj_ptr->color_ * ret_color + lambert_color * min_obj.obj_ptr->color_;
+        return  min_obj.obj_ptr->material.reflect_coeff_ * min_obj.obj_ptr->material.actual_color_ * reflection_color +
+                min_obj.obj_ptr->material.actual_color_* diffuse_color + 
+                min_obj.obj_ptr->material.lambert_coeff_ * lambert_color +
+                refraction_color * min_obj.obj_ptr->material.refract_coeff_; 
+            
     }
 }
 
@@ -130,11 +214,28 @@ Intersection RayTracerWidget::get_min_intersection_object(const Ray& ray) {
     return min_obj;
 }
 
+RayIntersectableBasic* RayTracerWidget::get_cur_surrounding(const Vector3D& point) {
+    // double min_dist = INFINITY;
+    // double refract_index = 1;
+
+    for (size_t it = 0; it < scene_items.size(); ++it) {
+        if(scene_items[it]->material.is_transparent) {
+            if (scene_items[it]->is_inside(point)) {
+                return scene_items[it];
+            }
+        }
+    }
+
+    return nullptr;
+}
+
 
 int RayTracerWidget::paint(Painter* painter) {
+
     size_t max_x = rect_.p2_.x_ - rect_.p1_.x_;
     size_t max_y = rect_.p2_.y_ - rect_.p1_.y_;
     size_t cur_y = 0;
+    SDL_Event event;
     #pragma omp parallel for
     for (cur_y = 0; cur_y < max_y; ++cur_y) {
         size_t cur_x = 0;
@@ -145,14 +246,25 @@ int RayTracerWidget::paint(Painter* painter) {
             {
                 painter->setColor(color);
                 painter->drawPoint(cur_x, cur_y);
+            
+                long bufpos = cur_y * 3 * max_x + ( 3 * max_x - 3 * cur_x );  
+                scr_buff_[bufpos    ] = char(color.r_ * 255);
+                scr_buff_[bufpos + 1] = char(color.g_ * 255);
+                scr_buff_[bufpos + 2] = char(color.b_ * 255);
+                // long newpos = ( max_y - cur_y - 1 ) * total_scanlinebytes + 3 * cur_x; 
+                // scr_buff_[y]
             }
         }
+
         // printf("%d cur_y\n", cur_y);
-        #pragma omp critical
-        {
-            painter->present();
-        }
+        // #pragma omp critical
+        // {
+        //     painter->present();
+        //     while(SDL_PollEvent(&event)) {};
+        // }
     }
+
+    bmp_dump_tracer(scr_buff_, max_x, max_y);
 
     return 0;
 }

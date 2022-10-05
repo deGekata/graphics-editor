@@ -2,6 +2,7 @@
 #define GRAPHICS_INTERFACES_SLD_WINDOW_HPP
 
 #include "SDL.h"
+#include "SDL_opengl.h"
 #include <stdio.h>
 
 class Window_ {
@@ -13,7 +14,9 @@ public:
 
 
     SDL_Window* window;
-
+    // SDL_GLContext gContext;
+    
+    
     ~Window_() {
         printf("dtooooooooooooor-----------");
         SDL_DestroyWindow(window);
@@ -22,6 +25,8 @@ public:
     static int startGraphicalLib() {
         static bool is_called = false;
         if (is_called) {
+            // SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 2 );
+            // SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
             SDL_SetHint(SDL_HINT_VIDEO_HIGHDPI_DISABLED, "1");
             return SDL_Init(SDL_INIT_EVERYTHING);
         }

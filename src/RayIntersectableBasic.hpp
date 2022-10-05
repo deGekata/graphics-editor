@@ -2,7 +2,7 @@
 #define RAY_INTERSECTABLE_BASIC_HPP
 #include "Vector3D.hpp"
 #include "Utilities.hpp"
-
+#include "Material.h"
 
 class Ray {
 public:
@@ -16,14 +16,18 @@ public:
 
 class RayIntersectableBasic {
 public:
+    RayIntersectableBasic(const Vector3D& base_point) : base_point_(base_point) {};
     virtual double   intersect(const Ray& ray) = 0;
     virtual double   distance_to_base_point(const Vector3D& vec) = 0;
     virtual Vector3D get_normal(const Ray& ray, double distance) = 0;
+    virtual Vector3D get_direction(Vector3D point) = 0;
+    virtual bool     is_inside(const Vector3D& point) = 0;
     bool is_light_source_ = false;
-    ColorF reflection_ = ColorF(1.0, 1.0, 1.0);  
-    double intensity = 5; 
+    Material material;
+    double intensity = 1; 
     // double spread_ = 
-    ColorF color_ = ColorF(1.0, 1.0, 1.0, 1.0);
+
+    Vector3D base_point_ = {0, 0, 0};
 };  
 
 struct Intersection

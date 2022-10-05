@@ -24,6 +24,7 @@ int Painter::fillWindow() {
 
 int Painter::fillWindowBounded() {
     // ....
+    return 1;
 }
 
 int Painter::setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
@@ -40,6 +41,8 @@ void Painter::present() {
 
 void Painter::setConstraint(const RectF& rect, const PointF& point) {
     //....
+    UNUSED(rect);
+    UNUSED(point);
 }
 
 int Painter::drawArrow(const PointF& p1, const PointF& p2) {
@@ -56,7 +59,11 @@ int Painter::drawLine(int x1, int y1, int x2, int y2) {
 
 int Painter::drawLineBounded(int x1, int y1, int x2, int y2) {
     //.....
-
+    UNUSED(x1);
+    UNUSED(y1);
+    UNUSED(x2);
+    UNUSED(y2);
+    return 1;
 }
 
 int Painter::drawPoint(PointF p1) {
@@ -69,4 +76,7 @@ int Painter::drawPoint(int x, int y) {
 
 int Painter::drawPointBounded(int x, int y) {
     //....
+    UNUSED(x);
+    UNUSED(y);
+    return 1;
 }

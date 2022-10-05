@@ -73,4 +73,4 @@ init:
 	if not exist $(BUILD_PATH) md $(BUILD_PATH)
 
 clean:
-	if exist $(BIN_DIR) rmdir /S /Q $(BIN_DIR)
+	if exist $(CWD)\\$(BIN_DIR) rmdir /S /Q $(BIN_DIR)

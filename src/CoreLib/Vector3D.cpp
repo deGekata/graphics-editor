@@ -19,6 +19,15 @@ double scalarMult(const Vector3D& lft, const Vector3D& rht) {
     return lft.x_*rht.x_ + lft.y_*rht.y_ + lft.z_*rht.z_;
 }
 
+double angleCos(const Vector3D& lft, const Vector3D& rht) {
+    return scalarMult(lft, rht) / (lft.length_ * rht.length_);
+}
+
+double angleSin(const Vector3D& lft, const Vector3D& rht) {
+    double cos_angle = scalarMult(lft, rht) / (lft.length_ * rht.length_); 
+    return sqrt(1 - cos_angle * cos_angle);
+}
+
 Vector3D vectorMult(const Vector3D& a, const Vector3D& b) {
     return Vector3D(
          (a.y_*b.z_) - (a.z_*b.y_),

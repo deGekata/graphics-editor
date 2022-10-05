@@ -4,8 +4,8 @@
 
 
 CoordSys::CoordSys(int x0, int y0, int width, int height) :
-    base_point_(x0, y0),
-    size_(width, height)
+    size_(width, height),
+    base_point_(x0, y0)
 {
     // SDL_Log("%d lel\n", width);
     // base_point_.setX(x0);
