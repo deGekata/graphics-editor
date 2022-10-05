@@ -19,7 +19,7 @@ public:
     bool is_transparent = false;
 
     void makeGlass() {
-        actual_color_  = {1.0, 1.0, 1.0};
+        actual_color_  = {0.1, 0.1, 0.1};
         reflect_coeff_ = {0.0, 0.0, 0.0};
         lambert_coeff_ = {0.0, 0.0, 0.0};
         refract_coeff_ = {1.0, 1.0, 1.0};

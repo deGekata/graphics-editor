@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <Windows.h>
-#include <algorithm>
-#include <memory>
+#include "Dump.h"
 
 // Save the bitmap to a bmp file  
 void SaveBitmapToFile( BYTE* pBitmapBits,  
@@ -211,6 +208,9 @@ std::unique_ptr<BYTE[]> CreateNewBuffer( unsigned long& padding,
 void bmp_dump_tracer(BYTE* data, int width, int height) {
 
     static int dumpNumber = 0;
+    if (dumpNumber >= 400) {
+        exit(0);
+    }
     printf("graphing %d\n", dumpNumber);
 
     // int imageWidth = 0;
@@ -229,8 +229,8 @@ void bmp_dump_tracer(BYTE* data, int width, int height) {
      
     // Use the new array data to create the new bitmap file
     char filename[300];
-    char* dump_dir = "C:\\Users\\Gekata\\Desktop\\GitProjects\\graphics-editor\\";
-    sprintf(filename, "%sLIST_DMP_№%d.bmp", dump_dir, dumpNumber);
+    char* dump_dir = "C:\\Users\\Gekata\\Desktop\\GitProjects\\graphics-editor\\dump\\";
+    sprintf(filename, "%sLIST_DMP_%d.bmp", dump_dir, dumpNumber);
     SaveBitmapToFile( (BYTE*) &newbuf2[ 0 ],  
                       width,  
                       height,  

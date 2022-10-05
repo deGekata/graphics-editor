@@ -1,5 +1,5 @@
 #include "RayTracerWidget.hpp"
-#include "Dump.cpp";
+#include "Dump.h";
 
 
 

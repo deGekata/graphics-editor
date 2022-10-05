@@ -370,10 +370,10 @@ public:
 
     ColorF normalize() {
         return ColorF(
-            sqrt(r_ > 1.0 ? 1 : r_),
-            sqrt(g_ > 1.0 ? 1 : g_),
-            sqrt(b_ > 1.0 ? 1 : b_),
-            sqrt(a_ > 1.0 ? 1 : a_)
+            sqrt(sqrt(r_ > 1.0 ? 1 : r_)),
+            sqrt(sqrt(g_ > 1.0 ? 1 : g_)),
+            sqrt(sqrt(b_ > 1.0 ? 1 : b_)),
+            sqrt(sqrt(a_ > 1.0 ? 1 : a_))
         );
         // return ColorF(sqrt(r_), sqrt(g_), sqrt(b_));
     }

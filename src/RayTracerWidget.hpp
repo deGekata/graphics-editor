@@ -5,6 +5,7 @@
 #include "Vector3D.hpp"
 #include "RayIntersectable.hpp"
 #include <omp.h>
+
 typedef unsigned char BYTE;
 
 #define LAMBERT_RAY_CNT 5
@@ -23,8 +24,8 @@ public:
     Vector3D plane_coord_y_;
     
     short int depth_ = 10;
-    short int lambert_depth_delta = 10;
-    short int lambert_ray_cnt = 20;
+    short int lambert_depth_delta = 7;
+    short int lambert_ray_cnt = 10;
     double lambert_coefficient = 0.5 / lambert_ray_cnt; 
 
 

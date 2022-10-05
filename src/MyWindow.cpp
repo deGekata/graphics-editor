@@ -29,15 +29,21 @@ MyWindow::MyWindow(int width, int height, int x, int y, uint32_t flags) :
     dot_rect->addChild(arrow, PointF(0, 0));
     rect1->addChild(rect2, PointF(-200, 100));
     rect1->addChild(dot_rect, PointF(200, 200));
-    tracer = new RayTracerWidget(RectF(0, 0, 400, 400), PointF(0, 0));
+
+
+
+    tracer = new RayTracerWidget(RectF(0, 0, 700, 700), PointF(0, 0));
     
+
+
     //------------------- Light-source --------------------------
-    sphere1 = new Sphere(Vector3D(200, 0, 400), 50);
+    // sphere1 = new Sphere(Vector3D(1, 1, 1), 100);
+    sphere1 = new Sphere(Vector3D(200, 0, 400), 400);
     // sphere1 = new Sphere(Vector3D(200, 50, 400), 50);
     // sphere1->is_light_source_ = true;
     sphere1->material.actual_color_ = ColorF(255/255.0, 255/255.0, 255/255.0); // #ffffff
     sphere1->material.makeGlass();
-    sphere1->material.refract_n_ = 0.5;
+    sphere1->material.refract_n_ = 2;
     tracer->add_item(sphere1);
 
     Sphere* sphere3 = new Sphere(Vector3D(-50, 0, 300), 60);
@@ -52,7 +58,7 @@ MyWindow::MyWindow(int width, int height, int x, int y, uint32_t flags) :
     Triangle* triangle = new Triangle(Vector3D(-100, -100, 200), Vector3D(-100, 100, 200), Vector3D(100, 0, 500));
     triangle->material.actual_color_ = ColorF(0.5, 0.5, 0.5);
     triangle->material.makeGlass();
-    triangle->material.refract_n_ = 0.5;
+    triangle->material.refract_n_ = 2;
     // triangle->material.makeRubber();
     // triangle->is_light_source_ = true;
     tracer->add_item(triangle);
@@ -103,7 +109,8 @@ MyWindow::MyWindow(int width, int height, int x, int y, uint32_t flags) :
     tracer->add_item(ceil),  ceil->material.actual_color_  = ColorF(234/255.0, 100/255.0, 99/255.0), ceil->material.makeRubber();
     
 
-    tracer->add_item(wall_lf), wall_lf->material.actual_color_ = ColorF(248/255.0, 177/255.0, 194/255.0), wall_lf->material.makeRubber(); //#f8b1c2
+    tracer->add_item(wall_lf), wall_lf->material.actual_color_ = ColorF(1.0, 1.0, 1.0), wall_lf->material.makeRubber(), wall_lf->is_light_source_ = true; //#ffffff
+    // tracer->add_item(wall_lf), wall_lf->material.actual_color_ = ColorF(248/255.0, 177/255.0, 194/255.0), wall_lf->material.makeRubber(); //#f8b1c2
     tracer->add_item(wall_rh), wall_rh->material.actual_color_ = ColorF(255 / 255.0, 255 / 255.0, 255 / 255.0), wall_rh->material.makeRubber(); //#ffffff
     // tracer->add_item(wall_rh), wall_rh->material.actual_color_ = ColorF(248 / 255.0, 177 / 255.0, 194 / 255.0), wall_rh->material.makeRubber(); //#f8b1c2
     // tracer->add_item(wall_fr), wall_fr->material.actual_color_ = ColorF(1.0, 1.0, 1.0), wall_fr->material.makeRubber(); //#ffffff

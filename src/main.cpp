@@ -7,6 +7,9 @@ int main(__attribute__((unused)) int argv, __attribute__((unused)) char** args) 
     std::cout << triangleArea(Vector3D(20, 0, 0), Vector3D(0, 0, 30)) << "check";
     Window::startGraphicalLib();
     MyWindow window(900, 900);
+    // size_t max_x = window.tracer.rect_.p2_.x_ - window.tracer.rect_.p1_.x_;
+    // size_t max_y = window.tracer.rect_.p2_.y_ - window.tracer.rect_.p1_.y_;
+    
     Painter painter(window);
     window.setPainter(&painter);
     // printf("%x", window.painter_->rsp_->painter_);
