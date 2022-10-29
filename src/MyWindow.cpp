@@ -38,7 +38,7 @@ MyWindow::MyWindow(int width, int height, int x, int y, uint32_t flags) :
 
     //------------------- Light-source --------------------------
     // sphere1 = new Sphere(Vector3D(1, 1, 1), 100);
-    sphere1 = new Sphere(Vector3D(200, 0, 400), 400);
+    sphere1 = new Sphere(Vector3D(200, 0, 400), 50);
     // sphere1 = new Sphere(Vector3D(200, 50, 400), 50);
     // sphere1->is_light_source_ = true;
     sphere1->material.actual_color_ = ColorF(255/255.0, 255/255.0, 255/255.0); // #ffffff

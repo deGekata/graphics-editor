@@ -47,7 +47,7 @@ public:
     Vector3D get_normal(const Ray& ray, double distance);
     Vector3D get_direction(Vector3D point);
     double   distance_to_base_point(const Vector3D& vec);
-    bool     is_inside(const Vector3D& point);
+    bool     is_inside(const Vector3D& point    );
 };
 
 

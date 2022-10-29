@@ -8,6 +8,8 @@
 #include <vector>
 
 //widget can be drawn
+
+
 class Widget : public BasicObject {
 protected:
     virtual int paint(Painter* painter) { UNUSED(painter); return 1;};
