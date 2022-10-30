@@ -229,7 +229,7 @@ void bmp_dump_tracer(BYTE* data, int width, int height) {
      
     // Use the new array data to create the new bitmap file
     char filename[300];
-    char* dump_dir = "C:\\Users\\Gekata\\Desktop\\GitProjects\\graphics-editor\\dump\\";
+    char* dump_dir = "C:\\Users\\Gekata\\Documents\\GitProjects\\graphics-editor\\dump\\";
     sprintf(filename, "%sLIST_DMP_%d.bmp", dump_dir, dumpNumber);
     SaveBitmapToFile( (BYTE*) &newbuf2[ 0 ],  
                       width,  

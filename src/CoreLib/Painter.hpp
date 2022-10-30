@@ -4,6 +4,8 @@
 #include "Utilities.hpp"
 #include "SDL.h"
 #include "Window.hpp"
+#include "Widget.hpp"
+#include "Surface.hpp"
 
 class Painter_;
 
@@ -17,6 +19,10 @@ public:
     ~Painter();
 
     void setWindow(const Window& window);
+
+    void begin(Widget& surface);
+
+    void end();
 
     int fillWindow();
 

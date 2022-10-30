@@ -1,44 +1,45 @@
-#ifndef GRAPHICS_INTERFACES_SLD_WINDOW_HPP
-#define GRAPHICS_INTERFACES_SLD_WINDOW_HPP
+#ifndef GRAPHICS_INTERFACES_SLD_SURFACE_HPP
+#define GRAPHICS_INTERFACES_SLD_SURFACE_HPP
 
 #include "SDL.h"
 #include "SDL_opengl.h"
 #include <stdio.h>
 
-class Window_ {
+
+
+
+class Surface_ {
+private:
+    SDL_Surface* surface_ = NULL;
+    SDL_Rect* clip_rect = NULL;
 public:
-    Window_(int width = 800, int height = 600, int x = SDL_WINDOWPOS_CENTERED, int y = SDL_WINDOWPOS_CENTERED, uint32_t flags = 0) {
-        startGraphicalLib();
-        window = SDL_CreateWindow("", x, y, width, height, flags | SDL_WINDOW_OPENGL);
+    
+    Surface_(int width, int height) {
+        #if SDL_BYTEORDER == SDL_BIG_ENDIAN
+            surface_ = SDL_CreateRGBSurface(0, width, height, 32,
+                                   0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff); 
+        #else
+            surface_ = SDL_CreateRGBSurface(0, width, height, 32,
+                                   0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000); 
+        #endif            
     }
-
-
-    SDL_Window* window;
-    // SDL_GLContext gContext;
     
     
-    ~Window_() {
-        SDL_DestroyWindow(window);
+    
+    int blitToOtherSurface(SDL_Surface* dest, SDL_Rect* dest_rect) {
+        return SDL_BlitSurface(this->surface_, this->clip_rect, dest, dest_rect);
     }
 
-    static int startGraphicalLib() {
-        static bool is_called = false;
-        if (is_called) {
-            // SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 2 );
-            // SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
-            SDL_SetHint(SDL_HINT_VIDEO_HIGHDPI_DISABLED, "1");
-            return SDL_Init(SDL_INIT_EVERYTHING);
-        }
-        return 0;
+    
+    ~Surface_() {
+        //how to delete surface...
+        SDL_FreeSurface(surface_);
+        
+        surface_ = NULL;
+        return;
     }
 
-    static void stopGraphicalLib() {
-        static bool is_called = false;
-        if (is_called) {
-            SDL_Quit();
-        }
-    }
-    friend class Window;
+    friend class Painter;
 };
 
 

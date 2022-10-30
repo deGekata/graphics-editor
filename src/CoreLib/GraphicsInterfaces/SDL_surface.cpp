@@ -1,9 +1,9 @@
-#include "SDL_window.hpp"
+#include "SDL_surface.hpp"
 
-#include "Window.hpp"
+#include "Surface.hpp"
 
 
-Window::Window(int width = 800, int height = 600, int x = SDL_WINDOWPOS_CENTERED, int y = SDL_WINDOWPOS_CENTERED, uint32_t flags = 0) {
+Surface_::Window(int width = 800, int height = 600, int x = SDL_WINDOWPOS_CENTERED, int y = SDL_WINDOWPOS_CENTERED, uint32_t flags = 0) {
     rsp_ = new Window_(width, height, x, y, flags);
 }
 

@@ -22,6 +22,8 @@ public:
         }
     }
 
+    void begin(Surface_)
+
     void setWindow(Window_* window) {
         if (painter_ != NULL) {
             SDL_DestroyRenderer(painter_);
@@ -56,6 +58,8 @@ public:
     void present() {
         SDL_RenderPresent(painter_);
     }
+
+    
 
     void setConstraint(const RectF& rect, const PointF& point) {
         rect_.x = rect.p1_.x_ + point.x_;   
