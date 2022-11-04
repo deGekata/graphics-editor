@@ -4,16 +4,19 @@
 #include "SDL.h"
 #include "SDL_opengl.h"
 #include <stdio.h>
-
+#include "SDL_surface.hpp"
 class Window_ {
 public:
     Window_(int width = 800, int height = 600, int x = SDL_WINDOWPOS_CENTERED, int y = SDL_WINDOWPOS_CENTERED, uint32_t flags = 0) {
         startGraphicalLib();
         window = SDL_CreateWindow("", x, y, width, height, flags | SDL_WINDOW_OPENGL);
+        window_surface = SDL_GetWindowSurface(window);
     }
 
+    
 
-    SDL_Window* window;
+    SDL_Window*  window;
+    SDL_Surface* window_surface;
     // SDL_GLContext gContext;
     
     
@@ -37,6 +40,7 @@ public:
         if (is_called) {
             SDL_Quit();
         }
+        return;
     }
     friend class Window;
 };

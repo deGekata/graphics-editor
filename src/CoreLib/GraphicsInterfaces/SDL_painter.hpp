@@ -4,7 +4,7 @@
 #include "Utilities.hpp"
 #include "SDL.h"
 #include "SDL_window.hpp"
-
+#include "SDL_surface.hpp"
 class Painter_ {
 public:
     Painter_(Window_* window) {
@@ -22,13 +22,25 @@ public:
         }
     }
 
-    void begin(Surface_)
+    void begin(Surface_* surface) {
+        if (painter_ == NULL) {
+            throw std::string("Painter_ must be destroyed before Painter_::begin");
+        }
+        painter_ = SDL_CreateSoftwareRenderer(surface->surface_);
+        return;
+    }
+
+    void end() {
+        SDL_DestroyRenderer(painter_);
+        return;
+    }
 
     void setWindow(Window_* window) {
         if (painter_ != NULL) {
             SDL_DestroyRenderer(painter_);
         }
         painter_ = SDL_CreateRenderer(window->window, -1, 0);
+        return;
     }
 
     int fillWindow() {
@@ -41,7 +53,7 @@ public:
 
     int setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) {
         if (painter_ == NULL) {
-            printf("fucking nuuuuuuuul%d\n", __LINE__);
+            
             exit(-1);
         }
         r = SDL_SetRenderDrawColor(painter_, r, g, b, a);
@@ -57,15 +69,7 @@ public:
 
     void present() {
         SDL_RenderPresent(painter_);
-    }
-
-    
-
-    void setConstraint(const RectF& rect, const PointF& point) {
-        rect_.x = rect.p1_.x_ + point.x_;   
-        rect_.y = rect.p1_.y_ + point.y_;
-        rect_.w = rect.p2_.x_ - rect.p2_.x_;
-        rect_.h = rect.p2_.y_ - rect.p1_.y_;
+        return;
     }
 
     int drawArrow(const PointF& p1, const PointF& p2) {
@@ -87,14 +91,6 @@ public:
         return SDL_RenderDrawLine(painter_, x1, y1, x2, y2);
     }
 
-    int drawLineBounded(int x1, int y1, int x2, int y2) { 
-        if (x1 > x2) {
-            SWAP(int, x1, x2);
-            SWAP(int, y1, y2);
-        }
-
-        return 1;
-    }
     
     int drawPoint(PointF p1) {
         return drawPoint(p1.x_, p1.y_);
@@ -103,12 +99,6 @@ public:
     int drawPoint(int x, int y) {
         return SDL_RenderDrawPoint(painter_, x, y);
     }
-
-    int drawPointBounded(int x, int y) {
-        if (x < rect_.x || rect_.x + rect_.w < x || y < rect_.y || rect_.y + rect_.w < y) return 1;
-        return SDL_RenderDrawPoint(painter_, x, y);
-    }
-
 
     SDL_Renderer* painter_ = NULL;
     SDL_FRect rect_;

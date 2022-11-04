@@ -1,30 +1,36 @@
 #include "SDL_painter.hpp"
 
 #include "Painter.hpp"
+#include "Widget.hpp"
 
 
-
-Painter::Painter(const Window& window) {
-    rsp_ = new Painter_(window.rsp_);
+Painter::Painter(Window* window) {
+    rsp_ = new Painter_(window->rsp_);
 }
 
 Painter::~Painter() {
-        printf("dtooooooooooooor-----------");
-
-    // delete rsp_;
+    delete rsp_;
 }
 
-void Painter::setWindow(const Window& window) {
-    return rsp_->setWindow(window.rsp_);
+void Painter::setWindow(Window* window) {
+    rsp_->setWindow(window->rsp_);
+    this->window_surface_ = window->surface_;
+    this->window_rect_ = {0, 0, window->rect_.size_.x_, window->rect_.size_.y_};
+    return;
+}
+
+int Painter::begin(Surface* surface) {
+    rsp_->begin(surface->rsp_);
+    return 0;
+}
+
+int Painter::end() {
+    rsp_->end();
+    return 0;
 }
 
 int Painter::fillWindow() {
     return rsp_->fillWindow();
-}
-
-int Painter::fillWindowBounded() {
-    // ....
-    return 1;
 }
 
 int Painter::setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
@@ -37,12 +43,7 @@ int Painter::setColor(const ColorF& color) {
 
 void Painter::present() {
     rsp_->present();
-}
-
-void Painter::setConstraint(const RectF& rect, const PointF& point) {
-    //....
-    UNUSED(rect);
-    UNUSED(point);
+    return;
 }
 
 int Painter::drawArrow(const PointF& p1, const PointF& p2) {
@@ -55,15 +56,6 @@ int Painter::drawLine(PointF p1, PointF p2) {
 
 int Painter::drawLine(int x1, int y1, int x2, int y2) {
     return rsp_->drawLine(x1, y1, x2, y2);
-}
-
-int Painter::drawLineBounded(int x1, int y1, int x2, int y2) {
-    //.....
-    UNUSED(x1);
-    UNUSED(y1);
-    UNUSED(x2);
-    UNUSED(y2);
-    return 1;
 }
 
 int Painter::drawPoint(PointF p1) {

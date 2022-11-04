@@ -4,20 +4,27 @@
 #include "BasicObject.hpp"
 #include "Painter.hpp"
 #include "Utilities.hpp"
+#include "Surface.hpp"
 
 #include <vector>
 
 //widget can be drawn
-
+class Painter;
 
 class Widget : public BasicObject {
-protected:
-    virtual int paint(Painter* painter) { UNUSED(painter); return 1;};
+private:
 public:
-    Widget(const RectF& rect, const PointF& point, Widget* parent=nullptr);
+    bool hasChanged_ = true;
+    virtual int repaint_(Painter* painter) { UNUSED(painter); return 1;};
+    virtual int repaint(Painter* painter) final;
 
-    int repaint(Painter* painter);
-    int addChild(Widget* child, PointF pos);
+    virtual int update_(Painter* painter) { UNUSED(painter); return 1;};
+    virtual int update(Painter* painter) final;
+public:
+    Widget(Rect rect, Point point, Widget* parent=nullptr);
+
+
+    int addChild(Widget* child, Point pos);
 
 
     //positioning region
@@ -31,8 +38,12 @@ public:
     std::vector<Widget*> items;
     Widget* parent_ = nullptr;
 
-    RectF rect_ = {0, 0};
-    PointF pos_ = {0, 0};
+    Rect rect_ = {0, 0};
+    Point pos_ = {0, 0};
+    Surface self_surface_;
+    Surface buff_surface_;
+    // Surface buffer_surface_
+    friend class Painter;
 
 };
 

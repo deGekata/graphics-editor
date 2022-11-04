@@ -7,8 +7,8 @@
 RayTracerWidget::RayTracerWidget
 (
     double FOV, 
-    const RectF& rect, 
-    const PointF& point, 
+    const Rect& rect, 
+    const Point& point, 
     Widget* parent
 ):
     Widget(rect, point, parent)
@@ -16,8 +16,8 @@ RayTracerWidget::RayTracerWidget
     if (is_zero(FOV - M_PI)) throw;
     FOV_ = FOV;
     recalc_view_plane_dist();
-    size_t max_x = rect_.p2_.x_ - rect_.p1_.x_;
-    size_t max_y = rect_.p2_.y_ - rect_.p1_.y_;
+    size_t max_x = rect.size_.x_;
+    size_t max_y = rect.size_.y_;
     scr_buff_ = (BYTE*) calloc(max_x * max_x * 3, sizeof(char));
 
     // rect_.p2_.x_ - rect.p1_.x_
@@ -26,8 +26,8 @@ RayTracerWidget::RayTracerWidget
 
 
 RayTracerWidget::RayTracerWidget(
-    const RectF& rect, 
-    const PointF& point, 
+    const Rect& rect, 
+    const Point& point, 
     Widget* parent
 ): 
    RayTracerWidget(M_PI / 2, rect, point, parent)
@@ -47,7 +47,7 @@ bool RayTracerWidget::add_item(RayIntersectableBasic* n_item) {
 }
 
 void RayTracerWidget::recalc_view_plane_dist() {
-    view_plane_dist_ = tan(M_PI / 2 - FOV_ / 2) * (rect_.p2_.x_ - rect_.p1_.x_) / 2;
+    view_plane_dist_ = tan(M_PI / 2 - FOV_ / 2) * (rect_.size_.x_) / 2;
     camera_direction_ = camera_direction_.normalize();
     plane_coord_x_ = {
                 camera_direction_.x_ * cos(M_PI / 2) - camera_direction_.z_ * sin(M_PI / 2),
@@ -69,7 +69,7 @@ inline Ray RayTracerWidget::calc_ray_direction(int x, int y) {
     // return ret_val;
     return Ray(
         camera_pos_, 
-        camera_direction_ * view_plane_dist_ + plane_coord_x_ * (x - (rect_.p2_.x_ - rect_.p1_.x_) /2) + plane_coord_y_ * (y - (rect_.p2_.y_ - rect_.p1_.y_) /2) );
+        camera_direction_ * view_plane_dist_ + plane_coord_x_ * (x - rect_.size_.x_ /2) + plane_coord_y_ * (y - rect_.size_.y_ /2) );
 }
 
 
@@ -84,8 +84,6 @@ ColorF RayTracerWidget::trace_ray(const Ray& ray, short int depth) {
         return min_obj.obj_ptr->material.actual_color_ * min_obj.obj_ptr->intensity;
     } else {
         if (depth >= depth_ - 1) {
-            // printf("max_depth");
-            // return ColorF(0, 0, 0);
             return AMBIENT;
         }
         Vector3D trace_point = ray.base_point_ + ray.direction_ * min_obj.distance + normal;
@@ -95,22 +93,6 @@ ColorF RayTracerWidget::trace_ray(const Ray& ray, short int depth) {
         // RayIntersectableBasic* next_env = get_cur_surrounding(trace_point - 2 * normal);
         double cur_env_n = cur_env == nullptr ? 1.0 : cur_env->material.refract_n_;
         double sinAlpha2 = angleSin(-ray.direction_, normal) * cur_env_n / min_obj.obj_ptr->material.refract_n_;
-
-
-        // ColorF refraction_color = trace_ray(
-        //     Ray(
-        //         trace_point - 2*normal,
-        //         (
-        //             (
-        //                 sqrt(1 - sinAlpha2 * sinAlpha2) * 
-        //                 (ray.direction_ - (normal * scalarMult(ray.direction_, normal) / ray.direction_.length())).normalize()
-        //             ) - normal * sinAlpha2
-        //         ).normalize()
-        //     ), 
-        //     depth + 1
-        // );
-
-
 
         ColorF refraction_color = ColorF(0, 0, 0);
 
@@ -229,11 +211,16 @@ RayIntersectableBasic* RayTracerWidget::get_cur_surrounding(const Vector3D& poin
     return nullptr;
 }
 
+int RayTracerWidget::update_(Painter* painter) {
+    if (hasChanged_) repaint_(painter);
+    return 0;
+}
 
-int RayTracerWidget::paint(Painter* painter) {
 
-    size_t max_x = rect_.p2_.x_ - rect_.p1_.x_;
-    size_t max_y = rect_.p2_.y_ - rect_.p1_.y_;
+int RayTracerWidget::repaint_(Painter* painter) {
+    painter->begin(&this->self_surface_);
+    size_t max_x = rect_.size_.x_;
+    size_t max_y = rect_.size_.y_;
     size_t cur_y = 0;
     SDL_Event event;
     #pragma omp parallel for
@@ -263,7 +250,8 @@ int RayTracerWidget::paint(Painter* painter) {
         //     while(SDL_PollEvent(&event)) {};
         // }
     }
-
+    painter->end();
+    hasChanged_ = false;
     bmp_dump_tracer(scr_buff_, max_x, max_y);
 
     return 0;

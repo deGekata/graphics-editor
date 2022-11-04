@@ -18,16 +18,16 @@ public:
     int paint(Painter* painter) {
         if (painter == NULL) return 1;
 
-        PointF base_point = rel_pos_ + (rect_.p1_ + rect_.p2_) / 2;
-        PointF direction  = (rect_.p2_ - base_point).normalize() * 50;
-        PointF end_point  = rel_pos_ + base_point + direction.normalize() * arrow_len;
+        // PointF base_point = rel_pos_ + (rect_.p1_ + rect_.p2_) / 2;
+        // PointF direction  = (rect_.p2_ - base_point).normalize() * 50;
+        // PointF end_point  = rel_pos_ + base_point + direction.normalize() * arrow_len;
 
-        // Point absolute_pos = absPos(pos_);
-        Transformation abs_transform = absTransformToParent();
-        // std::cout << abs_transform * (base_point) << "  arrow  " << abs_transform * end_point << " \n";
-        painter->drawLine(abs_transform * (base_point), abs_transform * end_point);
-        painter->drawLine(abs_transform * end_point, abs_transform * (end_point - direction.rotate(0.2 * M_PI)));
-        painter->drawLine(abs_transform * end_point, abs_transform * (end_point - direction.rotate(-0.2 * M_PI)));
+        // // Point absolute_pos = absPos(pos_);
+        // Transformation abs_transform = absTransformToParent();
+        // // std::cout << abs_transform * (base_point) << "  arrow  " << abs_transform * end_point << " \n";
+        // painter->drawLine(abs_transform * (base_point), abs_transform * end_point);
+        // painter->drawLine(abs_transform * end_point, abs_transform * (end_point - direction.rotate(0.2 * M_PI)));
+        // painter->drawLine(abs_transform * end_point, abs_transform * (end_point - direction.rotate(-0.2 * M_PI)));
 
         return 0;
     }

@@ -128,91 +128,91 @@ Point operator+(const Point& point);
 class RectF {
 public:
     RectF() {};
-    RectF(PointF p1, PointF p2) : RectF(p1.x_, p1.y_, p2.x_, p2.y_) {};
-    RectF(double x1, double y1, double x2, double y2) {
-        p1_ = {MIN(x1, x2), MIN(y1, y2)};
-        p2_ = {MAX(x1, x2), MAX(y1, y2)};
+    RectF(PointF point, PointF size) : RectF(point.x_, point.y_, size.x_, size.y_) {};
+    RectF(double x, double y, double width, double height) {
+        point_ = {x, y};
+        size_  = {fabs(width), fabs(height)};
     }
     
-    static RectF min_rect(const RectF& bounds, RectF sample, PointF move_rect) {
-        RectF res;
-        if (move_rect.x_ < 0 || move_rect.x_ > bounds.p2_.x_) {
-            move_rect.x_ = 0;
-        }
+    // static RectF min_rect(const RectF& bounds, RectF sample, PointF move_rect) {
+    //     RectF res;
+    //     if (move_rect.x_ < 0 || move_rect.x_ > bounds.p2_.x_) {
+    //         move_rect.x_ = 0;
+    //     }
 
-        if (move_rect.y_ < 0 || move_rect.y_ > bounds.p2_.y_) {
-            move_rect.y_ = 0;
-        }
+    //     if (move_rect.y_ < 0 || move_rect.y_ > bounds.p2_.y_) {
+    //         move_rect.y_ = 0;
+    //     }
 
-        sample.p1_ = sample.p1_ + move_rect;
-        sample.p2_ = sample.p2_ + move_rect;
+    //     sample.p1_ = sample.p1_ + move_rect;
+    //     sample.p2_ = sample.p2_ + move_rect;
 
-        if (sample.p1_.x_ < bounds.p1_.x_ ||  bounds.p2_.x_ < sample.p1_.x_) {
-            res.p1_.x_ = bounds.p1_.x_;
-        }
+    //     if (sample.p1_.x_ < bounds.p1_.x_ ||  bounds.p2_.x_ < sample.p1_.x_) {
+    //         res.p1_.x_ = bounds.p1_.x_;
+    //     }
 
-        if (sample.p2_.x_ < bounds.p1_.x_ ||  bounds.p2_.x_ < sample.p2_.x_) {
-            res.p2_.x_ = bounds.p2_.x_;
-        }
+    //     if (sample.p2_.x_ < bounds.p1_.x_ ||  bounds.p2_.x_ < sample.p2_.x_) {
+    //         res.p2_.x_ = bounds.p2_.x_;
+    //     }
 
-        if (sample.p1_.y_ < bounds.p1_.y_ ||  bounds.p2_.y_ < sample.p1_.y_) {
-            res.p1_.y_ = bounds.p1_.y_;
-        }
+    //     if (sample.p1_.y_ < bounds.p1_.y_ ||  bounds.p2_.y_ < sample.p1_.y_) {
+    //         res.p1_.y_ = bounds.p1_.y_;
+    //     }
 
-        if (sample.p2_.y_ < bounds.p1_.y_ ||  bounds.p2_.y_ < sample.p2_.y_) {
-            res.p2_.y_ = bounds.p2_.y_;
-        }
+    //     if (sample.p2_.y_ < bounds.p1_.y_ ||  bounds.p2_.y_ < sample.p2_.y_) {
+    //         res.p2_.y_ = bounds.p2_.y_;
+    //     }
 
-        return res;
-    }
+    //     return res;
+    // }
 
     ~RectF() = default;
-    PointF p1_ = {0, 0}, p2_ = {0, 0};
+    PointF point_ = {0, 0}, size_ = {0, 0};
 };
 
 class Rect {
 public:
     Rect() {};
-    Rect(Point p1, Point p2) : Rect(p1.x_, p1.y_, p2.x_, p2.y_) {};
-    Rect(int x1, int y1, int x2, int y2) {
-        p1_ = {MIN(x1, x2), MIN(y1, y2)};
-        p2_ = {MAX(x1, x2), MAX(y1, y2)};
+    Rect(Point point, Point size) : Rect(point.x_, point.y_, size.x_, size.y_) {};
+    Rect(int x, int y, int width, int height) {
+        point_ = {x, y};
+        size_ = {abs(width), abs(height)};
     }
     
-    static Rect min_rect(const Rect& bounds, Rect sample, Point move_rect) {
-        Rect res;
-        if (move_rect.x_ < 0 || move_rect.x_ > bounds.p2_.x_) {
-            move_rect.x_ = 0;
-        }
+    // static Rect min_rect(const Rect& bounds, Rect sample, Point move_rect) {
+    //     Rect res;
+    //     if (move_rect.x_ < 0 || move_rect.x_ > bounds.p2_.x_) {
+    //         move_rect.x_ = 0;
+    //     }
 
-        if (move_rect.y_ < 0 || move_rect.y_ > bounds.p2_.y_) {
-            move_rect.y_ = 0;
-        }
+    //     if (move_rect.y_ < 0 || move_rect.y_ > bounds.p2_.y_) {
+    //         move_rect.y_ = 0;
+    //     }
 
-        sample.p1_ = sample.p1_ + move_rect;
-        sample.p2_ = sample.p2_ + move_rect;
+    //     sample.p1_ = sample.p1_ + move_rect;
+    //     sample.p2_ = sample.p2_ + move_rect;
 
-        if (sample.p1_.x_ < bounds.p1_.x_ ||  bounds.p2_.x_ < sample.p1_.x_) {
-            res.p1_.x_ = bounds.p1_.x_;
-        }
+    //     if (sample.p1_.x_ < bounds.p1_.x_ ||  bounds.p2_.x_ < sample.p1_.x_) {
+    //         res.p1_.x_ = bounds.p1_.x_;
+    //     }
 
-        if (sample.p2_.x_ < bounds.p1_.x_ ||  bounds.p2_.x_ < sample.p2_.x_) {
-            res.p2_.x_ = bounds.p2_.x_;
-        }
+    //     if (sample.p2_.x_ < bounds.p1_.x_ ||  bounds.p2_.x_ < sample.p2_.x_) {
+    //         res.p2_.x_ = bounds.p2_.x_;
+    //     }
 
-        if (sample.p1_.y_ < bounds.p1_.y_ ||  bounds.p2_.y_ < sample.p1_.y_) {
-            res.p1_.y_ = bounds.p1_.y_;
-        }
+    //     if (sample.p1_.y_ < bounds.p1_.y_ ||  bounds.p2_.y_ < sample.p1_.y_) {
+    //         res.p1_.y_ = bounds.p1_.y_;
+    //     }
 
-        if (sample.p2_.y_ < bounds.p1_.y_ ||  bounds.p2_.y_ < sample.p2_.y_) {
-            res.p2_.y_ = bounds.p2_.y_;
-        }
+    //     if (sample.p2_.y_ < bounds.p1_.y_ ||  bounds.p2_.y_ < sample.p2_.y_) {
+    //         res.p2_.y_ = bounds.p2_.y_;
+    //     }
 
-        return res;
-    }
+    //     return res;
+    // }
 
     ~Rect() = default;
-    Point p1_ = {0, 0}, p2_ = {0, 0};
+    Point point_ = {0, 0}, size_ = {0, 0};
 };
 
 

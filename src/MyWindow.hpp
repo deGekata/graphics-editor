@@ -52,8 +52,8 @@ public:
                     Transformation trnsfrm = arrow->absTransformFromParent();
                     SDL_GetMouseState(&x, &y);
                     std::cout << "af tranfrom " << trnsfrm * PointF(x, y) << "  \n";
-                    arrow->rect_.p2_ = trnsfrm * PointF(x, y);
-                    arrow->rect_.p1_ = -arrow->rect_.p2_;
+                    // arrow->rect_.p2_ = trnsfrm * PointF(x, y);
+                    // arrow->rect_.p1_ = -arrow->rect_.p2_;
                     break;
                 }
 
@@ -82,8 +82,8 @@ public:
 
             // scene->repaint(painter_);
             // printf("%d\n", __LINE__);
-
-            tracer->paint(painter_);
+            central_widget_->update(painter_);
+            // tracer->update(painter_);
             // if (invert_coord) {
             //     ss.drawVec(painter_->painter_, ss2, line); 
             // } else {
@@ -91,48 +91,52 @@ public:
             // }
             // printf("%d\n", __LINE__);
 
-            painter_->present();
+            // painter_->present();
             // printf("%d\n", __LINE__);
 
-            rect1->rotation_angle_ += 0.0001 * M_PI;
-            dot_rect->rotation_angle_ += 0.0001 * M_PI;
-            // tracer->camera_pos_.x_ += 5;
-            // sphere1->base_point_.x_ += 5;
+            // rect1->rotation_angle_ += 0.0001 * M_PI;
+            // dot_rect->rotation_angle_ += 0.0001 * M_PI;
+            // // tracer->camera_pos_.x_ += 5;
+            // // sphere1->base_point_.x_ += 5;
             
-            // tracer->camera_pos_ = cen
-            // tracer->FOV_ += M_PI / 180 * 5;
-            // tracer->camera_pos_.x_ += 5;
-            // sphere1->base_point_.x_ += 5;
+            // // tracer->camera_pos_ = cen
+            // // tracer->FOV_ += M_PI / 180 * 5;
+            // // tracer->camera_pos_.x_ += 5;
+            // // sphere1->base_point_.x_ += 5;
             
-            tracer->camera_pos_ = tracer->camera_pos_ - center_vec;
-            // tracer->camera_direction_ = {
-            //     tracer->camera_direction_.x_ * cos(0.05) - tracer->camera_direction_.z_ * sin(0.05),
-            //     0,
-            //     tracer->camera_direction_.x_ * sin(0.05) + tracer->camera_direction_.z_ * cos(0.05)
+            // tracer->camera_pos_ = tracer->camera_pos_ - center_vec;
+            // // tracer->camera_direction_ = {
+            // //     tracer->camera_direction_.x_ * cos(0.05) - tracer->camera_direction_.z_ * sin(0.05),
+            // //     0,
+            // //     tracer->camera_direction_.x_ * sin(0.05) + tracer->camera_direction_.z_ * cos(0.05)
+            // // };
+
+            // tracer->camera_pos_ = {
+            //     tracer->camera_pos_.x_ * cos(0.05) - tracer->camera_pos_.z_ * sin(0.05),
+            //     tracer->camera_pos_.y_,
+            //     tracer->camera_pos_.x_ * sin(0.05) + tracer->camera_pos_.z_ * cos(0.05)
             // };
 
-            tracer->camera_pos_ = {
-                tracer->camera_pos_.x_ * cos(0.05) - tracer->camera_pos_.z_ * sin(0.05),
-                tracer->camera_pos_.y_,
-                tracer->camera_pos_.x_ * sin(0.05) + tracer->camera_pos_.z_ * cos(0.05)
-            };
-
             
-            tracer->camera_pos_ += center_vec;
-            // tracer->camera_direction_ = {
-            //     -tracer->camera_pos_.x_,
-            //     0,
-            //     -tracer->camera_pos_.z_ 
-            // };
-            tracer->camera_direction_ = center_vec - tracer->camera_pos_;
-            // tracer->FOV_ += M_PI / 180 * 5;
+            // tracer->camera_pos_ += center_vec;
+            // // tracer->camera_direction_ = {
+            // //     -tracer->camera_pos_.x_,
+            // //     0,
+            // //     -tracer->camera_pos_.z_ 
+            // // };
+            // tracer->camera_direction_ = center_vec - tracer->camera_pos_;
+            // // tracer->FOV_ += M_PI / 180 * 5;
             
+            // // tracer->recalc_view_plane_dist();
+            // // arrow.rotation_angle_ += 0.0001 * M_PI;
             // tracer->recalc_view_plane_dist();
+            // std::cout << tracer->camera_direction_.x_ << "  " << tracer->camera_direction_.y_ << "  " << tracer->camera_direction_.z_  << " direction\n";
+            // std::cout << tracer->camera_pos_.x_ << "  " << tracer->camera_pos_.y_ << "  " << tracer->camera_pos_.z_  << " pos\n";
             // arrow.rotation_angle_ += 0.0001 * M_PI;
-            tracer->recalc_view_plane_dist();
-            std::cout << tracer->camera_direction_.x_ << "  " << tracer->camera_direction_.y_ << "  " << tracer->camera_direction_.z_  << " direction\n";
-            std::cout << tracer->camera_pos_.x_ << "  " << tracer->camera_pos_.y_ << "  " << tracer->camera_pos_.z_  << " pos\n";
-            // arrow.rotation_angle_ += 0.0001 * M_PI;
+
+            // SDL_UpdateWindowSurface((SDL_Window*)this->rsp_);
+            
+            this->present();
         }
     }
 
@@ -152,6 +156,7 @@ public:
     GraphicsArrow* arrow;
     Painter* painter_;
     RayTracerWidget* tracer;
+    RayTracerWidget* tracer2;
     Sphere* sphere1;
     Vector3D center_vec;
 };
