@@ -53,7 +53,7 @@ VPATH = echo $(subst \,/,$(dir $(SRC_FULL_PATH)))
 
 # Build project
 $(BUILD_PATH)/$(OUT_FILE_NAME): $(OBJ) Makefile
-	$(CC) $(OBJ) -o $(BUILD_PATH)/$(OUT_FILE_NAME) $(LXXFLAGS)
+	@ $(CC) $(OBJ) -o $(BUILD_PATH)/$(OUT_FILE_NAME) $(LXXFLAGS)
 	$(BUILD_PATH)/$(OUT_FILE_NAME)
 
 # Dependency checking
@@ -61,11 +61,11 @@ include $(addprefix $(BIN_DIR)/, $(SRC:.cpp=.d))
 
 # Compilation source
 $(BIN_DIR)/%.o: %.cpp Makefile
-	$(CC) $< -c -o $@ $(CXXFLAGS)
+	@ $(CC) $< -c -o $@ $(CXXFLAGS)
 
 # Updating dependencies
 $(BIN_DIR)/%.d: %.cpp Makefile
-	$(CC) $<  $(CXXFLAGS) -MM -MT '$(BIN_DIR)/$*.o $(BIN_DIR)/$*.d' -MF $@ 
+	@ $(CC) $<  $(CXXFLAGS) -MM -MT '$(BIN_DIR)/$*.o $(BIN_DIR)/$*.d' -MF $@ 
 
 .PHONY: init clean
 init:

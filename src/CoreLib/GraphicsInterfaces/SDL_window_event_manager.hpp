@@ -1,0 +1,6 @@
+#ifndef SDL_WINDOW_EVENT_MANAGER_HPP
+#define SDL_WINDOW_EVENT_MANAGER_HPP
+
+
+
+#endif

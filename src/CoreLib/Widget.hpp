@@ -10,11 +10,14 @@
 
 //widget can be drawn
 class Painter;
+class EventManager;
 
 class Widget : public BasicObject {
 private:
 public:
     bool hasChanged_ = true;
+    EventManager* event_manager = NULL;
+
     virtual int repaint_(Painter* painter) { UNUSED(painter); return 1;};
     virtual int repaint(Painter* painter) final;
 
@@ -39,6 +42,7 @@ public:
     Widget* parent_ = nullptr;
 
     Rect rect_ = {0, 0};
+    Rect constraints_ = {0, 0};
     Point pos_ = {0, 0};
     Surface self_surface_;
     Surface buff_surface_;

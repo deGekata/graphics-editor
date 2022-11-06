@@ -178,38 +178,49 @@ public:
         point_ = {x, y};
         size_ = {abs(width), abs(height)};
     }
+
+    bool inRect(Point point) {
+        if (point_.x_ <= point.x_ && 
+            point_.y_ <= point.y_ && 
+            (point_.x_ + size_.x_) >= point.x_ && 
+            (point_.y_ + size_.y_) >= point.y_) 
+        {
+            return true;
+        }
+        return false;
+    }
     
-    // static Rect min_rect(const Rect& bounds, Rect sample, Point move_rect) {
-    //     Rect res;
-    //     if (move_rect.x_ < 0 || move_rect.x_ > bounds.p2_.x_) {
-    //         move_rect.x_ = 0;
-    //     }
+    /*static Rect min_rect(const Rect& bounds, Rect sample, Point move_rect) {
+        Rect res;
+        if (move_rect.x_ < 0 || move_rect.x_ > bounds.p2_.x_) {
+            move_rect.x_ = 0;
+        }
 
-    //     if (move_rect.y_ < 0 || move_rect.y_ > bounds.p2_.y_) {
-    //         move_rect.y_ = 0;
-    //     }
+        if (move_rect.y_ < 0 || move_rect.y_ > bounds.p2_.y_) {
+            move_rect.y_ = 0;
+        }
 
-    //     sample.p1_ = sample.p1_ + move_rect;
-    //     sample.p2_ = sample.p2_ + move_rect;
+        sample.p1_ = sample.p1_ + move_rect;
+        sample.p2_ = sample.p2_ + move_rect;
 
-    //     if (sample.p1_.x_ < bounds.p1_.x_ ||  bounds.p2_.x_ < sample.p1_.x_) {
-    //         res.p1_.x_ = bounds.p1_.x_;
-    //     }
+        if (sample.p1_.x_ < bounds.p1_.x_ ||  bounds.p2_.x_ < sample.p1_.x_) {
+            res.p1_.x_ = bounds.p1_.x_;
+        }
 
-    //     if (sample.p2_.x_ < bounds.p1_.x_ ||  bounds.p2_.x_ < sample.p2_.x_) {
-    //         res.p2_.x_ = bounds.p2_.x_;
-    //     }
+        if (sample.p2_.x_ < bounds.p1_.x_ ||  bounds.p2_.x_ < sample.p2_.x_) {
+            res.p2_.x_ = bounds.p2_.x_;
+        }
 
-    //     if (sample.p1_.y_ < bounds.p1_.y_ ||  bounds.p2_.y_ < sample.p1_.y_) {
-    //         res.p1_.y_ = bounds.p1_.y_;
-    //     }
+        if (sample.p1_.y_ < bounds.p1_.y_ ||  bounds.p2_.y_ < sample.p1_.y_) {
+            res.p1_.y_ = bounds.p1_.y_;
+        }
 
-    //     if (sample.p2_.y_ < bounds.p1_.y_ ||  bounds.p2_.y_ < sample.p2_.y_) {
-    //         res.p2_.y_ = bounds.p2_.y_;
-    //     }
+        if (sample.p2_.y_ < bounds.p1_.y_ ||  bounds.p2_.y_ < sample.p2_.y_) {
+            res.p2_.y_ = bounds.p2_.y_;
+        }
 
-    //     return res;
-    // }
+        return res;
+    }*/
 
     ~Rect() = default;
     Point point_ = {0, 0}, size_ = {0, 0};

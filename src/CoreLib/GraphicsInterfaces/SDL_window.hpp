@@ -8,40 +8,26 @@
 class Window_ {
 public:
     Window_(int width = 800, int height = 600, int x = SDL_WINDOWPOS_CENTERED, int y = SDL_WINDOWPOS_CENTERED, uint32_t flags = 0) {
-        startGraphicalLib();
         window = SDL_CreateWindow("", x, y, width, height, flags | SDL_WINDOW_OPENGL);
         window_surface = SDL_GetWindowSurface(window);
+        SDL_SetSurfaceBlendMode(window_surface, SDL_BLENDMODE_NONE);
     }
 
-    
-
     SDL_Window*  window;
-    SDL_Surface* window_surface;
-    // SDL_GLContext gContext;
-    
+    SDL_Surface* window_surface;    
     
     ~Window_() {
         SDL_DestroyWindow(window);
     }
 
-    static int startGraphicalLib() {
-        static bool is_called = false;
-        if (is_called) {
-            // SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 2 );
-            // SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
-            SDL_SetHint(SDL_HINT_VIDEO_HIGHDPI_DISABLED, "1");
-            return SDL_Init(SDL_INIT_EVERYTHING);
-        }
-        return 0;
+    void updateWindowSurface() {
+        SDL_UpdateWindowSurface(window);
     }
 
-    static void stopGraphicalLib() {
-        static bool is_called = false;
-        if (is_called) {
-            SDL_Quit();
-        }
-        return;
+    uint32_t getWindowId() {
+        return SDL_GetWindowID(window);
     }
+
     friend class Window;
 };
 

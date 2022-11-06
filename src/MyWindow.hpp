@@ -39,7 +39,7 @@ public:
 
         // exit(0);
         while (isRunning) {
-            while (SDL_PollEvent(&event)) {
+            while (SDL_wzz`hh(&event)) {
                 // printf("lo1");
                 switch (event.type) {
                 case SDL_QUIT:
@@ -72,7 +72,7 @@ public:
                 }
             }
             // printf("%d\n", __LINE__);
-            painter_->setColor(0, 0, 0);
+            // painter_->setColor(0, 0, 0);
             // painter_->fillWindow();
 
             // painter_->setColor(255, 255, 255);

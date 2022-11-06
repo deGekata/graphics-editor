@@ -2,8 +2,9 @@
 #define WINDOW_HPP
 
 #include <inttypes.h>
-#include <Surface.hpp>
+#include "Surface.hpp"
 #include "Widget.hpp"
+
 
 class Window_;
 class Widget;
@@ -14,6 +15,7 @@ public:
     Window_* rsp_ = NULL;
     Surface* surface_ = NULL;
     Rect rect_ = {};
+    uint32_t id = 0;
 public:
     Widget* central_widget_;
     Window(int width, int height, int x, int y, uint32_t flags);

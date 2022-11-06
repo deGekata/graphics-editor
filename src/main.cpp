@@ -2,6 +2,7 @@
 #include "MyWindow.hpp"
 #include <assert.h>
 #include "CoreLib/GraphicsInterfaces/SDL_painter.hpp"
+#include "thread"
 
 int main(__attribute__((unused)) int argv, __attribute__((unused)) char** args) {
     Window::startGraphicalLib();
@@ -10,6 +11,9 @@ int main(__attribute__((unused)) int argv, __attribute__((unused)) char** args) 
     window.setPainter(&painter);
     painter.setWindow(&window);
     window.exec();
+    // while(true) {
+
+    // }
     
 
     Window::stopGraphicalLib();

@@ -1,4 +1,5 @@
 #include "Widget.hpp"
+#include "EventManager.hpp"
 
 Widget::Widget(Rect rect, Point point, Widget* parent) 
     :
@@ -11,6 +12,7 @@ Widget::Widget(Rect rect, Point point, Widget* parent)
     if (parent != nullptr) {
         parent->addChild(this, point);
     }
+    this->event_manager = new EventManager(this);
 }
 
 int Widget::repaint(Painter* painter) {
