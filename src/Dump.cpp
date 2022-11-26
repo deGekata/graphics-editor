@@ -14,7 +14,7 @@ void SaveBitmapToFile( BYTE* pBitmapBits,
  
     unsigned long pixel_data_size = lHeight * ( ( lWidth * ( wBitsPerPixel / 8 ) ) + padding_size );  
        
-    BITMAPINFOHEADER bmpInfoHeader = {0};  
+    BITMAPINFOHEADER bmpInfoHeader = {};  
        
     // Set the size  
     bmpInfoHeader.biSize = sizeof(BITMAPINFOHEADER);  
@@ -43,7 +43,7 @@ void SaveBitmapToFile( BYTE* pBitmapBits,
     // Calculate the image size in bytes  
     bmpInfoHeader.biSizeImage = pixel_data_size;  
        
-    BITMAPFILEHEADER bfh = {0};  
+    BITMAPFILEHEADER bfh = {};  
        
     // This value should be values of BM letters i.e 0x4D42  
     // 0x4D = M 0×42 = B storing in reverse order to match with endian  
@@ -128,7 +128,7 @@ BYTE* LoadBMP ( int* width, int* height, unsigned long* size, LPCTSTR bmpfile )
     }
      
     // check if file is actually a bmp
-    if ( bmpheader.bfType != 'MB' )
+    if ( bmpheader.bfType != 19978/*aka 'MB'*/ )
     {
         CloseHandle ( file );
         return NULL;
@@ -229,7 +229,7 @@ void bmp_dump_tracer(BYTE* data, int width, int height) {
      
     // Use the new array data to create the new bitmap file
     char filename[300];
-    char* dump_dir = "C:\\Users\\Gekata\\Documents\\GitProjects\\graphics-editor\\dump\\";
+    const char* dump_dir = "C:\\Users\\Gekata\\Documents\\GitProjects\\graphics-editor\\dump\\";
     sprintf(filename, "%sLIST_DMP_%d.bmp", dump_dir, dumpNumber);
     SaveBitmapToFile( (BYTE*) &newbuf2[ 0 ],  
                       width,  

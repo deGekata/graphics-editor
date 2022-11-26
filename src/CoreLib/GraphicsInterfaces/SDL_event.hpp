@@ -3,7 +3,7 @@
 
 #include "SDL.h"
 
-enum class KeyboardButton
+enum class KeyboardButton_
 {
     UNKNOWN = SDLK_UNKNOWN,
     RETURN = SDLK_RETURN,

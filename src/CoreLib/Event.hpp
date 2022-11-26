@@ -2,13 +2,16 @@
 #define EVENT_HPP
 
 #include "Utilities.hpp"
+#include "KeyBoardCodes.hpp"
+#include "Mouse.hpp"
 
 enum class EventType {
-    // KEYDOWN,
-    // KEYUP,
-    KEYBOARD,
+    KEYDOWN,
+    KEYUP,
+    // KEYBOARD,
     // TEXTEDITING,
     // TEXTINPUT,
+    QUIT,
     MOUSEMOTION,
     MOUSE_ENTER,
     MOUSE_LEAVE,
@@ -18,11 +21,10 @@ enum class EventType {
     UNKNOWN
 };
 
-
-enum class MouseButton;
-enum class ButtonState;
-enum class KeyboardButton;
-
+enum ButtonState {
+    BUTTON_DOWN = 0,
+    BUTTON_UP   = 1,
+};
 
 struct MouseButtonEvent {
     int32_t x = 0, y = 0;
@@ -32,22 +34,20 @@ struct MouseButtonEvent {
 };
 
 struct MouseMotionEvent {
-    int32_t x = 0, y = 0;
     Point pos = {0, 0};
     Point rel_pos = {0, 0};
 };
 
 struct KeyboardEvent {
     ButtonState state;
-    KeyboardButton button;
+    Keysym key;
 };
-
-class Event_;
 
 class Event {
 private:
-    Event_* rsp_ = NULL;
+    // Event_* rsp_ = NULL;
 public:
+    Event() {}
     EventType type = EventType::UNKNOWN;
     
     union {

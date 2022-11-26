@@ -4,13 +4,15 @@
 #include <inttypes.h>
 #include "Surface.hpp"
 #include "Widget.hpp"
-
+#include "App.hpp"
 
 class Window_;
 class Widget;
+class App;
 
 class Window {
-private:
+protected:
+    App* manager_;
 public:
     Window_* rsp_ = NULL;
     Surface* surface_ = NULL;
@@ -30,6 +32,7 @@ public:
     virtual void exec_() final {}
 
     friend class Painter;
+    friend class App;
 };
 
 

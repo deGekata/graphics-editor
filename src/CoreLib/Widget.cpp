@@ -40,7 +40,7 @@ int Widget::update(Painter* painter) {
     // this->self_surface_.blitToOther(&this->rect_, &this->buff_surface_, &this->rect_);
     
     for (size_t it = 0; it < items.size(); ++it) {
-        std::cout << it << " lol\n";
+        // std::cout << it << " lol\n";
         items[it]->update(painter);
     }
 

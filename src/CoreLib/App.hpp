@@ -1,10 +1,15 @@
 #ifndef APP_HPP
 #define APP_HPP
 
-#include "WindowEventManager.hpp"
+#include "EventManager.hpp"
+#include "Logger.hpp"
+#include <map>
+// #include "WindowEventManager.hpp"
 
 class App_;
 class App;
+class Window;
+class Widget;
 
 class AppDestroyer {
 private:
@@ -18,9 +23,18 @@ class App {
 private:
     App_* rsp_ = NULL;
     static App* app_instance_;
-    std::map<uint32_t, Window*> windows_;
-    Window* cur_window = NULL; //TODO: currently it supports only one window
     static AppDestroyer destroyer;
+    // static EventManager manager;
+    
+    
+    Window* cur_window = NULL; //TODO: currently it supports only one window
+
+    std::map<uint32_t, Window*> windows_;
+    std::map<uint32_t, Widget*> current_active_widgets;
+    
+    Widget* current_text_input = NULL;
+    Widget* central_widget_ = NULL;
+    Widget* current_active_widget_ = NULL;
 
 protected:
     App();//implement constructor
@@ -30,11 +44,17 @@ protected:
 
     friend class AppDestroyer;
 public:
-    int addWindow(Window* window) {
-        //TODO: further it will be windows_.insert({window->id, window});
-        //
-        
-    }
+
+    void linkModalWidget(Widget* widget, uint32_t window_id = 0);
+
+    void unlinkModalWidget();
+
+    bool addWindow(Window* window);
+
+    int exec();
+
+    int pollEvent(Event* event, uint32_t window_id=0);
+
     static App& getInstance();
 };
 

@@ -1,7 +1,7 @@
 #include "SDL_window.hpp"
 
 #include "Window.hpp"
-
+#include "App.hpp"
 
 Window::Window(int width = 800, int height = 600, int x = SDL_WINDOWPOS_CENTERED, int y = SDL_WINDOWPOS_CENTERED, uint32_t flags = 0) 
     :

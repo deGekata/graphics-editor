@@ -5,23 +5,49 @@
 #include "Widget.hpp"
 #include "Event.hpp"
 
-class WindowEventManager;
+// class WindowEventManager;
+class Widget;
 
 class EventManager {
 private:
-    WindowEventManager* dispatcher;
+    // WindowEventManager* dispatcher;
     Widget* objective_;
     EventManager(Widget* objective) {
-        // if (objective == NULL) {
-        //     printError("objective must not be NULL");
-        //     throw;
-        // }
-        // objective_ = objective;
-        // std::cout << "manager_created!!!!";
-        // exit(-1);
+        // UNUSED(objective);
+        myAssert(objective == NULL, "must not be equal to NULL");
+        objective_ = objective;
     }
+
 public:
-    bool processChildren(Event* event);
+    bool processChildren(Event* event) {
+        myAssert(event == NULL, "event must not be NULL");
+        switch(event->type) {
+            case EventType::MOUSEMOTION:{
+                break;
+            }
+            
+            case EventType::MOUSEBUTTONDOWN:{
+                break;
+            }
+
+            case EventType::MOUSEBUTTONUP:{
+                break;
+            }
+
+            // case :{
+            //     break;
+            // }
+
+            // case :{
+            //     break;
+            // }
+
+
+            default:
+                myAssert(false, "unknown event");
+                break;
+        }
+    }
     bool processParent(Event* event);
     Widget* mapPointPos(Point pos);
     friend class Widget;

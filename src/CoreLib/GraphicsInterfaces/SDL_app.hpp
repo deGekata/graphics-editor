@@ -5,7 +5,7 @@
 
 class App_ {
 private:
-int startGraphicalLib() {
+    int startGraphicalLib() {
         static bool is_called = false;
         if (is_called) {
             // SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 2 );
@@ -23,6 +23,14 @@ int startGraphicalLib() {
         }
         return 0;
     }
+
+    int pollEvent(SDL_Event* event) {
+        // SDL_Event event;
+
+        int ret_val = SDL_PollEvent(event);
+        return ret_val;
+    }
+
     App_() {
         startGraphicalLib();
     }
@@ -30,6 +38,8 @@ int startGraphicalLib() {
     ~App_() {
         stopGraphicalLib();
     }
+
+    friend class App;
 
 };
 

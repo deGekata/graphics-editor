@@ -5,6 +5,7 @@
 #include "Painter.hpp"
 #include "Utilities.hpp"
 #include "Surface.hpp"
+// #include "Event.hpp"
 
 #include <vector>
 
@@ -29,6 +30,39 @@ public:
 
     int addChild(Widget* child, Point pos);
 
+    //events region
+
+    virtual int keyPressEvent(Event* event) {
+        std::cout << __PRETTY_FUNCTION__ << "\n";
+        return 0;
+    }
+
+    virtual int keyReleaseEvent(Event* event) {
+        std::cout << __PRETTY_FUNCTION__ << "\n";
+        return 0;
+    }
+
+    virtual int mousePressEvent(Event* event) {
+        std::cout << __PRETTY_FUNCTION__ << "\n";
+        return 0;
+    }
+
+    virtual int mouseReleaseEvent(Event* event) {
+        std::cout << __PRETTY_FUNCTION__ << "\n";
+        return 0;
+    }
+
+    virtual int enterEvent(Event* event) {
+        std::cout << __PRETTY_FUNCTION__ << "\n";
+        return 0;
+    }
+
+    virtual int leaveEvent(Event* event) {
+        std::cout << __PRETTY_FUNCTION__ << "\n";
+        return 0;
+    }
+
+    //end events region 
 
     //positioning region
     Transformation absTransformToParent();
@@ -39,6 +73,7 @@ public:
     //end positioning region
 
     std::vector<Widget*> items;
+
     Widget* parent_ = nullptr;
 
     Rect rect_ = {0, 0};

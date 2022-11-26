@@ -5,6 +5,8 @@
 #include "Vector3D.hpp"
 #include "RayIntersectable.hpp"
 #include <omp.h>
+#include "SDL.h"
+
 
 typedef unsigned char BYTE;
 

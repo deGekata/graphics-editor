@@ -1,0 +1,25 @@
+#ifndef MOUSE_HPP
+#define MOUSE_HPP
+
+#define D_BUTTON(X)       (1 << ((X)-1))
+#define D_BUTTON_LEFT     1
+#define D_BUTTON_MIDDLE   2
+#define D_BUTTON_RIGHT    3
+#define D_BUTTON_X1       4
+#define D_BUTTON_X2       5
+#define D_BUTTON_LMASK    D_BUTTON(D_BUTTON_LEFT)
+#define D_BUTTON_MMASK    D_BUTTON(D_BUTTON_MIDDLE)
+#define D_BUTTON_RMASK    D_BUTTON(D_BUTTON_RIGHT)
+#define D_BUTTON_X1MASK   D_BUTTON(D_BUTTON_X1)
+#define D_BUTTON_X2MASK   D_BUTTON(D_BUTTON_X2)
+
+
+enum MouseButton {
+    BUTTON_LEFT   = D_BUTTON_LEFT  , 
+    BUTTON_MIDDLE = D_BUTTON_MIDDLE, 
+    BUTTON_RIGHT  = D_BUTTON_RIGHT , 
+    BUTTON_X1     = D_BUTTON_X1    , 
+    BUTTON_X2     = D_BUTTON_X2 
+};
+
+#endif

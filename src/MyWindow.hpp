@@ -20,7 +20,8 @@ public:
         bool isRunning = true;
         bool invert_coord = true;
 
-        SDL_Event event; 
+        Event event;
+        // SDL_Event event; 
 
 
 
@@ -39,31 +40,54 @@ public:
 
         // exit(0);
         while (isRunning) {
-            while (SDL_wzz`hh(&event)) {
+            while (manager_->pollEvent(&event) > 0) {
                 // printf("lo1");
                 switch (event.type) {
-                case SDL_QUIT:
+                case EventType::QUIT:
                     isRunning = false;
                     break;
                 
-                case SDL_MOUSEBUTTONDOWN:{
+                case EventType::MOUSEBUTTONUP:{
                     PointF mouse_p;
                     int x, y;
                     Transformation trnsfrm = arrow->absTransformFromParent();
-                    SDL_GetMouseState(&x, &y);
-                    std::cout << "af tranfrom " << trnsfrm * PointF(x, y) << "  \n";
+                    // SDL_GetMouseState(&x, &y);
+                    std::cout << "af tranfrom " << trnsfrm * PointF(event.mouse_button.x, event.mouse_button.y) << "  \n";
+                    std::cout << "bef tranfrom " << PointF(event.mouse_button.x, event.mouse_button.y) << "  \n";
+                    if (event.mouse_button.state == ButtonState::BUTTON_DOWN) {
+                        std::cout << "down\n";
+                    } else {
+                        std::cout << "released\n";
+                    }
                     // arrow->rect_.p2_ = trnsfrm * PointF(x, y);
                     // arrow->rect_.p1_ = -arrow->rect_.p2_;
                     break;
                 }
 
-                case SDL_KEYDOWN:
-                    if (event.key.keysym.sym == SDLK_ESCAPE) {
+                case EventType::MOUSEMOTION:{
+                    
+                                        int x, y;
+                    Transformation trnsfrm = arrow->absTransformFromParent();
+                    // SDL_GetMouseState(&x, &y);
+                    std::cout << "bef tranfrom " <<event.mouse_motion.pos << "  \n";
+                    std::cout << "after delta " << event.mouse_motion.rel_pos << "  \n";
+                    // if (event.mouse_button.state == ButtonState::BUTTON_DOWN) {
+                    //     std::cout << "down\n";
+                    // } else {
+                    //     std::cout << "released\n";
+                    // }
+                    // arrow->rect_.p2_ = trnsfrm * PointF(x, y);
+                    // arrow->rect_.p1_ = -arrow->rect_.p2_;
+                    break;
+                }
+
+                case EventType::KEYUP:
+                    if (event.keyboard.key.sym == K_k) {
                         isRunning = false;
                         break;
                     }
 
-                    if (event.key.keysym.sym == SDLK_CAPSLOCK) {
+                    if (event.keyboard.key.sym == K_CAPSLOCK) {
                         invert_coord = !invert_coord;
                     }
                     break;

@@ -1,5 +1,5 @@
 #include "RayTracerWidget.hpp"
-#include "Dump.h";
+#include "Dump.h"
 
 
 
@@ -18,7 +18,7 @@ RayTracerWidget::RayTracerWidget
     recalc_view_plane_dist();
     size_t max_x = rect.size_.x_;
     size_t max_y = rect.size_.y_;
-    scr_buff_ = (BYTE*) calloc(max_x * max_x * 3, sizeof(char));
+    scr_buff_ = (BYTE*) calloc(max_x * max_y * 3, sizeof(char));
 
     // rect_.p2_.x_ - rect.p1_.x_
     // screen_buffer = new ColorF[(rect_.p2_.x_ - rect.p1_.x_) * (rect_.p2_.y_ - rect.p1_.y_)];
@@ -222,7 +222,7 @@ int RayTracerWidget::repaint_(Painter* painter) {
     size_t max_x = rect_.size_.x_;
     size_t max_y = rect_.size_.y_;
     size_t cur_y = 0;
-    SDL_Event event;
+
     #pragma omp parallel for
     for (cur_y = 0; cur_y < max_y; ++cur_y) {
         size_t cur_x = 0;

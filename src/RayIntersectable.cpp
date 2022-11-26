@@ -33,6 +33,7 @@ Vector3D Plane::get_direction(Vector3D point) {
 }
 
 bool Plane::is_inside(const Vector3D& point) {
+    UNUSED(point);
     return false;
 }
 
@@ -98,6 +99,7 @@ double Triangle::area() {
 }
 
 bool Triangle::is_inside(const Vector3D& point) {
+    UNUSED(point);
     return false;
 }
 
