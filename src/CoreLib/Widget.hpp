@@ -66,10 +66,13 @@ public:
 
     //positioning region
     Transformation absTransformToParent();
-
     Transformation absTransformFromParent();
-
-    PointF absPos(const PointF& pos_in_this);
+    PointF         absPos(const PointF& pos_in_this);
+    Point          mapFromGlobal(Point pos);
+    Point          mapToGlobal(Point pos);
+    Point          mapFromParent(Point pos);
+    Point          mapToParent(Point pos);
+    bool           isInConstraints(Point pos);
     //end positioning region
 
     std::vector<Widget*> items;
@@ -78,7 +81,7 @@ public:
 
     Rect rect_ = {0, 0};
     Rect constraints_ = {0, 0};
-    Point pos_ = {0, 0};
+    Point pos_ = {0, 0}; // position in parent coordinates
     Surface self_surface_;
     Surface buff_surface_;
     // Surface buffer_surface_

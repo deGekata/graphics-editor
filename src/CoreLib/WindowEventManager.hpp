@@ -20,7 +20,7 @@
 //     // Widget* current_active_widget_ = NULL;
 
 //     // void linkModalWidget(Widget* widget, uint32_t window_id = 0) {
-//     //     UNUSED(window_id); // TODO: etot pipec ya kogda nibud sdelau
+//     //     UNUSED(window_id); // TODO etot pipec ya kogda nibud sdelau
 //     //     if (widget == NULL) {
 //     //         printError("modal widget ptr must not be NULL");
 //     //         throw;
@@ -33,7 +33,7 @@
 //     // }
 
 //     // bool addWindow(Window* window) {
-//     //     //TODO: replace further for many windows
+//     //     //TODO replace further for many windows
 //     //     central_widget_ = window->central_widget_;
 //     //     current_active_widget_ = window->central_widget_;
          

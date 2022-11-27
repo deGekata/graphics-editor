@@ -61,3 +61,29 @@ int Widget::addChild(Widget* child, Point pos) {
 }
 
 
+
+
+
+Point Widget::mapFromGlobal(Point pos) {
+    if (this->parent_ == NULL) return pos - this->pos_;
+    return mapFromGlobal(pos) - this->pos_; 
+}
+
+Point Widget::mapToGlobal(Point pos) {
+    if (this->parent_ == NULL) return pos;
+    return parent_->mapToGlobal(pos + this->pos_);
+}
+
+Point Widget::mapFromParent(Point pos) {
+    if (parent_ == NULL) return pos;
+    return pos - this->pos_;
+}
+
+Point Widget::mapToParent(Point pos) {
+    if (this->parent_ == NULL) return pos;
+    return pos + this->pos_;
+}
+
+bool Widget::isInConstraints(Point pos) {
+    return this->constraints_.inRect(pos);
+}

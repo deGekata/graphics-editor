@@ -19,37 +19,9 @@ private:
     }
 
 public:
-    bool processChildren(Event* event) {
-        myAssert(event == NULL, "event must not be NULL");
-        switch(event->type) {
-            case EventType::MOUSEMOTION:{
-                break;
-            }
-            
-            case EventType::MOUSEBUTTONDOWN:{
-                break;
-            }
-
-            case EventType::MOUSEBUTTONUP:{
-                break;
-            }
-
-            // case :{
-            //     break;
-            // }
-
-            // case :{
-            //     break;
-            // }
-
-
-            default:
-                myAssert(false, "unknown event");
-                break;
-        }
-    }
+    bool processChildren(Event* event);
     bool processParent(Event* event);
-    Widget* mapPointPos(Point pos);
+    Widget* mapWidgetFromPos(Point pos);
     friend class Widget;
     // TODO:
 };
