@@ -1,9 +1,11 @@
 #ifndef APP_HPP
 #define APP_HPP
 
-#include "EventManager.hpp"
-#include "Logger.hpp"
+#include "Events/EventManager.hpp"
+#include "Utilities/Logger.hpp"
 #include <map>
+#include <queue>
+
 // #include "WindowEventManager.hpp"
 
 class App_;
@@ -31,10 +33,8 @@ private:
 
     std::map<uint32_t, Window*> windows_;
     std::map<uint32_t, Widget*> current_active_widgets;
-    
-    Widget* current_text_input = NULL;
-    Widget* central_widget_ = NULL;
-    Widget* current_active_widget_ = NULL;
+    std::queue<Event> event_queue;
+
 
 protected:
     App();//implement constructor
@@ -54,6 +54,9 @@ public:
     int exec();
 
     int pollEvent(Event* event, uint32_t window_id=0);
+
+    int pollEvent_(Event* event, uint32_t window_id=0);
+
 
     static App& getInstance();
 };

@@ -1,12 +1,12 @@
 #ifndef RAY_TRACER_WIDGET_HPP
 #define RAY_TRACER_WIDGET_HPP
 
-#include "Widget.hpp"
+#include "CoreLib/Widgets/Widget.hpp"
 #include "Vector3D.hpp"
 #include "RayIntersectable.hpp"
 #include <omp.h>
 #include "SDL.h"
-
+#include "SignalSlots.hpp"
 
 typedef unsigned char BYTE;
 
@@ -17,6 +17,7 @@ typedef unsigned char BYTE;
                 omp_out += omp_in)
 
 #define AMBIENT ColorF(0.09, 0.09, 0.09)
+
 
 class RayTracerWidget : public Widget {
 public:
@@ -38,8 +39,25 @@ public:
     Intersection get_min_intersection_object(const Ray& ray);
     RayIntersectableBasic* get_cur_surrounding(const Vector3D& point);
     std::vector<RayIntersectableBasic*> scene_items;
-
+    Signal<> tmp  = {};
 public:
+    void testfunc();
+    int mouseEnterEvent(Event* event) {
+        std::cout << "tracer enter\n";
+        return 0;
+    }
+
+    int mouseLeaveEvent(Event* event) {
+        std::cout << "tracer out\n";
+        tmp();
+        return 0;
+    }
+
+    int mouseMoveEvent(Event* event) {
+        std::cout << "tracer move\n";
+        return 0;
+    }
+
     void   recalc_view_plane_dist();
     RayTracerWidget(double FOV, 
                     const Rect& rect, 

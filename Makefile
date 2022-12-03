@@ -1,22 +1,29 @@
+rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
+uniq = $(if $1,$(firstword $1) $(call uniq,$(filter-out $(firstword $1),$1)))
+
 # Applicaton options
 APPLICATION = $(notdir $(CURDIR))# Application name is name of root holder
 GXX_STANDARD = 17 # 11, 14, 17, 20
 OUT_FILE_NAME = $(APPLICATION).exe
 
-
 # Get project directory
-CWD := $(subst /,\, $(abspath $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))))
 
 # test:
 # 	$(info    DIR is $(CWD))
-
 # Сompiler options
 CC = g++
-INCLUDE_PATHS = -I $(CWD)\\SDL2\\include -I $(CWD)\\SDL2\\include\\SDL2 -I $(CWD)\\src\\CoreLib\\
+CWD := $(subst /,\\, $(abspath $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))))
+INCLUDE_PATHS := $(call uniq, $(sort $(dir $(call rwildcard,src, *.hpp *.cpp *.h))))
+
+INCLUDE_PATHS := $(subst /,\\,$(dir $(INCLUDE_PATHS)))
+INCLUDE_PATHS += SDL2\\include SDL2\\include\\SDL2 src\\CoreLib\\ 
+INCLUDE_PATHS := $(patsubst %,-I$(CWD)\\\\% ,$(INCLUDE_PATHS)) 
 LIBS_PATHS = -L $(CWD)\\SDL2\\lib
 CXXFLAGS = -Wall -Wextra -std=c++$(GXX_STANDARD) -fopenmp  -lpthread
 CXXFLAGS += -g -lmingw64 -lSDL2main -lSDL2  $(INCLUDE_PATHS) $(LIBS_PATHS)
 LXXFLAGS = -fopenmp -lpthread
+
+
 
 # Debug or Release
 # BUILD = Debug
@@ -32,7 +39,7 @@ ifeq ($(BUILD), Debug)
 	BUILD_PATH = build-debug
 else
 # CXXFLAGS += -O1 -g -fdiagnostics-color=always
-	CXXFLAGS += -O3 -s -g -DNDEBUG 
+	CXXFLAGS += -O0 -s -g -DNDEBUG 
 	BUILD_PATH = build-debug
 endif
 
@@ -43,9 +50,10 @@ SRC = $(filter-out $(EXLUDED),$(notdir $(SRC_FULL_PATH)))
 OBJ = $(addprefix $(BIN_DIR)/, $(SRC:.cpp=.o))
 
 # Include library
-LIB_PATH = $(CWD)\\SDL2\\
+LIB_PATH = $(CWD)\\SDL2\\ 
 LIB_DEPEND = mingw32 SDL2main SDL2 
-CXXFLAGS += $(patsubst %,-I%/include,$(LIB_PATH))
+CXXFLAGS += $(patsubst %,-I%\\include,$(LIB_PATH))
+CXXFLAGS += $(INCLUDE_PATHS)
 LXXFLAGS += $(patsubst %,-L%\\lib,$(LIB_PATH)) $(addprefix -l, $(LIB_DEPEND))
 
 # Сonfiguring file search paths

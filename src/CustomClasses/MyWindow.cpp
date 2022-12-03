@@ -5,30 +5,30 @@
 MyWindow::MyWindow(int width, int height, int x, int y, uint32_t flags) :
     Window(width, height, x, y, flags)
 {
-    scene = new GraphicsScene();
+    // scene = new GraphicsScene();
     
-    rect1 = new GraphicsRectangleItem(PointF(0, 0));
-    rect1->rotation_angle_ = 0.1 * M_PI, rect1->parent_delta_coords_ = {100, 100};
+    // rect1 = new GraphicsRectangleItem(PointF(0, 0));
+    // rect1->rotation_angle_ = 0.1 * M_PI, rect1->parent_delta_coords_ = {100, 100};
 
-    rect2 = new GraphicsRectangleItem(PointF(500, 200));
+    // rect2 = new GraphicsRectangleItem(PointF(500, 200));
 
-    // a не кринж иметь такое:
-    // GraphicsScene scene = new GraphicsScene();
-    // Event::connect((void*)scene, scene->mouseClickEvent, some_random_event_func);
-    //scene->mouseClickEvent это void mouseClickEvent(Event* event)
-    dot_rect = new DottedRectangle (PointF(0, 0));
-    dot_rect->parent_delta_coords_ = {200, 200};
+    // // a не кринж иметь такое:
+    // // GraphicsScene scene = new GraphicsScene();
+    // // Event::connect((void*)scene, scene->mouseClickEvent, some_random_event_func);
+    // //scene->mouseClickEvent это void mouseClickEvent(Event* event)
+    // dot_rect = new DottedRectangle (PointF(0, 0));
+    // dot_rect->parent_delta_coords_ = {200, 200};
 
-    arrow = new GraphicsArrow(PointF(0, 0));
+    // arrow = new GraphicsArrow(PointF(0, 0));
 
-    scene->items.push_back(arrow);
-    scene->items.push_back(rect1);
-    scene->items.push_back(rect2);
-    scene->items.push_back(dot_rect);
+    // scene->items.push_back(arrow);
+    // scene->items.push_back(rect1);
+    // scene->items.push_back(rect2);
+    // scene->items.push_back(dot_rect);
 
-    dot_rect->addChild(arrow, PointF(0, 0));
-    rect1->addChild(rect2, PointF(-200, 100));
-    rect1->addChild(dot_rect, PointF(200, 200));
+    // dot_rect->addChild(arrow, PointF(0, 0));
+    // rect1->addChild(rect2, PointF(-200, 100));
+    // rect1->addChild(dot_rect, PointF(200, 200));
 
 
 

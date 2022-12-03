@@ -1,7 +1,7 @@
 #ifndef GRAPHICS_ARROW_HPP
 #define GRAPHICS_ARROW_HPP
 
-#include "CoreLib\GraphicsGeometryItem.hpp"
+#include "CoreLib/Core/GraphicsGeometryItem.hpp"
 
 
 class GraphicsArrow : public GraphicsGeometryItem {

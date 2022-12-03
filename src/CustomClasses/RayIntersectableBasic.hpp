@@ -1,6 +1,6 @@
 #ifndef RAY_INTERSECTABLE_BASIC_HPP
 #define RAY_INTERSECTABLE_BASIC_HPP
-#include "Vector3D.hpp"
+#include "CoreLib/Utilities/Vector3D.hpp"
 #include "Utilities.hpp"
 #include "Material.h"
 

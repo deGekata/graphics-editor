@@ -1,7 +1,7 @@
 #ifndef RECTANGLE_HPP
 #define RECTANGLE_HPP
 
-#include "GraphicsGeometryItem.hpp"
+#include "CoreLib/Core/GraphicsGeometryItem.hpp"
 
 
 class GraphicsRectangleItem : public GraphicsGeometryItem {

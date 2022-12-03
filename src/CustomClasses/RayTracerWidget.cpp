@@ -1,7 +1,10 @@
 #include "RayTracerWidget.hpp"
 #include "Dump.h"
 
-
+void RayTracerWidget::testfunc() {
+    std::cout << "lolkek";
+    return;
+}
 
 
 RayTracerWidget::RayTracerWidget
@@ -13,13 +16,16 @@ RayTracerWidget::RayTracerWidget
 ):
     Widget(rect, point, parent)
 {
-    if (is_zero(FOV - M_PI)) throw;
+    if (is_zero(FOV - M_PI)) 
+        throw;
     FOV_ = FOV;
     recalc_view_plane_dist();
+    
     size_t max_x = rect.size_.x_;
     size_t max_y = rect.size_.y_;
     scr_buff_ = (BYTE*) calloc(max_x * max_y * 3, sizeof(char));
-
+    ;
+    tmp += METHOD(*this, RayTracerWidget::testfunc);
     // rect_.p2_.x_ - rect.p1_.x_
     // screen_buffer = new ColorF[(rect_.p2_.x_ - rect.p1_.x_) * (rect_.p2_.y_ - rect.p1_.y_)];
 }
@@ -212,7 +218,10 @@ RayIntersectableBasic* RayTracerWidget::get_cur_surrounding(const Vector3D& poin
 }
 
 int RayTracerWidget::update_(Painter* painter) {
-    if (hasChanged_) repaint_(painter);
+    if (hasChanged_) {
+        repaint_(painter);
+        return 1;
+    }
     return 0;
 }
 
@@ -254,7 +263,7 @@ int RayTracerWidget::repaint_(Painter* painter) {
     hasChanged_ = false;
     bmp_dump_tracer(scr_buff_, max_x, max_y);
 
-    return 0;
+    return 1;
 }
 
 
@@ -262,8 +271,3 @@ int RayTracerWidget::repaint_(Painter* painter) {
 // RayTracerWidget::
 // RayTracerWidget::
 // RayTracerWidget::
-
-
-
-
-

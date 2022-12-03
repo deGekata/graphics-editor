@@ -1,12 +1,12 @@
 #ifndef PAINTER_HPP
 #define PAINTER_HPP
 
-#include "Utilities.hpp"
+#include "Utilities/Utilities.hpp"
 // #include "SDL.h"
 #include "Window.hpp"
 // #include "Widget.hpp"
 #include "Surface.hpp"
-#include "Logger.hpp"
+#include "Utilities/Logger.hpp"
 
 
 

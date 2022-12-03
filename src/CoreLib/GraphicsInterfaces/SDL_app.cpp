@@ -1,5 +1,5 @@
 #include "SDL_app.hpp"
-#include "App.hpp"
+#include "Core/App.hpp"
 
 
 App::App() {
@@ -12,17 +12,18 @@ App::~App() {
     delete rsp_;
 }
 
-int App::pollEvent(Event* event, uint32_t window_id) {
+int App::pollEvent_(Event* event, uint32_t window_id) {
     //TODO:`
     UNUSED(window_id);
     if (event == NULL) {
         printError("event ptr must not be NULL");
         throw;
     }
+
     //need to add id for events 
     SDL_Event sdl_event;
     int ret_val = rsp_->pollEvent(&sdl_event);
-    if (ret_val < 0) return ret_val;
+    if (ret_val <= 0) return ret_val;
 
     switch (sdl_event.type) {
     case SDL_MOUSEMOTION:
@@ -54,8 +55,7 @@ int App::pollEvent(Event* event, uint32_t window_id) {
         event->mouse_button.button = (MouseButton) sdl_event.button.button;
         event->mouse_button.clicks = sdl_event.button.clicks;
         event->mouse_button.state = ButtonState::BUTTON_DOWN;
-        event->mouse_button.x = sdl_event.button.x;
-        event->mouse_button.y = sdl_event.button.y;
+        event->mouse_button.pos = { sdl_event.button.x, sdl_event.button.y};
         break;
 
     case SDL_MOUSEBUTTONUP:
@@ -63,8 +63,7 @@ int App::pollEvent(Event* event, uint32_t window_id) {
         event->mouse_button.button = (MouseButton) sdl_event.button.button;
         event->mouse_button.clicks = sdl_event.button.clicks;
         event->mouse_button.state = ButtonState::BUTTON_UP;
-        event->mouse_button.x = sdl_event.button.x;
-        event->mouse_button.y = sdl_event.button.y;
+        event->mouse_button.pos = { sdl_event.button.x, sdl_event.button.y};
         break;
 
     case SDL_MOUSEWHEEL:

@@ -1,7 +1,7 @@
 #ifndef MATERIAL_HPP
 #define MATERIAL_HPP
 
-#include "CoreLib/Utilities.hpp"
+#include "CoreLib/Utilities/Utilities.hpp"
 
 class Material {
 public:

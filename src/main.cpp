@@ -1,13 +1,14 @@
 #include <iostream> 
-#include "MyWindow.hpp"
+#include "CustomClasses/MyWindow.hpp"
 #include <assert.h>
-#include "CoreLib/GraphicsInterfaces/SDL_painter.hpp"
+// #include "CoreLib/GraphicsInterfaces/SDL_painter.hpp"
 #include "thread"
-#include "App.hpp"
+#include "CoreLib/Core/App.hpp"
 
 
 int main(__attribute__((unused)) int argv, __attribute__((unused)) char** args) {
     // Window::startGraphicalLib();
+    int abc[] = {1, 4, 5, 8};
     MyWindow window(800, 800);
     Painter painter(&window);
     window.setPainter(&painter);

@@ -1,9 +1,9 @@
 #ifndef EVENT_MANAGER_HPP
 #define EVENT_MANAGER_HPP
 
-#include "Logger.hpp"
-#include "Widget.hpp"
-#include "Event.hpp"
+#include "Utilities/Logger.hpp"
+#include "Widgets/Widget.hpp"
+#include "Events/Event.hpp"
 
 // class WindowEventManager;
 class Widget;
@@ -19,8 +19,10 @@ private:
     }
 
 public:
-    bool processChildren(Event* event);
-    bool processParent(Event* event);
+    virtual bool processChildrenEvent(Event* event);
+    virtual bool processSelfEvent    (Event* event);
+    virtual bool processEvent        (Event* event);
+
     Widget* mapWidgetFromPos(Point pos);
     friend class Widget;
     // TODO:

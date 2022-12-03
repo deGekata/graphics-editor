@@ -5,10 +5,10 @@
 #include "Painter.hpp"
 #include "Utilities.hpp"
 #include "Surface.hpp"
-// #include "Event.hpp"
+// #include "Events/Events.hpp"
 
 #include <vector>
-
+#include "Modificators/abc.hpp"
 //widget can be drawn
 class Painter;
 class EventManager;
@@ -19,10 +19,10 @@ public:
     bool hasChanged_ = true;
     EventManager* event_manager = NULL;
 
-    virtual int repaint_(Painter* painter) { UNUSED(painter); return 1;};
+    virtual int repaint_(Painter* painter) { UNUSED(painter); return 0;};
     virtual int repaint(Painter* painter) final;
 
-    virtual int update_(Painter* painter) { UNUSED(painter); return 1;};
+    virtual int update_(Painter* painter) { UNUSED(painter); return 0;};
     virtual int update(Painter* painter) final;
 public:
     Widget(Rect rect, Point point, Widget* parent=nullptr);
@@ -32,35 +32,19 @@ public:
 
     //events region
 
-    virtual int keyPressEvent(Event* event) {
-        std::cout << __PRETTY_FUNCTION__ << "\n";
-        return 0;
-    }
+    virtual int keyPressEvent(Event* event);
 
-    virtual int keyReleaseEvent(Event* event) {
-        std::cout << __PRETTY_FUNCTION__ << "\n";
-        return 0;
-    }
+    virtual int keyReleaseEvent(Event* event);
 
-    virtual int mousePressEvent(Event* event) {
-        std::cout << __PRETTY_FUNCTION__ << "\n";
-        return 0;
-    }
+    virtual int mousePressEvent(Event* event);
 
-    virtual int mouseReleaseEvent(Event* event) {
-        std::cout << __PRETTY_FUNCTION__ << "\n";
-        return 0;
-    }
+    virtual int mouseReleaseEvent(Event* event);
 
-    virtual int enterEvent(Event* event) {
-        std::cout << __PRETTY_FUNCTION__ << "\n";
-        return 0;
-    }
+    virtual int mouseMoveEvent(Event* event);
 
-    virtual int leaveEvent(Event* event) {
-        std::cout << __PRETTY_FUNCTION__ << "\n";
-        return 0;
-    }
+    virtual int mouseEnterEvent(Event* event);
+
+    virtual int mouseLeaveEvent(Event* event);
 
     //end events region 
 

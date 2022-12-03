@@ -24,11 +24,13 @@ void App::linkModalWidget(Widget* widget, uint32_t window_id) {
         printError("modal widget ptr must not be NULL");
         throw;
     }
-    current_active_widget_ = widget;
+    // current_active_widget_ = widget;
+    //FIX:
 }
 
 void App::unlinkModalWidget() {
-    this->current_active_widget_ = central_widget_;
+    //FIX:
+    // this->current_active_widget_ = central_widget_;
 }
 
 bool App::addWindow(Window* window) {
@@ -40,13 +42,35 @@ bool App::addWindow(Window* window) {
     //TODO: further it will be windows_.insert({window->id, window});
     //
     cur_window = window;
-    central_widget_ = window->central_widget_;
-    current_active_widget_ = window->central_widget_;
+    //FIX:
+    // central_widget_ = window->central_widget_;
+    // current_active_widget_ = window->central_widget_;
     window->manager_ = this;
     return true;
 }
 
 int App::exec() {
-    cur_window->exec();
+    while(true) {
+        cur_window->update();
+        cur_window->processEvents();
+        cur_window->present();
+    }
+
     return 0;
+}
+
+int App::pollEvent(Event* event, uint32_t window_id) {
+    if (event == NULL) return -1;
+
+    if (!event_queue.empty()) {
+        *event = event_queue.front();
+        event_queue.pop();
+        return 1;
+    }
+
+    int res = pollEvent_(event, window_id);
+    if (res > 0 && event->type == EventType::MOUSEMOTION) {
+        
+    }
+    return res;
 }

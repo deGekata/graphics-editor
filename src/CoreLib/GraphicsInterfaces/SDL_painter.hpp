@@ -1,7 +1,7 @@
 #ifndef GRAPHICS_INTERFACES_SLD_PAINTER_HPP
 #define GRAPHICS_INTERFACES_SLD_PAINTER_HPP
 
-#include "Utilities.hpp"
+#include "Utilities/Utilities.hpp"
 #include "SDL.h"
 #include "SDL_window.hpp"
 #include "SDL_surface.hpp"

@@ -1,7 +1,7 @@
 #ifndef DOTTED_RECTANGLE_HPP
 #define DOTTED_RECTANGLE_HPP
 
-#include "GraphicsGeometryItem.hpp"
+#include "CoreLib/Core/GraphicsGeometryItem.hpp"
 
 
 class DottedRectangle : public GraphicsGeometryItem {

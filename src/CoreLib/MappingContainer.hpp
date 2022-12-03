@@ -1,5 +1,0 @@
-#ifndef MAPPING_CONTAINER_HPP
-#define MAPPING_CONTAINER_HPP
-
-
-#endif

@@ -1,7 +1,7 @@
 #include "SDL_painter.hpp"
 
-#include "Painter.hpp"
-#include "Widget.hpp"
+#include "Core/Painter.hpp"
+#include "Widgets/Widget.hpp"
 
 
 Painter::Painter(Window* window) {

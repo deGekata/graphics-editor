@@ -3,7 +3,7 @@
 
 #include <inttypes.h>
 #include "Surface.hpp"
-#include "Widget.hpp"
+#include "Widgets/Widget.hpp"
 #include "App.hpp"
 
 class Window_;
@@ -19,17 +19,17 @@ public:
     Rect rect_ = {};
     uint32_t id = 0;
 public:
-    Widget* central_widget_;
+    Widget* central_widget_        = NULL;
+    Widget* current_text_input     = NULL;
+    Widget* current_active_widget_ = NULL;
     Window(int width, int height, int x, int y, uint32_t flags);
 
     ~Window();
     void present();
-    static int startGraphicalLib();
-
-    static void stopGraphicalLib();
-
-    virtual void exec() {}
-    virtual void exec_() final {}
+    virtual void update()        {}
+    virtual void exec()          {}
+    virtual void exec_() final   {}
+    virtual void processEvents();
 
     friend class Painter;
     friend class App;

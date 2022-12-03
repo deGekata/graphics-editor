@@ -1,7 +1,7 @@
 #ifndef EVENT_HPP
 #define EVENT_HPP
 
-#include "Utilities.hpp"
+#include "Utilities/Utilities.hpp"
 #include "KeyBoardCodes.hpp"
 #include "Mouse.hpp"
 
@@ -27,7 +27,7 @@ enum ButtonState {
 };
 
 struct MouseButtonEvent {
-    int32_t x = 0, y = 0;
+    Point pos = {0, 0};
     uint8_t clicks = 0;
     MouseButton button;
     ButtonState state;
@@ -59,4 +59,5 @@ public:
     // static void connect()
 };
 
+bool is_for_text_input(int sym);
 #endif

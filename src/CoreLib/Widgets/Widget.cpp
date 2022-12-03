@@ -1,5 +1,5 @@
 #include "Widget.hpp"
-#include "EventManager.hpp"
+#include "Events/EventManager.hpp"
 
 Widget::Widget(Rect rect, Point point, Widget* parent) 
     :
@@ -9,6 +9,7 @@ Widget::Widget(Rect rect, Point point, Widget* parent)
 {
     rect_ = rect;
     pos_ = point;
+    constraints_ = rect_;
     if (parent != nullptr) {
         parent->addChild(this, point);
     }
@@ -34,39 +35,42 @@ int Widget::update(Painter* painter) {
         return 1;
     }
 
-    this->update_(painter);
+    bool need_to_blit = this->update_(painter);
     
-    this->self_surface_.blitToOther(NULL, &this->buff_surface_, NULL);
     // this->self_surface_.blitToOther(&this->rect_, &this->buff_surface_, &this->rect_);
-    
+    bool need_to_blit_child = false;
     for (size_t it = 0; it < items.size(); ++it) {
         // std::cout << it << " lol\n";
-        items[it]->update(painter);
+        bool res = items[it]->update(painter);
+        need_to_blit_child = need_to_blit_child || res;
     }
 
-    for (size_t it = 0; it < items.size(); ++it) {
-        items[it]->buff_surface_.blitToOther(&items[it]->rect_, &this->buff_surface_, &this->rect_);
+    if (need_to_blit_child || need_to_blit) {
+        this->self_surface_.blitToOther(NULL, &this->buff_surface_, NULL);
+
+        for (size_t it = 0; it < items.size(); ++it) {
+            // items[it]->buff_surface_.blitToOther(&items[it]->rect_, &this->buff_surface_, &this->rect_);
+            Rect dest_rect = {items[it]->pos_, {0, 0}};
+            items[it]->buff_surface_.blitToOther(NULL, &this->buff_surface_,  &dest_rect);
+        }
     }
 
-    return 0;
+    return need_to_blit || need_to_blit_child;
 }
 
 int Widget::addChild(Widget* child, Point pos) {
     if (child == nullptr) return 1;
-    // child->rect_ = RectF::min_rect(rect_, child->rect_, pos);
-    child->rect_.point_ = pos;
+    child->pos_ = pos;
+    std::cout << pos << "poos\n";
+    // child->rect_.point_ = pos;
     items.push_back(child);
     child->parent_ = this;
     return 0;
 }
 
-
-
-
-
 Point Widget::mapFromGlobal(Point pos) {
     if (this->parent_ == NULL) return pos - this->pos_;
-    return mapFromGlobal(pos) - this->pos_; 
+    return parent_->mapFromGlobal(pos) - this->pos_; 
 }
 
 Point Widget::mapToGlobal(Point pos) {
@@ -86,4 +90,46 @@ Point Widget::mapToParent(Point pos) {
 
 bool Widget::isInConstraints(Point pos) {
     return this->constraints_.inRect(pos);
+}
+
+
+
+
+
+
+
+
+int Widget::keyPressEvent(Event* event) {
+    std::cout << __PRETTY_FUNCTION__ << "\n";
+    return 0;
+}
+
+int Widget::keyReleaseEvent(Event* event) {
+    std::cout << __PRETTY_FUNCTION__ << "\n";
+    return 0;
+}
+
+int Widget::mousePressEvent(Event* event) {
+    std::cout << __PRETTY_FUNCTION__ << "\n";
+    return 0;
+}
+
+int Widget::mouseReleaseEvent(Event* event) {
+    std::cout << __PRETTY_FUNCTION__ << "\n";
+    return 0;
+}
+
+int Widget::mouseMoveEvent(Event* event) {
+    // std::cout << __PRETTY_FUNCTION__ << "\n";
+    return 0;
+}
+
+int Widget::mouseEnterEvent(Event* event) {
+    std::cout << __PRETTY_FUNCTION__ << "\n";
+    return 0;
+}
+
+int Widget::mouseLeaveEvent(Event* event) {
+    std::cout << __PRETTY_FUNCTION__ << "\n";
+    return 0;
 }

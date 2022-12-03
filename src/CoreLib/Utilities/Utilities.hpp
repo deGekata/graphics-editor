@@ -180,10 +180,10 @@ public:
     }
 
     bool inRect(Point point) {
-        if (point_.x_ <= point.x_ && 
-            point_.y_ <= point.y_ && 
-            (point_.x_ + size_.x_) >= point.x_ && 
-            (point_.y_ + size_.y_) >= point.y_) 
+        if (this->point_.x_ <= point.x_ && 
+            this->point_.y_ <= point.y_ && 
+            (this->point_.x_ + size_.x_) >= point.x_ && 
+            (this->point_.y_ + size_.y_) >= point.y_) 
         {
             return true;
         }
