@@ -12,6 +12,7 @@ class Surface_ {
 private:
     SDL_Surface* surface_ = NULL;
     SDL_Rect clip_rect_;
+    
 public:
     
     Surface_(int width, int height) {
@@ -30,7 +31,14 @@ public:
     Surface_(SDL_Surface* other) {
         this->surface_ = other;
     }
-    
+
+    int height() {
+        return surface_->h;
+    }
+
+    int width() {
+        return surface_->w;
+    }
     
     int blitToOther(SDL_Rect* src_rect, Surface_* dest, SDL_Rect* dest_rect) {
         return SDL_BlitSurface(this->surface_, src_rect, dest->surface_, dest_rect);

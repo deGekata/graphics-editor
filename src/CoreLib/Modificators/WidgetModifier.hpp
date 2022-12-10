@@ -1,33 +1,27 @@
-#ifndef WIDGET_HPP
-#define WIDGET_HPP
+#ifndef WIDGET_MODIFIER_HPP
+#define WIDGET_MODIFIER_HPP
 
 #include "BasicObject.hpp"
 #include "Painter.hpp"
 #include "Utilities.hpp"
 #include "Surface.hpp"
-// #include "Events/Events.hpp"
 
-#include <vector>
 //widget can be drawn
 class Painter;
-class EventManager;
-class WidgetModifier;
 
-class Widget : public BasicObject {
+class WidgetModifier : public BasicObject {
 private:
 public:
     bool hasChanged_ = true;
-    EventManager* event_manager = NULL;
 
-    virtual int repaint_(Painter* painter) { UNUSED(painter); return 0;};
-    virtual int repaint(Painter* painter);
+    virtual int repaint_(Painter* painter) { UNUSED(painter); return 0;}
+    virtual int repaint(Painter* painter) final;
 
     virtual int update_(Painter* painter) { UNUSED(painter); return 0;};
-    virtual int update(Painter* painter);
-public:
-    Widget(Rect rect, Point point, Widget* parent=nullptr);
+    virtual int update(Painter* painter) final;
 
-    int addChild(Widget* child, Point pos);
+public:
+    WidgetModifier(Rect rect, Point point);
 
     //events region
 
@@ -58,10 +52,8 @@ public:
     bool           isInConstraints(Point pos);
     //end positioning region
 
-    std::vector<Widget*> items;
-
-    Widget* parent_ = nullptr;
-    WidgetModifier* top_modifier_ = nullptr;    
+    WidgetModifier* child_ = nullptr;
+    WidgetModifier* parent = nullptr;
 
     Rect rect_ = {0, 0};
     Rect constraints_ = {0, 0};
