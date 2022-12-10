@@ -100,36 +100,43 @@ bool Widget::isInConstraints(Point pos) {
 
 
 int Widget::keyPressEvent(Event* event) {
+    (void)event;
     std::cout << __PRETTY_FUNCTION__ << "\n";
     return 0;
 }
 
 int Widget::keyReleaseEvent(Event* event) {
+    (void)event;
     std::cout << __PRETTY_FUNCTION__ << "\n";
     return 0;
 }
 
 int Widget::mousePressEvent(Event* event) {
+    (void)event;
     std::cout << __PRETTY_FUNCTION__ << "\n";
     return 0;
 }
 
 int Widget::mouseReleaseEvent(Event* event) {
+    (void)event;
     std::cout << __PRETTY_FUNCTION__ << "\n";
     return 0;
 }
 
 int Widget::mouseMoveEvent(Event* event) {
+    (void)event;
     // std::cout << __PRETTY_FUNCTION__ << "\n";
     return 0;
 }
 
 int Widget::mouseEnterEvent(Event* event) {
+    (void)event;
     std::cout << __PRETTY_FUNCTION__ << "\n";
     return 0;
 }
 
 int Widget::mouseLeaveEvent(Event* event) {
+    (void)event;
     std::cout << __PRETTY_FUNCTION__ << "\n";
     return 0;
 }

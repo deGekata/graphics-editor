@@ -16,6 +16,7 @@ Surface::~Surface() {
 }
 
 int Surface::blitToOther(Rect* src_rect, Surface* dest_surface, Rect* dest_rect) {
+    (void)src_rect;
     if (dest_rect == NULL) {
         return rsp_->blitToOther(NULL, dest_surface->rsp_, NULL);
     }

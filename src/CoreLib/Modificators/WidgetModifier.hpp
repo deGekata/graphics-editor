@@ -8,6 +8,7 @@
 
 //widget can be drawn
 class Painter;
+class Widget;
 
 class WidgetModifier : public BasicObject {
 private:
@@ -15,10 +16,10 @@ public:
     bool hasChanged_ = true;
 
     virtual int repaint_(Painter* painter) { UNUSED(painter); return 0;}
-    virtual int repaint(Painter* painter) final;
+    virtual int repaint(Painter* painter);
 
     virtual int update_(Painter* painter) { UNUSED(painter); return 0;};
-    virtual int update(Painter* painter) final;
+    virtual int update(Painter* painter);
 
 public:
     WidgetModifier(Rect rect, Point point);
@@ -54,6 +55,7 @@ public:
 
     WidgetModifier* child_ = nullptr;
     WidgetModifier* parent = nullptr;
+    Widget* target_widget_ = nullptr;
 
     Rect rect_ = {0, 0};
     Rect constraints_ = {0, 0};
@@ -62,6 +64,7 @@ public:
     Surface buff_surface_;
     // Surface buffer_surface_
     friend class Painter;
+    friend class Widget;
 
 };
 

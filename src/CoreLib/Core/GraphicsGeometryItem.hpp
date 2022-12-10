@@ -2,7 +2,7 @@
 #define GRAPHICS_GEOMETRY_ITEM_HPP
 
 #include "GraphicsItem.hpp"
-#include "Utilities/Utilities.hpp""
+#include "Utilities/Utilities.hpp"
 //CRINGE
 class GraphicsGeometryItem : public GraphicsItem {
 public:

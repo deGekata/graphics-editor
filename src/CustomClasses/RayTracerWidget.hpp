@@ -43,17 +43,20 @@ public:
 public:
     void testfunc();
     int mouseEnterEvent(Event* event) {
+        (void)event;
         std::cout << "tracer enter\n";
         return 0;
     }
 
     int mouseLeaveEvent(Event* event) {
+        (void)event;
         std::cout << "tracer out\n";
         tmp();
         return 0;
     }
 
     int mouseMoveEvent(Event* event) {
+        (void)event;
         std::cout << "tracer move\n";
         return 0;
     }

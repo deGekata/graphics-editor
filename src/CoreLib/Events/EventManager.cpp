@@ -11,6 +11,7 @@ bool EventManager::processEvent(Event* event) {
 }
 
 bool  EventManager::processSelfEvent(Event* event) {
+    (void)event;
     return false;
 }
 

@@ -4,5 +4,5 @@
 
 
 bool is_for_text_input(int sym) {
-    return isprint(sym) || sym == Keycode::K_DELETE || Keycode::K_ESCAPE;
+    return isprint(sym) || sym == Keycode::K_DELETE || sym == Keycode::K_ESCAPE;
 }
