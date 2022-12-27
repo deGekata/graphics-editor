@@ -22,8 +22,8 @@ INCLUDE_PATHS += SDL2\\include SDL2\\include\\SDL2 src\\CoreLib\\
 INCLUDE_PATHS := $(patsubst %,-I$(CWD)\\\\% ,$(INCLUDE_PATHS)) 
 LIBS_PATHS = -L $(CWD)\\SDL2\\lib
 CXXFLAGS = -Wall -Wextra -std=c++$(GXX_STANDARD) -fopenmp  -lpthread
-CXXFLAGS += -g -lmingw64 -lSDL2main -lSDL2  $(INCLUDE_PATHS) $(LIBS_PATHS)
-LXXFLAGS = -fopenmp -lpthread
+CXXFLAGS += -g -lmingw64 -lSDL2main -lSDL2 -lSDL2_ttf $(INCLUDE_PATHS) $(LIBS_PATHS)
+LXXFLAGS = -fopenmp -lpthread -lSDL2_ttf
 
 
 

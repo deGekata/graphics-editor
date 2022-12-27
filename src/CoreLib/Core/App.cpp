@@ -50,10 +50,21 @@ bool App::addWindow(Window* window) {
 }
 
 int App::exec() {
+    // int frames  = 0;
+    // clock_t start = clock();
     while(true) {
+        // if (frames == 10000) {
+        //     clock_t end = clock() - start;
+        //     std::cout << "fps: " << 10000 / (float(end) / CLOCKS_PER_SEC) << "\n";
+        //     start = clock();
+        //     frames = 0;
+        // }
+        //FIX:
         cur_window->update();
         cur_window->processEvents();
         cur_window->present();
+        // frames++;
+        // std::cout << "current frames" << frames << "\n";
     }
 
     return 0;

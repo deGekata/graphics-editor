@@ -7,7 +7,7 @@
 // #include "Widget.hpp"
 #include "Surface.hpp"
 #include "Utilities/Logger.hpp"
-
+#include "string"
 
 
 class Painter_;
@@ -47,15 +47,27 @@ public:
 
     int drawLine(int x1, int y1, int x2, int y2);
     
+    int drawRect(int x, int y, int width, int height);
+
+    int drawRect(PointF p1, PointF p2);
+
+    int drawRectFill(int x, int y, int width, int height);
+
+    int drawFillCircle(int x, int y, int radius);
+
+    int drawRectFill(PointF p1, PointF p2);
+
     int drawPoint(PointF p1);
 
     int drawPoint(int x, int y);
 
     int drawPointBounded(int x, int y);
     
+    int drawCircleFill(int cx, int cy, int radius);
 
+    int drawText(std::string& text, int x, int y, size_t size, const ColorF& color, std::string fontName);
 };
 
-
+int createTextSurface(const std::string& text, size_t size, const ColorF& color, const std::string fontName);
 
 #endif

@@ -1,6 +1,8 @@
 #include "RayTracerWidget.hpp"
 #include "Dump.h"
 
+int RayTracerWidget::id = 0;
+
 void RayTracerWidget::testfunc() {
     std::cout << "lolkek";
     return;
@@ -26,6 +28,8 @@ RayTracerWidget::RayTracerWidget
     scr_buff_ = (BYTE*) calloc(max_x * max_y * 3, sizeof(char));
     ;
     tmp += METHOD(*this, RayTracerWidget::testfunc);
+    id_ = id;
+    id++;
     // rect_.p2_.x_ - rect.p1_.x_
     // screen_buffer = new ColorF[(rect_.p2_.x_ - rect.p1_.x_) * (rect_.p2_.y_ - rect.p1_.y_)];
 }
@@ -238,6 +242,7 @@ int RayTracerWidget::repaint_(Painter* painter) {
         #pragma omp parallel for
         for (cur_x = 0; cur_x < max_x; ++cur_x) {
             ColorF color = trace_ray(calc_ray_direction(cur_x, cur_y), 0);
+            color.a_ = 1.0;
             #pragma omp critical 
             {
                 painter->setColor(color);

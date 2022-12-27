@@ -31,4 +31,9 @@ int Surface::blitToOther(Rect* src_rect, Surface* dest_surface, Rect* dest_rect)
     // return rsp_->blitToOther(&src_rect_, dest_surface->rsp_, &dest_rect_);
 }
 
+int Surface::clear() {
+    return rsp_->clear();
+    // return rsp_->blitToOther(&src_rect_, dest_surface->rsp_, &dest_rect_);
+}
+
 

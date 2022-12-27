@@ -10,6 +10,7 @@
 #include "DottedRectangle.hpp"
 #include "Arrow.hpp"
 #include "RayTracerWidget.hpp"
+#include "HoverModifier.hpp"
 
 class MyWindow : public Window {
 public:

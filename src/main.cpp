@@ -6,7 +6,7 @@
 
 int main(__attribute__((unused)) int argv, __attribute__((unused)) char** args) {
     // Window::startGraphicalLib();
-    MyWindow window(800, 800);
+    MyWindow window(800, 800, 750, 10);
     Painter painter(&window);
     window.setPainter(&painter);
     painter.setWindow(&window);

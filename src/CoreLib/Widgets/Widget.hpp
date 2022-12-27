@@ -8,12 +8,13 @@
 // #include "Events/Events.hpp"
 
 #include <vector>
+#include <list>
 //widget can be drawn
 class Painter;
 class EventManager;
 class WidgetModifier;
-
-class Widget : public BasicObject {
+class ModifierList;
+class Widget {
 private:
 public:
     bool hasChanged_ = true;
@@ -24,12 +25,17 @@ public:
 
     virtual int update_(Painter* painter) { UNUSED(painter); return 0;};
     virtual int update(Painter* painter);
+    Widget(Rect rect, Point point, EventManager* manager, Widget* parent);
 public:
     Widget(Rect rect, Point point, Widget* parent=nullptr);
 
-    int addChild(Widget* child, Point pos);
+    Surface* getBuffSurface();
 
+    int addChild(Widget* child, Point pos);
+    int modify(WidgetModifier* modifier);
     //events region
+
+    virtual int processSelfEvent(Event* event);
 
     virtual int keyPressEvent(Event* event);
 
@@ -55,18 +61,22 @@ public:
     Point          mapToGlobal(Point pos);
     Point          mapFromParent(Point pos);
     Point          mapToParent(Point pos);
+    Point          mapProcessModifiers(Point pos);
+    Point          mapRevertModifiers(Point pos);
+    Point          getPos();
+    Rect           getRectModified();
     bool           isInConstraints(Point pos);
     //end positioning region
 
     std::vector<Widget*> items;
 
     Widget* parent_ = nullptr;
-    WidgetModifier* top_modifier_ = nullptr;    
-
+    
+    ModifierList* modifier_list_ = nullptr;
     Rect rect_ = {0, 0};
     Rect constraints_ = {0, 0};
     Point pos_ = {0, 0}; // position in parent coordinates
-    Surface self_surface_;
+    Surface self_surface_; 
     Surface buff_surface_;
     // Surface buffer_surface_
     friend class Painter;
@@ -75,3 +85,7 @@ public:
 
 
 #endif
+
+
+
+

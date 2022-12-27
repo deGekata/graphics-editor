@@ -1,0 +1,364 @@
+{
+    "extension": "linecounter",
+    "version": "0.2.7",
+    "workspace": "c:\\Users\\Gekata\\Desktop\\GitProjects\\graphics-editor\\src",
+    "linecount": [
+        {
+            "version": "0.2.7",
+            "counttime": "2022-12-18 20:01:55",
+            "filesum": 55,
+            "codesum": 4029,
+            "commentsum": 594,
+            "blanksum": 1165,
+            "statistics": {
+                ".cpp": {
+                    "code": 1449,
+                    "comment": 360,
+                    "blank": 439
+                },
+                ".hpp": {
+                    "code": 2528,
+                    "comment": 231,
+                    "blank": 712
+                },
+                ".h": {
+                    "code": 52,
+                    "comment": 3,
+                    "blank": 14
+                }
+            },
+            "filelist": [
+                {
+                    "blank": 12,
+                    "code": 54,
+                    "comment": 22,
+                    "filename": "CoreLib\\Core\\App.cpp"
+                },
+                {
+                    "blank": 20,
+                    "code": 42,
+                    "comment": 5,
+                    "filename": "CoreLib\\Core\\App.hpp"
+                },
+                {
+                    "blank": 9,
+                    "code": 11,
+                    "comment": 2,
+                    "filename": "CoreLib\\Core\\GraphicsGeometryItem.hpp"
+                },
+                {
+                    "blank": 15,
+                    "code": 35,
+                    "comment": 5,
+                    "filename": "CoreLib\\Core\\GraphicsItem.hpp"
+                },
+                {
+                    "blank": 8,
+                    "code": 17,
+                    "comment": 2,
+                    "filename": "CoreLib\\Core\\GraphicsScene.hpp"
+                },
+                {
+                    "blank": 29,
+                    "code": 38,
+                    "comment": 2,
+                    "filename": "CoreLib\\Core\\Painter.hpp"
+                },
+                {
+                    "blank": 22,
+                    "code": 92,
+                    "comment": 0,
+                    "filename": "CoreLib\\Core\\SignalSlots.hpp"
+                },
+                {
+                    "blank": 4,
+                    "code": 18,
+                    "comment": 1,
+                    "filename": "CoreLib\\Core\\Surface.hpp"
+                },
+                {
+                    "blank": 7,
+                    "code": 32,
+                    "comment": 0,
+                    "filename": "CoreLib\\Core\\Window.hpp"
+                },
+                {
+                    "blank": 4,
+                    "code": 4,
+                    "comment": 0,
+                    "filename": "CoreLib\\Events\\Event.cpp"
+                },
+                {
+                    "blank": 10,
+                    "code": 55,
+                    "comment": 5,
+                    "filename": "CoreLib\\Events\\Event.hpp"
+                },
+                {
+                    "blank": 26,
+                    "code": 114,
+                    "comment": 11,
+                    "filename": "CoreLib\\Events\\EventManager.cpp"
+                },
+                {
+                    "blank": 8,
+                    "code": 28,
+                    "comment": 3,
+                    "filename": "CoreLib\\Events\\EventManager.hpp"
+                },
+                {
+                    "blank": 26,
+                    "code": 291,
+                    "comment": 1,
+                    "filename": "CoreLib\\Events\\KeyBoardCodes.hpp"
+                },
+                {
+                    "blank": 4,
+                    "code": 21,
+                    "comment": 0,
+                    "filename": "CoreLib\\Events\\Mouse.hpp"
+                },
+                {
+                    "blank": 23,
+                    "code": 253,
+                    "comment": 0,
+                    "filename": "CoreLib\\Events\\Scancode.hpp"
+                },
+                {
+                    "blank": 16,
+                    "code": 63,
+                    "comment": 4,
+                    "filename": "CoreLib\\GraphicsInterfaces\\SDL_app.cpp"
+                },
+                {
+                    "blank": 11,
+                    "code": 33,
+                    "comment": 3,
+                    "filename": "CoreLib\\GraphicsInterfaces\\SDL_app.hpp"
+                },
+                {
+                    "blank": 5,
+                    "code": 251,
+                    "comment": 0,
+                    "filename": "CoreLib\\GraphicsInterfaces\\SDL_event.hpp"
+                },
+                {
+                    "blank": 21,
+                    "code": 68,
+                    "comment": 1,
+                    "filename": "CoreLib\\GraphicsInterfaces\\SDL_painter.cpp"
+                },
+                {
+                    "blank": 26,
+                    "code": 100,
+                    "comment": 2,
+                    "filename": "CoreLib\\GraphicsInterfaces\\SDL_painter.hpp"
+                },
+                {
+                    "blank": 8,
+                    "code": 20,
+                    "comment": 6,
+                    "filename": "CoreLib\\GraphicsInterfaces\\SDL_surface.cpp"
+                },
+                {
+                    "blank": 16,
+                    "code": 44,
+                    "comment": 2,
+                    "filename": "CoreLib\\GraphicsInterfaces\\SDL_surface.hpp"
+                },
+                {
+                    "blank": 22,
+                    "code": 82,
+                    "comment": 6,
+                    "filename": "CoreLib\\GraphicsInterfaces\\SDL_window.cpp"
+                },
+                {
+                    "blank": 8,
+                    "code": 27,
+                    "comment": 0,
+                    "filename": "CoreLib\\GraphicsInterfaces\\SDL_window.hpp"
+                },
+                {
+                    "blank": 7,
+                    "code": 29,
+                    "comment": 1,
+                    "filename": "CoreLib\\Modificators\\BorderModifier.hpp"
+                },
+                {
+                    "blank": 34,
+                    "code": 134,
+                    "comment": 46,
+                    "filename": "CoreLib\\Modificators\\ModifierEventManager.cpp"
+                },
+                {
+                    "blank": 6,
+                    "code": 17,
+                    "comment": 2,
+                    "filename": "CoreLib\\Modificators\\ModifierEventManager.hpp"
+                },
+                {
+                    "blank": 28,
+                    "code": 110,
+                    "comment": 14,
+                    "filename": "CoreLib\\Modificators\\WidgetModifier.cpp"
+                },
+                {
+                    "blank": 25,
+                    "code": 63,
+                    "comment": 12,
+                    "filename": "CoreLib\\Modificators\\WidgetModifier.hpp"
+                },
+                {
+                    "blank": 129,
+                    "code": 330,
+                    "comment": 10,
+                    "filename": "CoreLib\\Utilities\\_MY_VECTOR_res_.hpp"
+                },
+                {
+                    "blank": 8,
+                    "code": 14,
+                    "comment": 0,
+                    "filename": "CoreLib\\Utilities\\Logger.hpp"
+                },
+                {
+                    "blank": 14,
+                    "code": 41,
+                    "comment": 0,
+                    "filename": "CoreLib\\Utilities\\Utilities.cpp"
+                },
+                {
+                    "blank": 89,
+                    "code": 247,
+                    "comment": 64,
+                    "filename": "CoreLib\\Utilities\\Utilities.hpp"
+                },
+                {
+                    "blank": 25,
+                    "code": 30,
+                    "comment": 66,
+                    "filename": "CoreLib\\Utilities\\Vector3D.cpp"
+                },
+                {
+                    "blank": 42,
+                    "code": 89,
+                    "comment": 14,
+                    "filename": "CoreLib\\Utilities\\Vector3D.hpp"
+                },
+                {
+                    "blank": 8,
+                    "code": 26,
+                    "comment": 12,
+                    "filename": "CoreLib\\Utilities\\vector_2d.cpp"
+                },
+                {
+                    "blank": 19,
+                    "code": 33,
+                    "comment": 2,
+                    "filename": "CoreLib\\Utilities\\vectord_2d.hpp"
+                },
+                {
+                    "blank": 7,
+                    "code": 9,
+                    "comment": 1,
+                    "filename": "CoreLib\\Widgets\\BasicObject.hpp"
+                },
+                {
+                    "blank": 43,
+                    "code": 193,
+                    "comment": 9,
+                    "filename": "CoreLib\\Widgets\\Widget.cpp"
+                },
+                {
+                    "blank": 26,
+                    "code": 58,
+                    "comment": 8,
+                    "filename": "CoreLib\\Widgets\\Widget.hpp"
+                },
+                {
+                    "blank": 14,
+                    "code": 30,
+                    "comment": 10,
+                    "filename": "CustomClasses\\Arrow.hpp"
+                },
+                {
+                    "blank": 14,
+                    "code": 22,
+                    "comment": 11,
+                    "filename": "CustomClasses\\DottedRectangle.hpp"
+                },
+                {
+                    "blank": 50,
+                    "code": 151,
+                    "comment": 47,
+                    "filename": "CustomClasses\\Dump.cpp"
+                },
+                {
+                    "blank": 5,
+                    "code": 17,
+                    "comment": 1,
+                    "filename": "CustomClasses\\Dump.h"
+                },
+                {
+                    "blank": 9,
+                    "code": 35,
+                    "comment": 2,
+                    "filename": "CustomClasses\\Material.h"
+                },
+                {
+                    "blank": 32,
+                    "code": 58,
+                    "comment": 68,
+                    "filename": "CustomClasses\\MyWindow.cpp"
+                },
+                {
+                    "blank": 15,
+                    "code": 37,
+                    "comment": 52,
+                    "filename": "CustomClasses\\MyWindow.hpp"
+                },
+                {
+                    "blank": 41,
+                    "code": 102,
+                    "comment": 8,
+                    "filename": "CustomClasses\\RayIntersectable.cpp"
+                },
+                {
+                    "blank": 27,
+                    "code": 42,
+                    "comment": 8,
+                    "filename": "CustomClasses\\RayIntersectable.hpp"
+                },
+                {
+                    "blank": 7,
+                    "code": 31,
+                    "comment": 1,
+                    "filename": "CustomClasses\\RayIntersectableBasic.hpp"
+                },
+                {
+                    "blank": 52,
+                    "code": 184,
+                    "comment": 38,
+                    "filename": "CustomClasses\\RayTracerWidget.cpp"
+                },
+                {
+                    "blank": 19,
+                    "code": 64,
+                    "comment": 2,
+                    "filename": "CustomClasses\\RayTracerWidget.hpp"
+                },
+                {
+                    "blank": 7,
+                    "code": 25,
+                    "comment": 0,
+                    "filename": "CustomClasses\\RectangleItem.hpp"
+                },
+                {
+                    "blank": 3,
+                    "code": 15,
+                    "comment": 2,
+                    "filename": "main.cpp"
+                }
+            ]
+        }
+    ]
+}

@@ -15,6 +15,7 @@ public:
     Surface(Surface_* new_rsp) : rsp_(new_rsp) {}
 
     int blitToOther(Rect* src_rect, Surface* dest_surface, Rect* dest_rect);
+    int clear();
     ~Surface();
     friend class Window;
     friend class Painter;

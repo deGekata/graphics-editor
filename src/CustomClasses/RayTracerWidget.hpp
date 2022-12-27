@@ -21,6 +21,8 @@ typedef unsigned char BYTE;
 
 class RayTracerWidget : public Widget {
 public:
+    static int id;
+    int id_ = 0;
     double FOV_ = M_PI / 2;
     double view_plane_dist_;
     Vector3D plane_coord_x_;
@@ -42,22 +44,24 @@ public:
     Signal<> tmp  = {};
 public:
     void testfunc();
+
+
     int mouseEnterEvent(Event* event) {
         (void)event;
-        std::cout << "tracer enter\n";
+        std::cout << "tracer enter"<< id_  << "\n";
         return 0;
     }
 
     int mouseLeaveEvent(Event* event) {
         (void)event;
-        std::cout << "tracer out\n";
+        std::cout << "tracer out"<< id_  << "\n";
         tmp();
         return 0;
     }
 
     int mouseMoveEvent(Event* event) {
         (void)event;
-        std::cout << "tracer move\n";
+        std::cout << "tracer move"<< id_  << "\n";
         return 0;
     }
 
@@ -80,5 +84,4 @@ public:
     BYTE* scr_buff_ = nullptr;
 
 };
-
 #endif

@@ -3,7 +3,7 @@
 
 #include <inttypes.h>
 #include "Surface.hpp"
-#include "Widgets/Widget.hpp"
+#include "Widget.hpp"
 #include "App.hpp"
 
 class Window_;

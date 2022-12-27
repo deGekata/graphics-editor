@@ -23,8 +23,10 @@ public:
             surface_ = SDL_CreateRGBSurface(0, width, height, 32,
                                    0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000); 
         #endif            
-        SDL_SetSurfaceBlendMode(surface_, SDL_BLENDMODE_NONE);
+        SDL_SetSurfaceBlendMode(surface_, SDL_BLENDMODE_BLEND);
+        // SDL_SetSurfaceBlendMode(surface_, SDL_BLENDMODE_NONE);
         clip_rect_ = {0, 0, width, height};
+        SDL_FillRect(surface_, &clip_rect_, 0);
         SDL_SetClipRect(surface_, &clip_rect_);
     }
 
@@ -44,6 +46,14 @@ public:
         return SDL_BlitSurface(this->surface_, src_rect, dest->surface_, dest_rect);
     }
 
+    int clear() {
+        #if SDL_BYTEORDER == SDL_BIG_ENDIAN
+            return SDL_FillRect(surface_, &clip_rect_, 255);
+        #else
+            return SDL_FillRect(surface_, &clip_rect_, 4278190080);
+        #endif 
+        
+    }
     
     ~Surface_() {
         //how to delete surface...

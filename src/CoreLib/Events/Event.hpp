@@ -33,6 +33,12 @@ struct MouseButtonEvent {
     ButtonState state;
 };
 
+enum class MouseMotionType {
+    FULL,
+    ONLY_ENTER,
+    ONLY_LEAVE
+};
+
 struct MouseMotionEvent {
     Point pos = {0, 0};
     Point rel_pos = {0, 0};
@@ -55,6 +61,7 @@ public:
         MouseButtonEvent mouse_button;
         KeyboardEvent   keyboard;
     };
+    MouseMotionType mouse_motion_type = MouseMotionType::FULL;
     bool is_processed_ = false;
     // static void connect()
 };

@@ -1,0 +1,74 @@
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2022-12-18 20:01:55
+count workspace : c:\Users\Gekata\Desktop\GitProjects\graphics-editor\src
+total files : 55
+total code lines : 4029
+total comment lines : 594
+total blank lines : 1165
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |           .cpp|           1449|            360|            439|     36|
+   |           .hpp|           2528|            231|            712|     63|
+   |             .h|             52|              3|             14|    1.3|
+   -------------------------------------------------------------------------
+CoreLib\Core\App.cpp, code is 54, comment is 22, blank is 12.
+CoreLib\Core\App.hpp, code is 42, comment is 5, blank is 20.
+CoreLib\Core\GraphicsGeometryItem.hpp, code is 11, comment is 2, blank is 9.
+CoreLib\Core\GraphicsItem.hpp, code is 35, comment is 5, blank is 15.
+CoreLib\Core\GraphicsScene.hpp, code is 17, comment is 2, blank is 8.
+CoreLib\Core\Painter.hpp, code is 38, comment is 2, blank is 29.
+CoreLib\Core\SignalSlots.hpp, code is 92, comment is 0, blank is 22.
+CoreLib\Core\Surface.hpp, code is 18, comment is 1, blank is 4.
+CoreLib\Core\Window.hpp, code is 32, comment is 0, blank is 7.
+CoreLib\Events\Event.cpp, code is 4, comment is 0, blank is 4.
+CoreLib\Events\Event.hpp, code is 55, comment is 5, blank is 10.
+CoreLib\Events\EventManager.cpp, code is 114, comment is 11, blank is 26.
+CoreLib\Events\EventManager.hpp, code is 28, comment is 3, blank is 8.
+CoreLib\Events\KeyBoardCodes.hpp, code is 291, comment is 1, blank is 26.
+CoreLib\Events\Mouse.hpp, code is 21, comment is 0, blank is 4.
+CoreLib\Events\Scancode.hpp, code is 253, comment is 0, blank is 23.
+CoreLib\GraphicsInterfaces\SDL_app.cpp, code is 63, comment is 4, blank is 16.
+CoreLib\GraphicsInterfaces\SDL_app.hpp, code is 33, comment is 3, blank is 11.
+CoreLib\GraphicsInterfaces\SDL_event.hpp, code is 251, comment is 0, blank is 5.
+CoreLib\GraphicsInterfaces\SDL_painter.cpp, code is 68, comment is 1, blank is 21.
+CoreLib\GraphicsInterfaces\SDL_painter.hpp, code is 100, comment is 2, blank is 26.
+CoreLib\GraphicsInterfaces\SDL_surface.cpp, code is 20, comment is 6, blank is 8.
+CoreLib\GraphicsInterfaces\SDL_surface.hpp, code is 44, comment is 2, blank is 16.
+CoreLib\GraphicsInterfaces\SDL_window.cpp, code is 82, comment is 6, blank is 22.
+CoreLib\GraphicsInterfaces\SDL_window.hpp, code is 27, comment is 0, blank is 8.
+CoreLib\Modificators\BorderModifier.hpp, code is 29, comment is 1, blank is 7.
+CoreLib\Modificators\ModifierEventManager.cpp, code is 134, comment is 46, blank is 34.
+CoreLib\Modificators\ModifierEventManager.hpp, code is 17, comment is 2, blank is 6.
+CoreLib\Modificators\WidgetModifier.cpp, code is 110, comment is 14, blank is 28.
+CoreLib\Modificators\WidgetModifier.hpp, code is 63, comment is 12, blank is 25.
+CoreLib\Utilities\_MY_VECTOR_res_.hpp, code is 330, comment is 10, blank is 129.
+CoreLib\Utilities\Logger.hpp, code is 14, comment is 0, blank is 8.
+CoreLib\Utilities\Utilities.cpp, code is 41, comment is 0, blank is 14.
+CoreLib\Utilities\Utilities.hpp, code is 247, comment is 64, blank is 89.
+CoreLib\Utilities\Vector3D.cpp, code is 30, comment is 66, blank is 25.
+CoreLib\Utilities\Vector3D.hpp, code is 89, comment is 14, blank is 42.
+CoreLib\Utilities\vector_2d.cpp, code is 26, comment is 12, blank is 8.
+CoreLib\Utilities\vectord_2d.hpp, code is 33, comment is 2, blank is 19.
+CoreLib\Widgets\BasicObject.hpp, code is 9, comment is 1, blank is 7.
+CoreLib\Widgets\Widget.cpp, code is 193, comment is 9, blank is 43.
+CoreLib\Widgets\Widget.hpp, code is 58, comment is 8, blank is 26.
+CustomClasses\Arrow.hpp, code is 30, comment is 10, blank is 14.
+CustomClasses\DottedRectangle.hpp, code is 22, comment is 11, blank is 14.
+CustomClasses\Dump.cpp, code is 151, comment is 47, blank is 50.
+CustomClasses\Dump.h, code is 17, comment is 1, blank is 5.
+CustomClasses\Material.h, code is 35, comment is 2, blank is 9.
+CustomClasses\MyWindow.cpp, code is 58, comment is 68, blank is 32.
+CustomClasses\MyWindow.hpp, code is 37, comment is 52, blank is 15.
+CustomClasses\RayIntersectable.cpp, code is 102, comment is 8, blank is 41.
+CustomClasses\RayIntersectable.hpp, code is 42, comment is 8, blank is 27.
+CustomClasses\RayIntersectableBasic.hpp, code is 31, comment is 1, blank is 7.
+CustomClasses\RayTracerWidget.cpp, code is 184, comment is 38, blank is 52.
+CustomClasses\RayTracerWidget.hpp, code is 64, comment is 2, blank is 19.
+CustomClasses\RectangleItem.hpp, code is 25, comment is 0, blank is 7.
+main.cpp, code is 15, comment is 2, blank is 3.
+===============================================================================

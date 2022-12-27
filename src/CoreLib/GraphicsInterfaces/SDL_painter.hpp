@@ -3,8 +3,10 @@
 
 #include "Utilities/Utilities.hpp"
 #include "SDL.h"
+#include "SDL_ttf.h"
 #include "SDL_window.hpp"
 #include "SDL_surface.hpp"
+
 class Painter_ {
 public:
     Painter_(Window_* window) {
@@ -91,7 +93,24 @@ public:
         return SDL_RenderDrawLine(painter_, x1, y1, x2, y2);
     }
 
-    
+    int drawRect(int x, int y, int width, int height) {
+        SDL_Rect rect = {x, y, width, height}; 
+        return SDL_RenderDrawRect(painter_, &rect);
+    }
+
+    int drawRect(PointF p1, PointF p2) {
+        return drawRect(p1, p2 - p1);
+    }
+
+    int drawRectFill(int x, int y, int width, int height) {
+        SDL_Rect rect = {x, y, width, height}; 
+        return SDL_RenderFillRect(painter_, &rect);
+    }
+
+    int drawRectFill(PointF p1, PointF p2) {
+        return drawRectFill(p1, p2 - p1);
+    }
+
     int drawPoint(PointF p1) {
         return drawPoint(p1.x_, p1.y_);
     }

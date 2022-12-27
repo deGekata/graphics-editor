@@ -34,10 +34,21 @@ MyWindow::MyWindow(int width, int height, int x, int y, uint32_t flags) :
 
     tracer = new RayTracerWidget(Rect(0, 0, 400, 400), Point(0, 0));
     tracer2 = new RayTracerWidget(Rect(0, 0, 400, 400), Point(0, 0));
-    central_widget_->addChild(tracer, {400, 400});
-    central_widget_->addChild(tracer2, {0, 0});
+    central_widget_->addChild(tracer, {100, 100});
+    // central_widget_->addChild(tracer2, {0, 0});
+    tracer->addChild(tracer2, {100, 100});
+    HoverModifier* modifier = new HoverModifier(tracer->getRectModified());
+    // tracer->modify(modifier);
+    // tracer->modify(new BorderModifier(tracer->getRectModified()));
+    // tracer->modify(new BorderModifier(tracer->getRectModified()));
+    // tracer->modify(new BorderModifier(tracer->getRectModified()));
+    // tracer->modify(new BorderModifier(tracer->getRectModified()));
+    HoverModifier* modifier2 = new HoverModifier(tracer->getRectModified(), 2);
+    tracer->modify(modifier2);
+    // modifier2->border_color_ = ColorF(123, 233, 14);
+    // tracer->pos_ = {0, 0};
 
-
+    std::cout << "tracer" << tracer->id_ << " " << tracer2->id_ << "\n";
     //------------------- Light-source --------------------------
     // sphere1 = new Sphere(Vector3D(1, 1, 1), 100);
     sphere1 = new Sphere(Vector3D(200, 0, 400), 50);

@@ -3,7 +3,7 @@
 #include "Core/Window.hpp"
 #include "Core/App.hpp"
 
-Window::Window(int width = 800, int height = 600, int x = SDL_WINDOWPOS_CENTERED, int y = SDL_WINDOWPOS_CENTERED, uint32_t flags = 0) 
+Window::Window(int width = 800, int height = 600, int x = 1000, int y = 0, uint32_t flags = 0) 
     :
     rect_({0, 0, width, height})
 {
@@ -27,30 +27,19 @@ void Window::processEvents() {
     while (this->manager_->pollEvent(&event, 0) > 0) {
         switch (event.type) {
             case EventType::MOUSEMOTION: {
-                Widget* before, *after;
-                after = current_active_widget_->event_manager->mapWidgetFromPos(event.mouse_motion.pos);
-                before  = current_active_widget_->event_manager->mapWidgetFromPos(event.mouse_motion.pos - event.mouse_motion.rel_pos);
-                if (before != NULL)
-                    before->mouseMoveEvent(&event);
-
-                if (before != after) {
-                    std::cout << "leave_enter\n";
-                    if (before != NULL) 
-                        before->mouseLeaveEvent(&event);
-                    if (after != NULL) 
-                        after->mouseEnterEvent(&event);
-                }
+                int status = current_active_widget_->event_manager->mapEnterLeaveEvents(&event);
                 //TODO:
                 //some additional code for always tracking widgets
             }
             break;
 
             case EventType::MOUSEBUTTONUP  : {
-                Widget* widg;
-                widg = current_active_widget_->event_manager->mapWidgetFromPos(event.mouse_button.pos);
+                WidgetCoords widg = current_active_widget_->event_manager->mapWidgetFromPos(event.mouse_button.pos);
         
-                if (widg != NULL) {
-                    widg->mouseReleaseEvent(&event);
+                if (widg.widget != NULL) {
+                    event.mouse_button.pos = widg.pos;
+                    // widg.widget->mouseReleaseEvent(&event);
+                    widg.widget->event_manager->processEvent(&event);
                 }
                 //TODO:
                 //some additional code for always tracking widgets
@@ -58,11 +47,12 @@ void Window::processEvents() {
             break;
 
             case EventType::MOUSEBUTTONDOWN: {
-                Widget* widg;
-                widg = current_active_widget_->event_manager->mapWidgetFromPos(event.mouse_button.pos);
+                WidgetCoords widg = current_active_widget_->event_manager->mapWidgetFromPos(event.mouse_button.pos);
         
-                if (widg != NULL) {
-                    widg->mousePressEvent(&event);
+                if (widg.widget != NULL) {
+                    event.mouse_button.pos = widg.pos;
+                    // widg.widget-> mousePressEvent(&event);
+                    widg.widget->event_manager->processEvent(&event);
                 }
                 //TODO:
                 //some additional code for always tracking widgets
